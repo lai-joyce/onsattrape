@@ -63,10 +63,12 @@ function deleteContact () {
 	});
 }
 
+var contactKey = '';
+
 function editContact () {
 	newContactEligible = false;
 	var row = $(this).parent().parent();
-	var contactKey =  row.data('key');
+	contactKey =  row.data('key');
 	console.log(contactKey);
 	$("#editContact").modal();
 	$("#nameInput").val(row.data('values').name);
