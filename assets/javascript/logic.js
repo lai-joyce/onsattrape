@@ -9,7 +9,7 @@ var testContact = {
 var database = firebase.database();
 var firebaseRef = database.ref();
 
-firebaseRef.on("value", function(snap) {
+firebaseRef.orderByChild('name').on("value", function(snap) {
 	$("#contactTable td").remove();
 	snap.forEach(function(contact) {
 		var contactVal = contact.val();
