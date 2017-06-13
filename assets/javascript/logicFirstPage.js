@@ -8,8 +8,15 @@ var config = {
 			messagingSenderId: "1094671185695"
 		};
 firebase.initializeApp(config);
+
+var uid = "-KmUZTaohwghpuagw";
+
+
+
 var database = firebase.database();
 
-database.ref().on("child_added", function(snapshot) {
+var contactsRef = database.ref('users/'+uid+'/contacts');
+
+contactsRef.on("child_added", function(snapshot) {
 	console.log(snapshot.val());
 });

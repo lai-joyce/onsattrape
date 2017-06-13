@@ -6,14 +6,17 @@ var testContact = {
 	email: "michael.t.halvorson@gmail.com"
 }
 
-var database = firebase.database();
-var firebaseRef = database.ref();
+var uid = "-KmUZTaohwghpuagw";
 
-firebaseRef.orderByChild('name').on("value", function(snap) {
+var database = firebase.database();
+var contactsRef = database.ref('users/'+uid+'/contacts');
+
+contactsRef.orderByChild('name').on("value", function(snap) {
+	console.log();
 	$("#contactTable td").remove();
 	snap.forEach(function(contact) {
 		var contactVal = contact.val();
-		$("#contactTable").append($("<tr>").data('key',contact.key).data('values',contactVal).append($("<td>").text(contactVal.name)).append($("<td>").text(contactVal.telephone)).append($("<td>").text(contactVal.email)).append($("<td>").text(contactVal.days)).append($("<td>")).append($("<td>").text(contactVal.city)).append($("<td>").text(contactVal.birthday)).append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))).append($("<td>").append($("<button>").text("Delete").addClass("delete btn btn-default"))))
+		$("#contactTable").append($("<tr>").data('key',contact.key).data('values',contactVal).append($("<td>").text(contactVal.name)).append($("<td>").text(contactVal.telephone)).append($("<td>").text(contactVal.email)).append($("<td>").text(contactVal.days)).append($("<td>")).append($("<td>").text(contactVal.city)).append($("<td>").text(contactVal.birthday)).append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))).append($("<td>").append($("<button>").text("Delete").addClass("delete btn btn-default"))));
 	});
 });
 
@@ -35,7 +38,7 @@ function newContact () {
 	$("#daysBetweenInput").val(7);
 	$("#saveButton").on("click", function() {
 		if (newContactEligible) {
-			firebaseRef.push({
+			contactsRef.push({
 				name: $("#nameInput").val().trim(),
 				telephone: $("#telephoneInput").val().trim(),
 				email: $("#emailInput").val().trim(),
@@ -55,7 +58,7 @@ function deleteContact () {
 	console.log(contactKey);
 	$("#deleteConfirm").modal();
 	$('#deleteButton').on('click', function() {
-		firebaseRef.child(contactKey).remove();
+		contactsRef.child(contactKey).remove();
 		$('#deleteConfirm').modal('hide');
 	});
 }
@@ -74,7 +77,7 @@ function editContact () {
 	$("#daysBetweenInput").val(row.data('values').days);
 	$("#saveButton").text("Save");
 	$("#saveButton").on("click", function() {
-		firebaseRef.child(contactKey).update({
+		contactsRef.child(contactKey).update({
 			name: $("#nameInput").val().trim(),
 			telephone: $("#telephoneInput").val().trim(),
 			email: $("#emailInput").val().trim(),
