@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!
  * Start Bootstrap - Modern Business (http://startbootstrap.com/)
  * Copyright 2013-2016 Start Bootstrap
@@ -103,3 +104,40 @@ footer {
         height: 70%;
     }
 }
+||||||| merged common ancestors
+=======
+#contactTable {
+	width:100%
+}
+
+#newContact {
+	float: right;
+}
+
+#headshot {
+	margin: auto;
+}
+
+#contactTable table {
+	border-collapse: collapse;
+}
+#contactTable tr { 
+	border: solid;
+	border-width: 1px 0;
+}
+#contactTable tr:first-child {
+	border-top: none;
+}
+#contactTable tr:last-child {
+	border-bottom: none;
+}
+.edit, .delete {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+#newContact {
+	cursor: pointer;
+}
+>>>>>>> f389b4e71d78163bd4a6dbda91f774ad076a8b03
