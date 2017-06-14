@@ -18,12 +18,12 @@ var database = firebase.database();
 var contactsRef = database.ref('users/'+uid+'/contacts');
 
 contactsRef.on("child_added", function(snapshot) {
-	if (selectionLogic(snapshot.val())) {
+	if (selectionLogic(snapshot.val())>0) {
 		console.log(snapshot.val());
 	}
 });
 
 function selectionLogic(snapValues) {
-	//This is where the magic happens; this function should return true or false depending on whether someone was randomly selected, whether it's their birthday, etc.
-	return true;
+	//This is where the magic happens; this function should return why someone was selected (birthday = 1, location = 2, random = 3)
+	return 1;
 }
