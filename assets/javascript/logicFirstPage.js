@@ -19,123 +19,98 @@ var contactsRef = database.ref('users/'+uid+'/contacts');
 
 contactsRef.on("child_added", function(snapshot) {
 	if (selectionLogic(snapshot.val())>0) {
-		console.log(snapshot.val().name);
+		//console.log(snapshot.val().name);
 		var mainDiv = $("<div>");
 		mainDiv.addClass("col-md-4");
 		mainDiv.addClass("mainDiv");
 
-	var divPanel = $("<div>");
-	divPanel.addClass("panel");
-	divPanel.addClass("panel-default");
+		var divPanel = $("<div>");
+		divPanel.addClass("panel panel-info contact-panel");
 
-	var panelHeading = $("<div>");
-	panelHeading.addClass("panel-heading");
+		var panelHeading = $("<div>");
+		panelHeading.addClass("panel-heading clearfix");
 
-	var imageHolder = $("<img>");
-	imageHolder.attr("src", "#");
+		var panelTitle = $("<div>").addClass('panelTitle pull-left').text(snapshot.val().name);
 
+		var panelHeadingIcons = $("<div>").addClass('pull-right');		
 
-	var hFour = $("<h4>");
-	hFour.attr("id", "contactName");
-	hFour.append(snapshot.val().name);
+		// var imageHolder = $("<img>");
+		// imageHolder.attr("src", "#");
+		// panelHeading.append(imageHolder);
 
-		var hFour = $("<h4>");
+		
 
-		hFour.append(snapshot.val().name);
-
-
-	panelHeading.append(imageHolder);
-	panelHeading.append(hFour);
-
-	divPanel.append(panelHeading);
-
-	mainDiv.append(divPanel);
-
-	$("#dump-div").append(mainDiv);
+		$("#dump-div").append(mainDiv);
 
 
-	var panelBody = $("<div>");
-	panelBody.addClass("panel-body");
+		var panelBody = $("<div>");
+		panelBody.addClass("panel-body hidden-sm hidden-xs");
 
-	var notes = $("<p>");
-	notes.attr("id", "notesParagraph");
-	notes.append("<h4>" + " Last time talked about: " + snapshot.val().lastTalked + "</h4>");
+		var notes = $("<p>");
+		notes.attr("id", "notesParagraph");
+		notes.append("<h4>" + " Last time talked about: " + snapshot.val().lastTalked + "</h4>");
 
-	if (snapshot.val().birthday !== null && snapshot.val().birthday !== "") {
-		notes.append("<h5>" + " Birthday is on: " + snapshot.val().birthday + "</h5>");
-	}
+		if (snapshot.val().birthday !== null && snapshot.val().birthday !== "") {
+			notes.append("<h5>" + " Birthday is on: " + snapshot.val().birthday + "</h5>");
+		}
 
-	if (snapshot.val().city !== null && snapshot.val().city !== "") {
-		notes.append("<h6>" + " Located currently in: " + snapshot.val().city + "</h6>");
-	}
+		if (snapshot.val().city !== null && snapshot.val().city !== "") {
+			notes.append("<h6>" + " Located currently in: " + snapshot.val().city + "</h6>");
+		}
 
-	panelBody.append(notes);
+		panelBody.append(notes);
 
-	var email = $("<a>");
-	email.attr("href", "mailto:" + snapshot.val().email);
-	email.addClass("btn btn-default hidden-md hidden-lg");
-	//email.addClass("btn-default");
-	var iemail = $("<i>");
-	iemail.addClass("fa");
-	iemail.addClass("fa-envelope-o");
-	iemail.attr("aria-hidden", "true");
-	email.append(iemail);
-
-	var gmail = $("<a>");
-	gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + snapshot.val().email);
-	gmail.attr("target", "_blank");
-	gmail.attr("id", "gmailID");
-	gmail.addClass("btn btn-default hidden-sm hidden-xs");
-	//gmail.addClass("btn-default");
-	var igemail = $("<i>");
-	igemail.addClass("fa");
-	igemail.addClass("fa-envelope-o");
-	igemail.attr("aria-hidden", "true");
-	igemail.text(" gmail");
-	gmail.append(igemail);
-
-
-	var phone = $("<a>");
-	phone.attr("href", "tel:" + snapshot.val().telephone);
-	phone.attr("id", "phoneLine");
-	phone.addClass("btn");
-	phone.addClass("btn-default");
-	var iphone = $("<i>");
-	iphone.addClass("fa");
-	iphone.addClass("fa-phone");
-	iphone.attr("aria-hidden", "true");
-	phone.append(iphone);
-
-
-	var check = $("<a>");
-		//check.attr("href", "#");
-		check.addClass("checkMark");
-		check.addClass("btn");
-		check.addClass("btn-default");
+		var check = $("<a>");
+		check.addClass("checkMark btn btn-primary panelButton");
 		var icheck = $("<i>");
-		icheck.addClass("fa");
-		icheck.addClass("fa-check");
+		icheck.addClass("fa fa-check");
 		icheck.attr("aria-hidden", "true");
 		check.append(icheck);
 
+		if (snapshot.val().phone !== null) {
+			var phone = $("<a>");
+			phone.attr("href", "tel:" + snapshot.val().telephone);
+			phone.attr("id", "phoneLine");
+			phone.addClass("btn btn-primary panelButton");
+			var iphone = $("<i>");
+			iphone.addClass("fa fa-phone");
+			iphone.attr("aria-hidden", "true");
+			phone.append(iphone);
+			panelHeadingIcons.append(phone);
+		}
 
 		if (snapshot.val().email !== null) {
-			panelBody.append(email);
-			panelBody.append(gmail)
+
+			var email = $("<a>");
+			email.attr("href", "mailto:" + snapshot.val().email);
+			email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
+			var iemail = $("<i>");
+			iemail.addClass("fa fa-envelope-o");
+			iemail.attr("aria-hidden", "true");
+			email.append(iemail);
+
+			var gmail = $("<a>");
+			gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + snapshot.val().email);
+			gmail.attr("target", "_blank");
+			gmail.attr("id", "gmailID");
+			gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
+			var igemail = $("<i>");
+			igemail.addClass("fa fa-envelope-o");
+			igemail.attr("aria-hidden", "true");
+			//igemail.text("g");
+			gmail.append(igemail);
+
+			panelHeadingIcons.append(email);
+			panelHeadingIcons.append(gmail);
+
 		}
 
-		if (snapshot.val().phone !== null) {
-			panelBody.append(phone);
-		}
-
-		panelBody.append(check);
+		panelHeadingIcons.append(check);
 
 
 		var viewNotes = $("<a>");
 		//check.attr("href", "#");
-		viewNotes.addClass("checkMark");
-		viewNotes.addClass("btn");
-		viewNotes.addClass("btn-default");
+		viewNotes.addClass("checkMark btn btn-primary");
 		var iNotes = $("<i>");
 		iNotes.addClass("fa");
 		//iNotes.addClass("fa-check");
@@ -145,13 +120,16 @@ contactsRef.on("child_added", function(snapshot) {
 
 		panelBody.append(viewNotes);
 
+		panelHeading.append(panelTitle);
+		panelHeading.append(panelHeadingIcons);
+
+		divPanel.append(panelHeading);
 
 		divPanel.append(panelBody);
 
 		mainDiv.append(divPanel);
 
 		$("#dump-div").append(mainDiv);
-
 	}
 
 
@@ -168,11 +146,9 @@ function setUpLogic() {
 	//Gets today's date
 	now = moment();
 	todayStr = now.format('YYYY-MM-DD');
-	console.log(todayStr);
 	//Sets random number based on date
 	myrng = new Math.seedrandom(todayStr);
 	myrngInt = Math.floor(myrng()*1000000+1);
-	console.log(myrngInt);
 	//Grabs constants/user settings for minThreshold and maxThreshold
 	var infoRef = database.ref('users/'+uid+'/info');
 	infoRef.on("value", function(snap) {
@@ -186,8 +162,6 @@ function setUpLogic() {
 		} else {
 			maxThreshold = 2;
 		}
-		console.log(minThreshold);
-		console.log(maxThreshold);
 	});
 }
 
@@ -235,7 +209,7 @@ function selectionLogic(snapValues) {
 //        } 
 // 	return false;
 // }
-    
+
 $(document).on("click",".checkMark", removeDiv);
 
 function removeDiv() {
@@ -244,9 +218,9 @@ function removeDiv() {
 	//console.log("something");
 	//$(this).parent().parent().parent().remove();
 // 	$("#dump-div").empty();
-	var key = $(this).parent().parent().parent().data('key');
-	addNote(key);
-	mostRecentContact(key);
+var key = $(this).parent().parent().parent().data('key');
+addNote(key);
+mostRecentContact(key);
 	//createNewModal();
 	
 }
