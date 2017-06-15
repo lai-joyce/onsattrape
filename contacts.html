@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Index</title>
+	<title>My Contacts</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://bootswatch.com/journal/bootstrap.min.css">
@@ -10,9 +10,25 @@
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-	<header>
-		
-	</header>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>                        
+				</button>
+				<a class="navbar-brand" href="#">On S'attrape!</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="index.html"><i class="fa fa-calendar-o" aria-hidden="true"></i></a></li>
+					<li><a href="contacts.html"><i class="fa fa-address-book-o" aria-hidden="true"></i></a></li>
+					<li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
 	<div class="container">
 		<div class="col-lg-12">
@@ -28,9 +44,8 @@
 							<th>Tel</th>
 							<th>Email</th>
 							<th>Days</th>
-							<th>Picture</th>
-							<th>City</th>
-							<th>Birthday</th>
+							<th class='hidden-xs hidden-sm'>City</th>
+							<th class='hidden-xs hidden-sm'>Birthday</th>
 							<th>Edit</th>
 							<th>Delete</th>
 						</tr>
@@ -63,7 +78,7 @@
 								</div>
 							</div>
 							<div class="col-sm-4">
-							<img id="headshot" src="https://via.placeholder.com/150x150"> 
+								<img id="headshot" src="https://via.placeholder.com/150x150"> 
 							</div>
 							<div class="col-sm-12">
 								<div class="form-group">
@@ -132,6 +147,9 @@
 		firebase.initializeApp(config);
 	</script>
 	<script src="https://code.jquery.com/jquery.js"></script>
+	<script>
+		$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
+	</script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="assets/javascript/logic.js"></script>
 </body>

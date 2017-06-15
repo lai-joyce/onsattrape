@@ -20,10 +20,6 @@ var contactsRef = database.ref('users/'+uid+'/contacts');
 contactsRef.on("child_added", function(snapshot) {
 	if (selectionLogic(snapshot.val())>0) {
 		console.log(snapshot.val().name);
-
-
-	}
-
 		var mainDiv = $("<div>");
 		mainDiv.addClass("col-md-4");
 		mainDiv.addClass("mainDiv");
@@ -103,91 +99,106 @@ contactsRef.on("child_added", function(snapshot) {
 		mainDiv.append(divPanel);
 
 		$("#dump-div").append(mainDiv);
+
+	}
+
+
 });
 
-var myrng = new Math.seedrandom('2017-06-14');
-console.log(myrng()); 
+var now;
+var myrng;
+var myrngInt;
+var todayStr;
+var minThreshold;
+var maxThreshold;
+
+function setUpLogic() {
+	//Gets today's date
+	now = moment();
+	todayStr = now.format('YYYY-MM-DD');
+	console.log(todayStr);
+	//Sets random number based on date
+	myrng = new Math.seedrandom(todayStr);
+	myrngInt = Math.floor(myrng()*1000000+1);
+	console.log(myrngInt);
+	//Grabs constants/user settings for minThreshold and maxThreshold
+	var infoRef = database.ref('users/'+uid+'/info');
+	infoRef.on("value", function(snap) {
+		if (snap.val() !== null && (snap.val().minThreshold < 0.5 && snap.val().minThreshold >= 0)) {
+			minThreshold = snap.val().minThreshold;
+		} else {
+			minThreshold = 0.25;
+		}
+		if (snap.val() !== null && snap.val().maxThreshold >= 1.5) {
+			maxThreshold = snap.val().maxThreshold;
+		} else {
+			maxThreshold = 2;
+		}
+		console.log(minThreshold);
+		console.log(maxThreshold);
+	});
+}
+
+setUpLogic();
 
 function selectionLogic(snapValues) {
 
-	if {
-		birthday 
-	}
+	// if {
+	// 	birthday 
+	// }
 	//This is where the magic happens; this function should return why someone was selected (birthday = 1, location = 2, random = 3)
 	return 1;
 }
- 
-
-var randNum = random number from date
-//This should be the same every time it's run on a specific date, in case we need to recreate it. It should be the same across all our users as well
-
-//loop (in Bob's code): 
-for each contact {
-	if (checkEligibility(contact) {
-		populate page
-	}
-}
-
-$(document).ready(function() {
 
 
-function checkEligibility (contact) {
+// var randNum = random number from date
+// //This should be the same every time it's run on a specific date, in case we need to recreate it. It should be the same across all our users as well
 
-	   var birthday = 0;
-       var location = 0;
-       var offset = 0;
-       var frequency = $("#frequency");
-       var randNum = Math.floor(Math.random() * 1000000);
-       var contacts_to_daily = [];
-       for (var i=0; i<4; i++) {
-        contacts_to_daily.push();
-       }
-	//Bday check
-	if (contact.bday === today) {
-		return 1;
-	}
+// //loop (in Bob's code): 
+// for each contact {
+// 	if (checkEligibility(contact) {
+// 		populate page
+// 	}
+// }
 
-	if ($("#bdayInput").val().trim() === moment().format() {
-             //push to daily page
-       }
+// $(document).ready(function() {
 
 
+// function checkEligibility (contact) {
 
-	//Distance based
-	if (distance(current location, contact.city) < 25 miles && current location not within ignore zone) {
-		return 2; 
-	}
+// 	   var birthday = 0;
+//        var location = 0;
+//        var offset = 0;
+//        var frequency = $("#frequency");
+//        var randNum = Math.floor(Math.random() * 1000000);
+//        var contacts_to_daily = [];
+//        for (var i=0; i<4; i++) {
+//         contacts_to_daily.push();
+//        }
+// 	//Bday check
+// 	if (contact.bday === today) {
+// 		return 1;
+// 	}
+
+// 	if ($("#bdayInput").val().trim() === moment().format() {
+//              //push to daily page
+//        }
 
 
-	//Random number based
-	if ((randNum + offset)%frequency === 0) {
-		return 3;
-	}
 
-	if (parseInt((snapshot.val().lastTalked).val().trim()) === moment($("#first").val().trim(), "HH:mm")) {
+// 	//Distance based
+// 	if (distance(current location, contact.city) < 25 miles && current location not within ignore zone) {
+// 		return 2; 
+// 	}
 
-       } 
-	return false;
-}
 
-		
+// 	//Random number based
+// 	if ((randNum + offset)%frequency === 0) {
+// 		return 3;
+// 	}
 
-// <div class="col-md-4">
-//       <div class="panel panel-default">
+// 	if (parseInt((snapshot.val().lastTalked).val().trim()) === moment($("#first").val().trim(), "HH:mm")) {
 
-//       			<div class="panel-heading">
-
-//       				<div><img src="#"></div>
-//       				<div><h4>Bob</h4></div>
-
-//       			</div>
-
-//       			<div class="panel-body">
-
-//       				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, optio corporis quae nulla aspernatur in alias at numquam rerum ea excepturi expedita tenetur assumenda voluptatibus eveniet incidunt dicta nostrum quod?</p>
-//       				<a href="#" class="btn btn-default"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
-//       				<a href="#" class="btn btn-default"><i class="fa fa-phone" aria-hidden="true"></i></a>
-//       				<a href="#" class="btn btn-default"><i class="fa fa-check" aria-hidden="true"></i></a>
-//       			</div>
-//       </div>
-//</div>
+//        } 
+// 	return false;
+// }

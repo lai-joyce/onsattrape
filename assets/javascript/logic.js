@@ -16,7 +16,7 @@ contactsRef.orderByChild('name').on("value", function(snap) {
 	$("#contactTable td").remove();
 	snap.forEach(function(contact) {
 		var contactVal = contact.val();
-		$("#contactTable").append($("<tr>").data('key',contact.key).data('values',contactVal).append($("<td>").text(contactVal.name)).append($("<td>").text(contactVal.telephone)).append($("<td>").text(contactVal.email)).append($("<td>").text(contactVal.days)).append($("<td>")).append($("<td>").text(contactVal.city)).append($("<td>").text(contactVal.birthday)).append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))).append($("<td>").append($("<button>").text("Delete").addClass("delete btn btn-default"))));
+		$("#contactTable").append($("<tr>").data('key',contact.key).data('values',contactVal).append($("<td>").text(contactVal.name)).append($("<td>").text(contactVal.telephone)).append($("<td>").text(contactVal.email)).append($("<td>").text(contactVal.days)).append($("<td>").text(contactVal.city).addClass('hidden-xs hidden-sm')).append($("<td>").text(contactVal.birthday).addClass('hidden-xs hidden-sm')).append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))).append($("<td>").append($("<button>").text("Delete").addClass("delete btn btn-default"))));
 	});
 });
 
