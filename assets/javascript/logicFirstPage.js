@@ -39,6 +39,7 @@ contactsRef.on("child_added", function(snapshot) {
 		imageHolder.attr("src", "#");
 
 		var hFour = $("<h4>");
+
 		hFour.append(snapshot.val().name);
 
 		panelHeading.append(imageHolder);
@@ -104,11 +105,70 @@ contactsRef.on("child_added", function(snapshot) {
 		$("#dump-div").append(mainDiv);
 });
 
+var myrng = new Math.seedrandom('2017-06-14');
+console.log(myrng()); 
+
 function selectionLogic(snapValues) {
+
+	if {
+		birthday 
+	}
 	//This is where the magic happens; this function should return why someone was selected (birthday = 1, location = 2, random = 3)
 	return 1;
 }
+ 
 
+var randNum = random number from date
+//This should be the same every time it's run on a specific date, in case we need to recreate it. It should be the same across all our users as well
+
+//loop (in Bob's code): 
+for each contact {
+	if (checkEligibility(contact) {
+		populate page
+	}
+}
+
+$(document).ready(function() {
+
+
+function checkEligibility (contact) {
+
+	   var birthday = 0;
+       var location = 0;
+       var offset = 0;
+       var frequency = $("#frequency");
+       var randNum = Math.floor(Math.random() * 1000000);
+       var contacts_to_daily = [];
+       for (var i=0; i<4; i++) {
+        contacts_to_daily.push();
+       }
+	//Bday check
+	if (contact.bday === today) {
+		return 1;
+	}
+
+	if ($("#bdayInput").val().trim() === moment().format() {
+             //push to daily page
+       }
+
+
+
+	//Distance based
+	if (distance(current location, contact.city) < 25 miles && current location not within ignore zone) {
+		return 2; 
+	}
+
+
+	//Random number based
+	if ((randNum + offset)%frequency === 0) {
+		return 3;
+	}
+
+	if (parseInt((snapshot.val().lastTalked).val().trim()) === moment($("#first").val().trim(), "HH:mm")) {
+
+       } 
+	return false;
+}
 
 		
 
