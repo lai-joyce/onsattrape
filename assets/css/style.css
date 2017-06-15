@@ -102,6 +102,12 @@ footer {
 
 /* Responsive Styles */
 
+/*@media(max-width:565px) {
+    #gmailID {
+        display: none;
+    }
+}*/
+
 @media(max-width:991px) {
     .customer-img,
     .img-related {
