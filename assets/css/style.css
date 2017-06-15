@@ -55,6 +55,20 @@ header.carousel .fill {
     background-size: cover;
 }
 
+/*----------------------------*/
+
+
+.btn {
+    margin-right: 10px;
+}
+
+img {
+    margin-right: 20px;
+}
+
+
+/*----------------------------*/
+
 /* 404 Page Styles */
 
 .error-404 {
@@ -105,7 +119,7 @@ footer {
     }
 }
 
-#contactTable {
+/*#contactTable {
 	width: 100%;
 }
 
@@ -119,8 +133,8 @@ footer {
 
 #contactTable table {
 	border-collapse: collapse;
-}
-#contactTable tr { 
+}*/
+/*#contactTable tr { 
 	border: solid;
 	border-width: 1px 0;
 }
@@ -129,8 +143,8 @@ footer {
 }
 #contactTable tr:last-child {
 	border-bottom: none;
-}
-.edit, .delete {
+}*/
+/*.edit, .delete {
 	padding-top: 5px;
 	padding-bottom: 5px;
 	margin-top: 2px;
@@ -138,5 +152,5 @@ footer {
 }
 #newContact {
 	cursor: pointer;
-}
+}*/
 >>>>>>> f389b4e71d78163bd4a6dbda91f774ad076a8b03
