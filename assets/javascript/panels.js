@@ -189,8 +189,15 @@ function selectionLogic(snapValues) {
 			return 1;
 
 		}
-		//use Google Maps Distance Matrix API to figure out distance between Contact and User City?
-		if (snapValues.city.milesFromContactCity <= 25) {
+
+		var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + snapValues.city + 
+						"&destinations=" + user.city + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
+
+				$.ajax({url: queryURL, method: "GET"}).done(function(response) {
+						//console.log(response); 
+
+		//use Google Maps Distance Matrix API above to figure out distance in km between Contact and User City
+		if (snapValues.city.milesFromContactCity <= 42) {
 			proximityContactsGroup2.push(snapValues.contact);
 			return 2;
 		}
