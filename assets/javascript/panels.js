@@ -1,4 +1,4 @@
-// alert("working");
+alert("working");
 // now = moment();
 // 	console.log(now);
 
@@ -173,7 +173,7 @@ setUpLogic();
 function selectionLogic(snapValues) {
 
 	now = moment();
-	todayStr = now.format('YYYY-MM-DD');
+	todayStr = now.format('MM-DD');
 	console.log(now);
 	var birthdayContactsGroup1 = [];
 	var proximityContactsGroup2 = [];
