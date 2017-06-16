@@ -1,6 +1,7 @@
 // alert("working");
 // now = moment();
 // 	console.log(now);
+
 var config = {
 	apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
 	authDomain: "onsattrape.firebaseapp.com",
@@ -181,30 +182,30 @@ function selectionLogic(snapValues) {
 
 	var contactBirthday = database.ref('users/'+uid+'/contacts');
 
-	contactBirthday.on("value", function(snapshot) {
-		console.log(snapshot);
-		if (snapshot.val().birthday !== now) {
-			birthdayContactsGroup1.push(snapshot.val().contact);
+	contactBirthday.on("value", function(snapValues) {
+		console.log(snapValues);
+		if (snapValues.birthday !== now) {
+			birthdayContactsGroup1.push(snapValues.contact);
 			return 1;
 
 		}
-		//use Google Maps API to figure out distance between Contact and User City?
-		if (snapshot.val().city.milesFromContactCity <= 25) {
-			proximityContactsGroup2.push(snapshot.val().contact);
+		//use Google Maps Distance Matrix API to figure out distance between Contact and User City?
+		if (snapValues.city.milesFromContactCity <= 25) {
+			proximityContactsGroup2.push(snapValues.contact);
 			return 2;
 		}
 
-		if ((myrng + contact.myrngInt) % snapshot.val().lastTalked === 0) {
-			randomContactsGroup3.push(snapshot.val().contact);
+		if ((myrng + contact.myrngInt) % snapValues.lastTalked === 0) {
+			randomContactsGroup3.push(snapValues.contact);
 			return 3;
 		}
 		
 	});
 
-	for(var item in birthdayContactsGroup1) {
-				var contactsByBirthday = $("<div>" + birthdayContactsGroup1[item] + "</div>");
-				$("#dump-div").append(contactsByBirthday);
-			};
+	// for(var item in birthdayContactsGroup1) {
+	// 			var contactsByBirthday = $("<div>" + birthdayContactsGroup1[item] + "</div>");
+	// 			$("#dump-div").append(contactsByBirthday);
+	// 		};
 	//This is where the magic happens; this function should return why someone was selected (birthday = 1, location = 2, random = 3)
 }
 
@@ -276,4 +277,4 @@ function mostRecentContact(key) {
 
 function createNewModal() {
 
-}
+};
