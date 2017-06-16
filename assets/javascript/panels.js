@@ -201,6 +201,7 @@ function selectionLogic(snapValues) {
 			proximityContactsGroup2.push(snapValues.contact);
 			return 2;
 		}
+	});
 
 		if ((myrng + contact.myrngInt) % snapValues.lastTalked === 0) {
 			randomContactsGroup3.push(snapValues.contact);
