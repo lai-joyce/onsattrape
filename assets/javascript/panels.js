@@ -31,6 +31,7 @@ contactsRef.on("child_added", function(snapshot) {
 
 		var divPanel = $("<div>");
 		divPanel.addClass("panel panel-info contact-panel");
+		divPanel.data("key",snapshot.key);
 
 		var panelHeading = $("<div>");
 		panelHeading.addClass("panel-heading clearfix");
@@ -262,13 +263,13 @@ $(document).on("click",".checkMark", removeDiv);
 
 function removeDiv() {
 
+	var key = $(this).parent().parent().parent().data('key');
 
 	//console.log("something");
-	//$(this).parent().parent().parent().remove();
-// 	$("#dump-div").empty();
-var key = $(this).parent().parent().parent().data('key');
-addNote(key);
-mostRecentContact(key);
+	$(this).parent().parent().parent().remove();
+	// 	$("#dump-div").empty();
+	addNote(key);
+	mostRecentContact(key);
 	//createNewModal();
 	
 }
