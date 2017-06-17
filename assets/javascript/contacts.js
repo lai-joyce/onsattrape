@@ -46,7 +46,8 @@ function newContact () {
 				email: $("#emailInput").val().trim(),
 				birthday: $("#bdayInput").val().trim(),
 				city: $("#locationInput").val().trim(),
-				days: Number($("#daysBetweenInput").val().trim())
+				days: Number($("#daysBetweenInput").val().trim()),
+				offset: Math.floor(Math.random()*1000000+1)
 			});
 			newContactEligible = false;
 		}
