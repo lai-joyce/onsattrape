@@ -23,7 +23,12 @@ var database = firebase.database();
 var contactsRef = database.ref('users/'+uid+'/contacts');
 
 contactsRef.on("child_added", function(snapshot) {
+
+
 	if (selectionLogic(snapshot.val())>0) {
+
+
+
 		//console.log(snapshot.val().name);
 		var mainDiv = $("<div>");
 		mainDiv.addClass("col-md-4");
@@ -147,26 +152,26 @@ var myrngInt;
 var todayStr;
 var minThreshold;
 var maxThreshold;
+var todayStrNoYear;
 
 function setUpLogic() {
 	//Gets today's date
 	now = moment();
 	todayStr = now.format('YYYY-MM-DD');
+	todayStrNoYear = now.format('MM/DD');
 	//Sets random number based on date
 	myrng = new Math.seedrandom(todayStr);
 	myrngInt = Math.floor(myrng()*1000000+1);
 	//Grabs constants/user settings for minThreshold and maxThreshold
 	var infoRef = database.ref('users/'+uid+'/info');
+	minThreshold = 0.25;
+	maxThreshold = 2;
 	infoRef.on("value", function(snap) {
 		if (snap.val() !== null && (snap.val().minThreshold < 0.5 && snap.val().minThreshold >= 0)) {
 			minThreshold = snap.val().minThreshold;
-		} else {
-			minThreshold = 0.25;
 		}
 		if (snap.val() !== null && snap.val().maxThreshold >= 1.5) {
 			maxThreshold = snap.val().maxThreshold;
-		} else {
-			maxThreshold = 2;
 		}
 	});
 }
@@ -174,19 +179,20 @@ function setUpLogic() {
 setUpLogic();
 
 function selectionLogic(snapValues) {
+    var convertedBday = moment(snapValues.birthday).format("MM/DD");
 
-	now = moment();
-	todayStr = now.format('MM-DD');
-	//console.log(now);
-	var convertedDate = moment(snapValues.birthday, "MM/DD");
-	//determine the time in days between today and last talked
-	var lastTalkedNumberDays = moment(moment(snapValues.lastTalked, "MM/DD/YYYY")).diff(moment(), "days");
-	var milesFromContactCity;
 
-	//console.log(snapValues);
-	if (convertedDate === todayStr) {
-		return 1;
-	}
+    // console.log(convertedBday);
+    // console.log(todayStrNoYear);
+    if (convertedBday === todayStrNoYear) {
+        console.log('BIRTHDAY!!');
+        return 1;
+    }
+
+    var lastTalkedNumberDays; 
+
+    lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(snapValues.lastTalked, "YYYY-MM-DD"), 'days');
+    // console.log(lastTalkedNumberDays);
 
 	var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + snapValues.city + 
 	"&destinations=" + 'San+Francisco' + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
@@ -205,13 +211,20 @@ function selectionLogic(snapValues) {
 	// 	// }
 	// });
 
-	// console.log(myrngInt);
-	// console.log(snapValues.days);
-	if ((myrngInt) % snapValues.days === 0) {
+	// console.log("my rand int " + myrngInt);
+	// console.log("snap days " + snapValues.days);
+	// console.log("snap plus int " + (snapValues.offset + myrngInt));
+	// console.log(lastTalkedNumberDays > minThreshold * snapValues.days);
+	// console.log(lastTalkedNumberDays);
+	// console.log(Number(minThreshold * snapValues.days));
+	// console.log(minThreshold);
+	if ((myrngInt + snapValues.offset) % snapValues.days === 0 && (isNaN(lastTalkedNumberDays) || lastTalkedNumberDays > minThreshold * snapValues.days)) {
+		console.log("random Function working");
 		return 3;
 	}
 
-	if (lastTalkedNumberDays > snapValues.daysBetweenInput) {
+	if (lastTalkedNumberDays > maxThreshold * snapValues.days) {
+		return 2; 
 	}
 
 	//return 1;
@@ -283,7 +296,7 @@ function addNote(key) {
 
 function mostRecentContact(key) {
 	contactsRef.child(key).update({
-		lastTalked: '2017-06-14'
+		lastTalked: todayStr
 	})
 }
 

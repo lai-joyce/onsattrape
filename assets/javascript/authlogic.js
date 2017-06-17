@@ -44,6 +44,7 @@ function checkIfNewUser(user) {
 	});
 }
 
+// give me the permission to access the contacts
 function askForContactPermission() {
 	provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 	provider.addScope('https://www.google.com/m8/feeds/');
