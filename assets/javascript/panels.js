@@ -2,7 +2,7 @@
 // now = moment();
 // 	console.log(now);
 
-$("#dump-div").append("<h1>" + "Hello World" + "</h1>");
+// $("#dump-div").append("<h1>" + "Hello World" + "</h1>");
 
 var config = {
 	apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
