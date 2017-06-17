@@ -266,7 +266,7 @@ function removeDiv() {
 	var key = $(this).parent().parent().parent().data('key');
 
 	//console.log("something");
-	$(this).parent().parent().parent().remove();
+	$(this).parent().parent().parent().parent().remove();
 	// 	$("#dump-div").empty();
 	addNote(key);
 	mostRecentContact(key);
