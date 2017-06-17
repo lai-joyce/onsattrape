@@ -21,6 +21,10 @@ canvas {
 	color: #eee;
 }
 
+.birthday {
+	color: yellow;
+}
+
 .panelButton {
 	margin-left: 5px;
 }

@@ -24,8 +24,8 @@ var contactsRef = database.ref('users/'+uid+'/contacts');
 
 contactsRef.on("child_added", function(snapshot) {
 
-
-	if (selectionLogic(snapshot.val())>0) {
+	var selectionReason = selectionLogic(snapshot.val())
+	if (selectionReason>0) {
 
 
 
@@ -41,7 +41,11 @@ contactsRef.on("child_added", function(snapshot) {
 		var panelHeading = $("<div>");
 		panelHeading.addClass("panel-heading clearfix");
 
-		var panelTitle = $("<div>").addClass('panelTitle pull-left').text(snapshot.val().name);
+		if (selectionReason === 1) {
+			var panelTitle = $("<div>").addClass('panelTitle pull-left').text(snapshot.val().name).append('&nbsp&nbsp<i class="fa fa-birthday-cake birthday" aria-hidden="true"></i>');
+		} else {
+			var panelTitle = $("<div>").addClass('panelTitle pull-left').text(snapshot.val().name);
+		}
 
 		var panelHeadingIcons = $("<div>").addClass('pull-right');		
 
@@ -78,7 +82,7 @@ contactsRef.on("child_added", function(snapshot) {
 		icheck.attr("aria-hidden", "true");
 		check.append(icheck);
 
-		if (snapshot.val().phone !== null) {
+		if (snapshot.val().telephone !== null && snapshot.val().telephone !== "") {
 			var phone = $("<a>");
 			phone.attr("href", "tel:" + snapshot.val().telephone);
 			phone.attr("id", "phoneLine");
@@ -88,9 +92,20 @@ contactsRef.on("child_added", function(snapshot) {
 			iphone.attr("aria-hidden", "true");
 			phone.append(iphone);
 			panelHeadingIcons.append(phone);
+		} else {
+			var phone = $("<a>");
+			phone.attr("href", "tel:" + snapshot.val().telephone);
+			phone.attr("id", "phoneLine");
+			phone.attr('disabled',true);
+			phone.addClass("btn btn-primary panelButton");
+			var iphone = $("<i>");
+			iphone.addClass("fa fa-phone");
+			iphone.attr("aria-hidden", "true");
+			phone.append(iphone);
+			panelHeadingIcons.append(phone);
 		}
 
-		if (snapshot.val().email !== null) {
+		if (snapshot.val().email !== null && snapshot.val().email !== "") {
 
 			var email = $("<a>");
 			email.attr("href", "mailto:" + snapshot.val().email);
@@ -114,6 +129,30 @@ contactsRef.on("child_added", function(snapshot) {
 			panelHeadingIcons.append(email);
 			panelHeadingIcons.append(gmail);
 
+		} else {
+			var email = $("<a>");
+			email.attr("href", "mailto:" + snapshot.val().email);
+			email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
+			var iemail = $("<i>");
+			iemail.addClass("fa fa-envelope-o");
+			iemail.attr("aria-hidden", "true");
+			email.attr('disabled', true);
+			email.append(iemail);
+
+			var gmail = $("<a>");
+			gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + snapshot.val().email);
+			gmail.attr("target", "_blank");
+			gmail.attr("id", "gmailID");
+			gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
+			var igemail = $("<i>");
+			igemail.addClass("fa fa-envelope-o");
+			igemail.attr("aria-hidden", "true");
+			gmail.attr('disabled', true);
+			//igemail.text("g");
+			gmail.append(igemail);
+
+			panelHeadingIcons.append(email);
+			panelHeadingIcons.append(gmail);
 		}
 
 		panelHeadingIcons.append(check);
@@ -179,14 +218,14 @@ function setUpLogic() {
 setUpLogic();
 
 function selectionLogic(snapValues) {
-    var convertedBday = moment(snapValues.birthday).format("MM/DD");
+	var convertedBday = moment(snapValues.birthday).format("MM/DD");
 
 
     // console.log(convertedBday);
     // console.log(todayStrNoYear);
     if (convertedBday === todayStrNoYear) {
-        console.log('BIRTHDAY!!');
-        return 1;
+    	console.log('BIRTHDAY!!');
+    	return 1;
     }
 
     var lastTalkedNumberDays; 
@@ -194,8 +233,8 @@ function selectionLogic(snapValues) {
     lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(snapValues.lastTalked, "YYYY-MM-DD"), 'days');
     // console.log(lastTalkedNumberDays);
 
-	var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + snapValues.city + 
-	"&destinations=" + 'San+Francisco' + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
+    var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + snapValues.city + 
+    "&destinations=" + 'San+Francisco' + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
 
 	// $.ajax({
 	// 	url: queryURL, 
