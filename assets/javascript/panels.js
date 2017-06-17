@@ -176,48 +176,44 @@ function selectionLogic(snapValues) {
 
 	now = moment();
 	todayStr = now.format('MM-DD');
-	console.log(now);
+	//console.log(now);
 	var convertedDate = moment(snapValues.birthday, "MM/DD");
 	//determine the time in days between today and last talked
 	var lastTalkedNumberDays = moment(moment(snapValues.lastTalked, "MM/DD/YYYY")).diff(moment(), "days");
-	var birthdayContactsGroup1 = [];
-	var proximityContactsGroup2 = [];
-	var randomContactsGroup3 = [];
 	var milesFromContactCity;
 
-	var contactBirthday = database.ref('users/'+uid+'/contacts');
+	//console.log(snapValues);
+	if (convertedDate === todayStr) {
+		return 1;
+	}
 
-	contactBirthday.on("value", function(snapValues) {
-		console.log(snapValues);
-		if (convertedDate = todayStr) {
-			birthdayContactsGroup1.push(snapValues.contact);
-			return 1;
+	var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + snapValues.city + 
+	"&destinations=" + 'San+Francisco' + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
 
-		}
+	// $.ajax({
+	// 	url: queryURL, 
+	// 	method: "GET",
+	// 	dataType: 'JSON',
+	// 	crossOrigin: true,
+	// }).done(function(response) {
+	// 	console.log(response); 
+	// 	//return 1;
+	// 	//use Google Maps Distance Matrix API above to figure out distance in km between Contact and User City
+	// 	// if (snapValues.city.milesFromContactCity <= 42) {
+	// 	// 	return 2;
+	// 	// }
+	// });
 
-		var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + snapValues.city + 
-						"&destinations=" + user.city + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
+	// console.log(myrngInt);
+	// console.log(snapValues.days);
+	if ((myrngInt) % snapValues.days === 0) {
+		return 3;
+	}
 
-				$.ajax({url: queryURL, method: "GET"}).done(function(response) {
-						//console.log(response); 
+	if (lastTalkedNumberDays > snapValues.daysBetweenInput) {
+	}
 
-		//use Google Maps Distance Matrix API above to figure out distance in km between Contact and User City
-		if (snapValues.city.milesFromContactCity <= 42) {
-			proximityContactsGroup2.push(snapValues.contact);
-			return 2;
-		}
-	});
-
-		if ((myrng + contact.myrngInt) % snapValues.daysBetweenInput === 0) {
-			randomContactsGroup3.push(snapValues.contact);
-			return 3;
-		}
-
-		if (lastTalkedNumberDays > snapValues.daysBetweenInput) {
-			randomContactsGroup3.push(snapValues.contact);
-		}
-		
-	});
+	//return 1;
 
 	// for(var item in birthdayContactsGroup1) {
 	// 			var contactsByBirthday = $("<div>" + birthdayContactsGroup1[item] + "</div>");
