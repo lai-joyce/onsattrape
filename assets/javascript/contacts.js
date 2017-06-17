@@ -25,9 +25,11 @@ $(document).on("click", "#newContact", newContact);
 $(document).on("click", ".delete", deleteContact);
 
 var newContactEligible = false;
+var editContactEligible = false;
 
 function newContact () {
 	newContactEligible = true;
+	editContactEligible = false;
 	$("#editContact").modal();
 	$("#nameInput").val("");
 	$("#telephoneInput").val("");
@@ -54,7 +56,7 @@ function newContact () {
 
 function deleteContact () {
 	var row = $(this).parent().parent();
-	var contactKey =  row.data('key');
+	contactKey =  row.data('key');
 	console.log(contactKey);
 	$("#deleteConfirm").modal();
 	$('#deleteButton').on('click', function() {
@@ -67,6 +69,7 @@ var contactKey = '';
 
 function editContact () {
 	newContactEligible = false;
+	editContactEligible = true;
 	var row = $(this).parent().parent();
 	contactKey =  row.data('key');
 	console.log(contactKey);
@@ -79,14 +82,17 @@ function editContact () {
 	$("#daysBetweenInput").val(row.data('values').days);
 	$("#saveButton").text("Save");
 	$("#saveButton").on("click", function() {
-		contactsRef.child(contactKey).update({
-			name: $("#nameInput").val().trim(),
-			telephone: $("#telephoneInput").val().trim(),
-			email: $("#emailInput").val().trim(),
-			birthday: $("#bdayInput").val().trim(),
-			city: $("#locationInput").val().trim(),
-			days: Number($("#daysBetweenInput").val().trim())
-		});
+		if (editContactEligible) {
+			contactsRef.child(contactKey).update({
+				name: $("#nameInput").val().trim(),
+				telephone: $("#telephoneInput").val().trim(),
+				email: $("#emailInput").val().trim(),
+				birthday: $("#bdayInput").val().trim(),
+				city: $("#locationInput").val().trim(),
+				days: Number($("#daysBetweenInput").val().trim())
+			});
+			editContactEligible = false;
+		}
 		$('#editContact').modal('hide');
 	});
 }
