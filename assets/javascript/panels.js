@@ -1,6 +1,8 @@
-alert("working");
+// alert("working");
 // now = moment();
 // 	console.log(now);
+
+$("#dump-div").append("<h1>" + "Hello World" + "</h1>");
 
 var config = {
 	apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
@@ -175,6 +177,9 @@ function selectionLogic(snapValues) {
 	now = moment();
 	todayStr = now.format('MM-DD');
 	console.log(now);
+	var convertedDate = moment(snapValues.birthday, "MM/DD");
+	//determine the time in days between today and last talked
+	var lastTalkedNumberDays = moment(moment(snapValues.lastTalked, "MM/DD/YYYY")).diff(moment(), "days");
 	var birthdayContactsGroup1 = [];
 	var proximityContactsGroup2 = [];
 	var randomContactsGroup3 = [];
@@ -184,7 +189,7 @@ function selectionLogic(snapValues) {
 
 	contactBirthday.on("value", function(snapValues) {
 		console.log(snapValues);
-		if (snapValues.birthday !== now) {
+		if (convertedDate = todayStr) {
 			birthdayContactsGroup1.push(snapValues.contact);
 			return 1;
 
@@ -203,9 +208,13 @@ function selectionLogic(snapValues) {
 		}
 	});
 
-		if ((myrng + contact.myrngInt) % snapValues.lastTalked === 0) {
+		if ((myrng + contact.myrngInt) % snapValues.daysBetweenInput === 0) {
 			randomContactsGroup3.push(snapValues.contact);
 			return 3;
+		}
+
+		if (lastTalkedNumberDays > snapValues.daysBetweenInput) {
+			randomContactsGroup3.push(snapValues.contact);
 		}
 		
 	});
@@ -214,7 +223,7 @@ function selectionLogic(snapValues) {
 	// 			var contactsByBirthday = $("<div>" + birthdayContactsGroup1[item] + "</div>");
 	// 			$("#dump-div").append(contactsByBirthday);
 	// 		};
-	//This is where the magic happens; this function should return why someone was selected (birthday = 1, location = 2, random = 3)
+	// This is where the magic happens; this function should return why someone was selected (birthday = 1, location = 2, random = 3)
 }
 
 
