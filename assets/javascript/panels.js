@@ -155,12 +155,47 @@ contactsRef.on("child_added", function(snapshot) {
 			panelHeadingIcons.append(gmail);
 		}
 
+
+// trying to display add notes and view notes buttons when screen is iphone size
+		var viewNotesPhone = $("<a>");
+		//check.attr("href", "#");
+		viewNotesPhone.addClass("checkMark btn btn-info");
+		viewNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg viewNotes");
+		viewNotesPhone.append('<i class="fa fa-eye" aria-hidden="true"></i>');
+		var iNotesPhone = $("<i>");
+		iNotesPhone.addClass("fa");
+		//iNotes.addClass("fa-check");
+		iNotesPhone.attr("aria-hidden", "true");
+		iNotesPhone.text("View Notes");
+		viewNotesPhone.append(iNotes);
+
+		panelHeadingIcons.append(viewNotesPhone);
+
+
+		var addNotesPhone = $("<a>");
+		//check.attr("href", "#");
+		addNotesPhone.addClass("checkMark btn btn-info addNotes");
+		addNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg addNotes");
+		addNotesPhone.append('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>');
+		var iaddNotesPhone = $("<i>");
+		iaddNotesPhone.addClass("fa");
+		//iNotes.addClass("fa-check");
+		iaddNotesPhone.attr("aria-hidden", "true");
+		iaddNotesPhone.text("Add Notes");
+		addNotesPhone.append(iaddNotes);
+
+		panelHeadingIcons.append(addNotesPhone);
+//-------------------------------------------------------- MIKE CHECK THIS IF OKEY -----------------
+
+
+
+
 		panelHeadingIcons.append(check);
 
 
 		var viewNotes = $("<a>");
 		//check.attr("href", "#");
-		viewNotes.addClass("checkMark btn btn-primary");
+		viewNotes.addClass("checkMark btn btn-info");
 		var iNotes = $("<i>");
 		iNotes.addClass("fa");
 		//iNotes.addClass("fa-check");
@@ -169,6 +204,22 @@ contactsRef.on("child_added", function(snapshot) {
 		viewNotes.append(iNotes);
 
 		panelBody.append(viewNotes);
+
+
+		var addNotes = $("<a>");
+		//check.attr("href", "#");
+		addNotes.addClass("checkMark btn btn-primary addNotes");
+		var iaddNotes = $("<i>");
+		iaddNotes.addClass("fa");
+		//iNotes.addClass("fa-check");
+		iaddNotes.attr("aria-hidden", "true");
+		iaddNotes.text("Add Notes");
+		addNotes.append(iaddNotes);
+
+		panelBody.append(addNotes);
+
+
+
 
 		panelHeading.append(panelTitle);
 		panelHeading.append(panelHeadingIcons);
@@ -311,6 +362,8 @@ function selectionLogic(snapValues) {
 // 	return false;
 // }
 
+// $(document).on("click", ".viewNotes", createNewModal);
+
 $(document).on("click",".checkMark", removeDiv);
 
 function removeDiv() {
@@ -342,5 +395,37 @@ function mostRecentContact(key) {
 
 
 function createNewModal() {
+}
 
-};
+
+
+
+
+// Get the modal
+var modal = document.getElementById('#myModal');
+
+// Get the button that opens the modal
+var btn = $(".viewNotes");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+//modal.addNotesCSS.display = "block";
+
+// When the user clicks on the button, open the modal 
+$(document).on("click", ".viewNotes", function() {
+    modal.addNotesCSS.display = "block";
+});
+
+//When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.addNotesCSS.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.addNotesCSS.display = "none";
+    }
+}
+
