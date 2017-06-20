@@ -38,7 +38,7 @@
 					<span id="newContact"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New</span>
 				</div>
 				<div class="panel-body">
-					<table id="contactTable">
+					<table class="linedTable" id="contactTable">
 						<tr>
 							<th>Name</th>
 							<th>Tel</th>
@@ -47,7 +47,6 @@
 							<th class='hidden-xs hidden-sm'>City, State</th>
 							<th class='hidden-xs hidden-sm'>Birthday</th>
 							<th>Edit</th>
-							<th>Delete</th>
 						</tr>
 					</table>
 				</div>
@@ -112,6 +111,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+					<button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left">Delete contact</button>
 					<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button type="button" id="saveButton" class="btn btn-primary">Save changes</button>
 				</div>
