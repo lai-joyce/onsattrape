@@ -284,7 +284,6 @@ function removeDiv() {
 	addNote(key);
 	mostRecentContact(key);
 	//createNewModal();
-	
 }
 
 function addNote(key) {

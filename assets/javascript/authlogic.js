@@ -44,36 +44,4 @@ function checkIfNewUser(user) {
 	});
 }
 
-// give me the permission to access the contacts
-function askForContactPermission() {
-	provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-	provider.addScope('https://www.google.com/m8/feeds/');
-	firebase.auth().signInWithPopup(provider).then(function(result) {
-		token = result.credential.accessToken;
-		user = result.user;
-		grabContacts();
-	}).catch(function(error) {
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		var email = error.email;
-		var credential = error.credential;
-	});
-}
-
-function grabContacts() {
-	$.ajax({ 
-		url: "https://www.google.com/m8/feeds/contacts/" + user.email +"/full?access_token=" + token + "&alt=json", 
-		dataType: "JSONP", 
-		success: function(res){ 
-			console.log(res); 
-		}, 
-		error: function(xhr,status,error){
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-		}
-	});
-}
-
 $(document).on("click", "#loginButton", login);
-$(document).on("click", "#getContacts", askForContactPermission);

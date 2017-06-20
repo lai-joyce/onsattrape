@@ -12,6 +12,27 @@ canvas {
 	align-items: center;
 }
 
+.modal-xl {
+	width: 98%;
+	height: 92%;
+	padding: 0;
+	margin: 0;
+
+}
+
+.modal-dialog-xl {
+	width: 98%;
+	height: 92%;
+	padding: 0;
+	margin: 0;
+}
+
+.modal-content-xl {
+	height: 99%;
+	width: 97%;
+	background-color: yellow;
+}
+
 .panelTitle {
 	font-size: 20px;
 	padding: 5px 0;
