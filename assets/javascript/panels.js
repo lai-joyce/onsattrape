@@ -1,6 +1,4 @@
-// alert("working");
-// now = moment();
-// 	console.log(now);
+
 
 // $("#dump-div").append("<h1>" + "Hello World" + "</h1>");
 
@@ -24,9 +22,11 @@ $(function() {
 
 	firebase.initializeApp(config);
 
+
 	var database = firebase.database();
 
 	var contactsRef = database.ref('users/'+uid+'/contacts');
+
 
 	var localContacts = []; // in memory storage of the contacts
 
@@ -73,7 +73,9 @@ $(function() {
 		var panelHeading = $("<div>");
 		panelHeading.addClass("panel-heading clearfix");
 
+
 		var panelTitle = $("<div>").addClass('panelTitle pull-left').text(contactVal.name);
+
 
 		var panelHeadingIcons = $("<div>").addClass('pull-right');		
 
@@ -112,7 +114,9 @@ $(function() {
 		icheck.attr("aria-hidden", "true");
 		check.append(icheck);
 
+
 		if (contactVal.telephone !== null) {
+
 			var phone = $("<a>");
 			phone.attr("href", "tel:" + contactVal.telephone);
 			phone.attr("id", "phoneLine");
@@ -122,9 +126,22 @@ $(function() {
 			iphone.attr("aria-hidden", "true");
 			phone.append(iphone);
 			panelHeadingIcons.append(phone);
+		} else {
+			var phone = $("<a>");
+			phone.attr("href", "tel:" + snapshot.val().telephone);
+			phone.attr("id", "phoneLine");
+			phone.attr('disabled',true);
+			phone.addClass("btn btn-primary panelButton");
+			var iphone = $("<i>");
+			iphone.addClass("fa fa-phone");
+			iphone.attr("aria-hidden", "true");
+			phone.append(iphone);
+			panelHeadingIcons.append(phone);
 		}
 
+
 		if (contactVal.email !== null) {
+
 
 			var email = $("<a>");
 			email.attr("href", "mailto:" + contactVal.email);
@@ -148,14 +165,84 @@ $(function() {
 			panelHeadingIcons.append(email);
 			panelHeadingIcons.append(gmail);
 
+		} else {
+			var email = $("<a>");
+			email.attr("href", "mailto:" + snapshot.val().email);
+			email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
+			var iemail = $("<i>");
+			iemail.addClass("fa fa-envelope-o");
+			iemail.attr("aria-hidden", "true");
+			email.attr('disabled', true);
+			email.append(iemail);
+
+			var gmail = $("<a>");
+			gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + snapshot.val().email);
+			gmail.attr("target", "_blank");
+			gmail.attr("id", "gmailID");
+			gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
+			var igemail = $("<i>");
+			igemail.addClass("fa fa-envelope-o");
+			igemail.attr("aria-hidden", "true");
+			gmail.attr('disabled', true);
+			//igemail.text("g");
+			gmail.append(igemail);
+
+			panelHeadingIcons.append(email);
+			panelHeadingIcons.append(gmail);
 		}
+
+			// var location = $("<a>");
+			// //location.attr("href", "tel:" + snapshot.val().location);
+			// location.attr("id", "location");
+			// location.addClass("btn btn-primary panelButton");
+			// location.append('<i class="fa fa-globe" aria-hidden="true"></i>');
+			// var iLocation = $("<i>");
+			// //iLocation.addClass("fa fa-location");
+			// iLocation.attr("aria-hidden", "true");
+			// location.append(iLocation);
+			// panelHeadingIcons.append(location);
+
+
+// trying to display add notes and view notes buttons when screen is iphone size
+		var viewNotesPhone = $("<a>");
+		//check.attr("href", "#");
+		viewNotesPhone.addClass("btn btn-info");
+		viewNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg viewNotesSmall");
+		viewNotesPhone.append('<i class="fa fa-eye" aria-hidden="true"></i>');
+		var iNotesPhone = $("<i>");
+		iNotesPhone.addClass("fa");
+		//iNotes.addClass("fa-check");
+		iNotesPhone.attr("aria-hidden", "true");
+		iNotesPhone.text("View Notes");
+		viewNotesPhone.append(iNotes);
+
+		panelHeadingIcons.append(viewNotesPhone);
+
+
+		var addNotesPhone = $("<a>");
+		//check.attr("href", "#");
+		addNotesPhone.addClass("btn btn-info addNotesSmall");
+		addNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg addNotesSmall");
+		addNotesPhone.append('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>');
+		var iaddNotesPhone = $("<i>");
+		iaddNotesPhone.addClass("fa");
+		//iNotes.addClass("fa-check");
+		iaddNotesPhone.attr("aria-hidden", "true");
+		iaddNotesPhone.text("Add Notes");
+		addNotesPhone.append(iaddNotes);
+
+		panelHeadingIcons.append(addNotesPhone);
+//-------------------------------------------------------- MIKE CHECK THIS IF OKEY -----------------
+
+
+
 
 		panelHeadingIcons.append(check);
 
 
 		var viewNotes = $("<a>");
 		//check.attr("href", "#");
-		viewNotes.addClass("checkMark btn btn-primary");
+		viewNotes.addClass("btn btn-info viewNotes");
 		var iNotes = $("<i>");
 		iNotes.addClass("fa");
 		//iNotes.addClass("fa-check");
@@ -164,6 +251,22 @@ $(function() {
 		viewNotes.append(iNotes);
 
 		panelBody.append(viewNotes);
+
+
+		var addNotes = $("<a>");
+		//check.attr("href", "#");
+		addNotes.addClass("btn btn-primary addNotes");
+		var iaddNotes = $("<i>");
+		iaddNotes.addClass("fa");
+		//iNotes.addClass("fa-check");
+		iaddNotes.attr("aria-hidden", "true");
+		iaddNotes.text("Add Notes");
+		addNotes.append(iaddNotes);
+
+		panelBody.append(addNotes);
+
+
+
 
 		panelHeading.append(panelTitle);
 		panelHeading.append(panelHeadingIcons);
@@ -297,6 +400,7 @@ $(function() {
 			return 2; 
 		}
 
+
 		//return 1;
 
 		// for(var item in birthdayContactsGroup1) {
@@ -308,6 +412,7 @@ $(function() {
 
 		// return -1 if no selection criteria matches
 		return -1;
+
 	}
 
 	var myCoordinates;
@@ -370,9 +475,13 @@ $(function() {
 
 	$(document).on("click",".checkMark", removeDiv);
 
+
 	function removeDiv() {
 
+
+
 		var key = $(this).parent().parent().parent().data('key');
+
 
 		//console.log("something");
 		$(this).parent().parent().parent().parent().remove();
@@ -383,12 +492,16 @@ $(function() {
 		
 	}
 
+
+
 	function addNote(key) {
 		console.log(key.notes);
 		contactsRef.child(key).child('notes').push({
 			date: '2017-06-14'
 		})
 	}
+
+
 
 	function mostRecentContact(key) {
 		contactsRef.child(key).update({
@@ -398,8 +511,12 @@ $(function() {
 
 
 
+
 	function createNewModal() {
 
+
 	};
+
+
 
 });
