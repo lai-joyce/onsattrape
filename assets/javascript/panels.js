@@ -476,6 +476,7 @@ $(function() {
 	$(document).on("click",".checkMark", removeDiv);
 
 
+
 	function removeDiv() {
 
 
@@ -491,6 +492,7 @@ $(function() {
 		//createNewModal();
 		
 	}
+
 
 
 
