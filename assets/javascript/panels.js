@@ -397,20 +397,8 @@ var viewNotes = $("<a>");
 	if (lastTalkedNumberDays > maxThreshold * contact.days) {
 		return 2; 
 	}
-
-
-		//return 1;
-
-		// for(var item in birthdayContactsGroup1) {
-		// 			var contactsByBirthday = $("<div>" + birthdayContactsGroup1[item] + "</div>");
-		// 			$("#dump-div").append(contactsByBirthday);
-		// 		};
-		// This is where the magic happens; this function should return why someone was selected (birthday = 1, location = 2, random = 3)
-
-
-		// return -1 if no selection criteria matches
-		return -1;
-
+	
+	return -1;
 	}
 
 	var myCoordinates;
@@ -435,42 +423,6 @@ var viewNotes = $("<a>");
 		getLocation();
 	});
 
-
-
-
-	// var randNum = random number from date
-	// //This should be the same every time it's run on a specific date, in case we need to recreate it. It should be the same across all our users as well
-
-	// //loop (in Bob's code): 
-	// for each contact {
-	// 	if (checkEligibility(contact) {
-	// 		populate page
-	// 	}
-	// }
-
-	// $(document).ready(function() {
-
-
-	// function checkEligibility (contact) {
-
-	// 	   var birthday = 0;
-	//        var location = 0;
-	//        var offset = 0;
-	//        var frequency = $("#frequency");
-	//        var randNum = Math.floor(Math.random() * 1000000);
-	//        var contacts_to_daily = [];
-	//        for (var i=0; i<4; i++) {
-	//         contacts_to_daily.push();
-	//        }
-	// 	//Bday check
-	// 	if (contact.bday === today) {
-	// 		return 1;
-	// 	}
-
-	//        } 
-	// 	return false;
-	// }
-
 	$(document).on("click",".checkMark", removeDiv);
 
 
@@ -479,12 +431,10 @@ var viewNotes = $("<a>");
 
 
 
-		var key = $(this).parent().parent().parent().data('key');
+		var key = $(this).parents('.contact-panel').data('key');
 
-
-		//console.log("something");
-		$(this).parent().parent().parent().parent().remove();
-		// 	$("#dump-div").empty();
+		console.log(key);
+		$(this).parents('.mainDiv').remove();
 		addNote(key);
 		mostRecentContact(key);
 		//createNewModal();
