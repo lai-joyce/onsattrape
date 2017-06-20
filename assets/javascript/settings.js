@@ -22,9 +22,9 @@ function saveContactsToFirebase() {
 	$("tr.gContact").each(function() {
 		if($(this).find("input[type='checkbox']").is(':checked')) {
 			contactsRef.push({
-				name: $(this).children("#nameInput").text().trim(),
+				name: $(this).children("#nameInput").data('fullName').trim(),
 				telephone: $(this).children("#telephoneInput").text().trim(),
-				email: $(this).children("#emailInput").text().trim(),
+				email: $(this).children("#emailInput").data('fullEmail').trim(),
 				city: $(this).children("#locationInput").text().trim(),
 				days: Number($(this).find("#daysBetweenInput").val().trim()),
 				offset: Math.floor(Math.random()*1000000+1)
@@ -77,7 +77,7 @@ function displayGmailContacts(contactArray) {
 			}
 			if(contactArray[i].gd$email){
 				tr.append($('<td id="emailInput">')
-					.data('fullName',contactArray[i].gd$email["0"].address)
+					.data('fullEmail',contactArray[i].gd$email["0"].address)
 					.text(contactArray[i].gd$email["0"].address.substring(0,30)+((contactArray[i].gd$email["0"].address.length > 30) ? "..." : "")));
 			} else {
 				tr.append($('<td id="emailInput">'));

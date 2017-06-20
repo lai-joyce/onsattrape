@@ -16,13 +16,24 @@ contactsRef.orderByChild('name').on("value", function(snap) {
 	$("#contactTable td").remove();
 	snap.forEach(function(contact) {
 		var contactVal = contact.val();
-		$("#contactTable").append($("<tr>").data('key',contact.key).data('values',contactVal).append($("<td>").text(contactVal.name)).append($("<td>").text(contactVal.telephone)).append($("<td>").text(contactVal.email)).append($("<td>").text(contactVal.days)).append($("<td>").text(contactVal.city).addClass('hidden-xs hidden-sm')).append($("<td>").text(contactVal.birthday).addClass('hidden-xs hidden-sm')).append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))).append($("<td>").append($("<button>").text("Delete").addClass("delete btn btn-default"))));
+		$("#contactTable")
+			.append($("<tr>").data('key',contact.key).data('values',contactVal)
+			.append($("<td>").text(contactVal.name))
+			.append($("<td>").text(contactVal.telephone))
+			.append($("<td>").text(contactVal.email).addClass('hidden-xs hidden-sm'))
+			.append($("<td>").text(contactVal.email.substring(0,5)+((contactVal.email.length > 5) ? "..." : "")).addClass('hidden-md hidden-lg'))
+			.append($("<td>").text(contactVal.days))
+			.append($("<td>").text(contactVal.city).addClass('hidden-xs hidden-sm'))
+			.append($("<td>").text(contactVal.birthday).addClass('hidden-xs hidden-sm'))
+			.append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))));
 	});
 });
 
 $(document).on("click", ".edit", editContact);
 $(document).on("click", "#newContact", newContact);
-$(document).on("click", ".delete", deleteContact);
+$(document).on("click", "#deleteButtonModal", function () {
+	deleteContact(contactKey);
+});
 
 var newContactEligible = false;
 var editContactEligible = false;
@@ -30,6 +41,7 @@ var editContactEligible = false;
 function newContact () {
 	newContactEligible = true;
 	editContactEligible = false;
+	contactKey = '';
 	$("#editContact").modal();
 	$("#nameInput").val("");
 	$("#telephoneInput").val("");
@@ -55,14 +67,15 @@ function newContact () {
 	});
 }
 
-function deleteContact () {
-	var row = $(this).parent().parent();
-	contactKey =  row.data('key');
-	console.log(contactKey);
+function deleteContact (contactKey) {
+	//var row = $(this).parents('tr');
+	//contactKey =  row.data('key');
+	//console.log(contactKey);
 	$("#deleteConfirm").modal();
 	$('#deleteButton').on('click', function() {
 		contactsRef.child(contactKey).remove();
 		$('#deleteConfirm').modal('hide');
+		$('#editContact').modal('hide');
 	});
 }
 
@@ -71,7 +84,7 @@ var contactKey = '';
 function editContact () {
 	newContactEligible = false;
 	editContactEligible = true;
-	var row = $(this).parent().parent();
+	var row = $(this).parents('tr');
 	contactKey =  row.data('key');
 	console.log(contactKey);
 	$("#editContact").modal();
