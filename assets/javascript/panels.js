@@ -35,19 +35,11 @@ $(function() {
 		$("#dump-div").empty(); // dump the dump
 
 		$.each(localContacts, function( index, contact ) {
-  			console.log( index + ": " + contact );
+			console.log( index + ": " + contact );
 
-  			var selectionVal = selectionLogic(contact.key, contact);
+			var selectionVal = selectionLogic(contact.key, contact);
 
-			if(contact.isAShortDistanceAway) {
-				appendContactToDumpDiv(contact.key, contact);
-			}
-			// if selection is <= 0 or undefined, do not display the "snapshot"
-			else if( typeof selectionVal === "undefined" || 
-				selectionVal <= 0) {
-				return;
-			}
-			else {
+			if(selectionVal > 0) {
 				appendContactToDumpDiv(contact.key, contact);
 			}
 		});
@@ -93,13 +85,13 @@ $(function() {
 
 		var notes = $("<p>");
 		notes.attr("id", "notesParagraph");
-		notes.append("<h4>" + " Last time talked about: " + contactVal.lastTalked + "</h4>");
-
-		if (contactVal.birthday !== null && contactVal.birthday !== "") {
+		if (contactVal.lastTalked) {
+			notes.append("<h4>" + " Last time talked about: " + contactVal.lastTalked + "</h4>");
+		}
+		if (contactVal.birthday) {
 			notes.append("<h5>" + " Birthday is on: " + contactVal.birthday + "</h5>");
 		}
-
-		if (contactVal.city !== null && contactVal.city !== "") {
+		if (contactVal.city) {
 			notes.append("<h6>" + " Located currently in: " + contactVal.city + "</h6>");
 		}
 
@@ -115,8 +107,7 @@ $(function() {
 		check.append(icheck);
 
 
-		if (contactVal.telephone !== null) {
-
+		if (contactVal.telephone) {
 			var phone = $("<a>");
 			phone.attr("href", "tel:" + contactVal.telephone);
 			phone.attr("id", "phoneLine");
@@ -128,7 +119,6 @@ $(function() {
 			panelHeadingIcons.append(phone);
 		} else {
 			var phone = $("<a>");
-			phone.attr("href", "tel:" + snapshot.val().telephone);
 			phone.attr("id", "phoneLine");
 			phone.attr('disabled',true);
 			phone.addClass("btn btn-primary panelButton");
@@ -140,7 +130,7 @@ $(function() {
 		}
 
 
-		if (contactVal.email !== null) {
+		if (contactVal.email) {
 
 
 			var email = $("<a>");
@@ -167,7 +157,6 @@ $(function() {
 
 		} else {
 			var email = $("<a>");
-			email.attr("href", "mailto:" + snapshot.val().email);
 			email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
 			var iemail = $("<i>");
 			iemail.addClass("fa fa-envelope-o");
@@ -176,7 +165,6 @@ $(function() {
 			email.append(iemail);
 
 			var gmail = $("<a>");
-			gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + snapshot.val().email);
 			gmail.attr("target", "_blank");
 			gmail.attr("id", "gmailID");
 			gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
@@ -204,7 +192,7 @@ $(function() {
 
 
 // trying to display add notes and view notes buttons when screen is iphone size
-		var viewNotesPhone = $("<a>");
+var viewNotesPhone = $("<a>");
 		//check.attr("href", "#");
 		viewNotesPhone.addClass("btn btn-info");
 		viewNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg viewNotesSmall");
@@ -237,10 +225,10 @@ $(function() {
 
 
 
-		panelHeadingIcons.append(check);
+panelHeadingIcons.append(check);
 
 
-		var viewNotes = $("<a>");
+var viewNotes = $("<a>");
 		//check.attr("href", "#");
 		viewNotes.addClass("btn btn-info viewNotes");
 		var iNotes = $("<i>");
@@ -293,22 +281,32 @@ $(function() {
 		
 		// update display
 		displayContacts();
+		displayContactsCount++;
 
+		//Skips distance lookup if no city for contact
+		if (!contactVal.city) {
+			return;
+		}
 
-    	var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&" +
-	    	"origins=" + contactVal.city + "&destinations=" + myCoordinates.latitude + "," + 
-	    	myCoordinates.longitude + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
+		var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&" +
+		"origins=" + contactVal.city + "&destinations=" + myCoordinates.latitude + "," + 
+		myCoordinates.longitude + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
 
-		 $.ajax({
-		 	url: queryURL, 
-		 	method: "GET",
-		 	dataType: 'JSON',
-		 	crossOrigin: true,
-		 }).done(function(response) {
-		 	console.log(response); 
-		 	var data = JSON.parse(response);
+		$.ajax({
+			url: queryURL, 
+			method: "GET",
+			dataType: 'JSON',
+			crossOrigin: true,
+		}).done(function(response) {
+			console.log(response); 
+			var data = JSON.parse(response);
 			// use Google Maps Distance Matrix API above to figure out distance 
 			// in km between Contact and User City
+
+			//Error handling if google does not return distance
+			if (!data.rows[0].elements[0].distance) {
+				return;
+			}
 			var distance = data.rows[0].elements[0].distance.value / 1609;
 			var localContact = localContacts.find(function(c) { return c.key === contactKey; });
 
@@ -321,8 +319,9 @@ $(function() {
 
 			localContact.distanceAway = distance;
 			displayContacts();
+			displayContactsCount++;
 		});
-	    
+
 
 	}
 
@@ -330,7 +329,7 @@ $(function() {
 		contactsRef.on("child_added", contactChildAddedHandler);
 	}
 	
-
+	var displayContactsCount;
 	var now;
 	var myrng;
 	var myrngInt;
@@ -363,42 +362,41 @@ $(function() {
 
 	setUpLogic();
 
+	//contactsRef.on("child_added", contactChildAddedHandler);
+
 	function selectionLogic(contactKey, contact) {
-		var convertedBday = moment(contact.birthday).format("MM/DD");
+		
+		if (contact.birthday) { 
+			var convertedBday = moment(contact.birthday).format("MM/DD");
+		}
 
+		console.log(convertedBday);
+		// console.log(todayStrNoYear);
+		if (convertedBday === todayStrNoYear) {
+			console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
+			return 1;
+		}
 
-	    // console.log(convertedBday);
-	    // console.log(todayStrNoYear);
-	    if (convertedBday === todayStrNoYear) {
-	    	console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
-	    	return 1;
-	    }
+		if (contact.isAShortDistanceAway) {
+			return 4;
+		}
 
-	    var lastTalkedNumberDays; 
+		var lastTalkedNumberDays; 
 
-	    lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
-	    // console.log(lastTalkedNumberDays);
-
-	    
-	    
-
-		// console.log("my rand int " + myrngInt);
-		// console.log("snap days " + contact.days);
-		// console.log("snap plus int " + (contact.offset + myrngInt));
-		// console.log(lastTalkedNumberDays > minThreshold * contact.days);
-		// console.log(lastTalkedNumberDays);
-		// console.log(Number(minThreshold * contact.days));
-		// console.log(minThreshold);
+		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
+	 
+		// console.log((myrngInt + contact.offset) % contact.days === 0);
+		
 		if ((myrngInt + contact.offset) % contact.days === 0 && 
-				(isNaN(lastTalkedNumberDays) || 
-					lastTalkedNumberDays > minThreshold * contact.days)) {
+			(isNaN(lastTalkedNumberDays) || 
+				lastTalkedNumberDays > minThreshold * contact.days)) {
 			console.log("random Function working");
-			return 3;
-		}
+		return 3;
+	}
 
-		if (lastTalkedNumberDays > maxThreshold * contact.days) {
-			return 2; 
-		}
+	if (lastTalkedNumberDays > maxThreshold * contact.days) {
+		return 2; 
+	}
 
 
 		//return 1;
