@@ -300,9 +300,13 @@ var viewNotes = $("<a>");
 		displayContactsCount++;
 
 		//Skips distance lookup if no city for contact
+
 		if (!contactVal.city) {
 			return;
 		}
+
+		//Skips geoquery logic
+		return;
 
 		var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&" +
 		"origins=" + contactVal.city + "&destinations=" + myCoordinates.latitude + "," + 
@@ -405,8 +409,10 @@ var viewNotes = $("<a>");
 	 
 		// console.log((myrngInt + contact.offset) % contact.days === 0);
 		
-		if ((myrngInt + contact.offset) % contact.days === 0 && (isNaN(lastTalkedNumberDays) || lastTalkedNumberDays > minThreshold * contact.days)) {
-			//console.log("random Function working");
+		console.log(contact);
+
+		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays > minThreshold * contact.days)) {
+			console.log("random Function working");
 			return 3;
 		}
 
