@@ -33,14 +33,16 @@ $(function() {
 	function displayContacts() {
 
 		$("#dump-div").empty(); // dump the dump
+		blowUpCount++;
+		console.log("blowUpCount: " + (blowUpCount));
 
 		$.each(localContacts, function( index, contact ) {
-			console.log( index + ": " + contact );
+			console.log(contact);
 
 			var selectionVal = selectionLogic(contact.key, contact);
 
 			if(selectionVal > 0) {
-				appendContactToDumpDiv(contact.key, contact);
+				appendContactToDumpDiv(contact.key, contact, selectionVal);
 			}
 		});
 
@@ -52,7 +54,7 @@ $(function() {
 		}
 	}
 
-	function appendContactToDumpDiv(contactKey, contactVal) {
+	function appendContactToDumpDiv(contactKey, contactVal, selectionVal) {
 
 		var mainDiv = $("<div>");
 		mainDiv.addClass("col-md-4");
@@ -66,8 +68,22 @@ $(function() {
 		panelHeading.addClass("panel-heading clearfix");
 
 
-		var panelTitle = $("<div>").addClass('panelTitle pull-left').text(contactVal.name);
+		var panelTitle = $("<div>").addClass('panelTitle pull-left').append($("<h4>").text(contactVal.name));
 
+		switch(selectionVal){
+			case 1: 
+				//Birthday
+				break;
+			case 2:
+				//Haven't talked in a while
+				break;
+			case 3: 
+				//Random chance
+				break;
+			case 4: 
+				//Nearby
+				break;
+		}
 
 		var panelHeadingIcons = $("<div>").addClass('pull-right');		
 
@@ -330,6 +346,7 @@ var viewNotes = $("<a>");
 	}
 	
 	var displayContactsCount;
+	var blowUpCount;
 	var now;
 	var myrng;
 	var myrngInt;
@@ -358,6 +375,7 @@ var viewNotes = $("<a>");
 				maxThreshold = snap.val().maxThreshold;
 			}
 		});
+		blowUpCount = 0;
 	}
 
 	setUpLogic();
@@ -370,7 +388,7 @@ var viewNotes = $("<a>");
 			var convertedBday = moment(contact.birthday).format("MM/DD");
 		}
 
-		console.log(convertedBday);
+		//console.log(convertedBday);
 		// console.log(todayStrNoYear);
 		if (convertedBday === todayStrNoYear) {
 			console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
@@ -387,18 +405,16 @@ var viewNotes = $("<a>");
 	 
 		// console.log((myrngInt + contact.offset) % contact.days === 0);
 		
-		if ((myrngInt + contact.offset) % contact.days === 0 && 
-			(isNaN(lastTalkedNumberDays) || 
-				lastTalkedNumberDays > minThreshold * contact.days)) {
-			console.log("random Function working");
-		return 3;
-	}
+		if ((myrngInt + contact.offset) % contact.days === 0 && (isNaN(lastTalkedNumberDays) || lastTalkedNumberDays > minThreshold * contact.days)) {
+			//console.log("random Function working");
+			return 3;
+		}
 
-	if (lastTalkedNumberDays > maxThreshold * contact.days) {
-		return 2; 
-	}
+		if (lastTalkedNumberDays > maxThreshold * contact.days) {
+			return 2; 
+		}
 	
-	return -1;
+		return -1;
 	}
 
 	var myCoordinates;
@@ -435,23 +451,9 @@ var viewNotes = $("<a>");
 
 		console.log(key);
 		$(this).parents('.mainDiv').remove();
-		addNote(key);
+		//addNote(key);
 		mostRecentContact(key);
-		//createNewModal();
-		
 	}
-
-
-
-
-	function addNote(key) {
-		console.log(key.notes);
-		contactsRef.child(key).child('notes').push({
-			date: '2017-06-14'
-		})
-	}
-
-
 
 	function mostRecentContact(key) {
 		contactsRef.child(key).update({
@@ -459,14 +461,45 @@ var viewNotes = $("<a>");
 		})
 	}
 
+	//Notes modal functions
 
+	//Set modalContactKey so we can test it.
+	var modalContactKey = "-KmdM1du_4dVi0-vlvyq"
 
+	//Change 'modalContactKey' below to update based on where the 
+	$(document).on("click", ".addNotes", function () {
+		newNoteModal(modalContactKey);
+	});
+	$(document).on("click", ".addNotesSmall", function () {
+		newNoteModal(modalContactKey);
+	});
+	$(document).on("click", ".viewNotes", function () {
+		prevNotesModal(modalContactKey);
+	});
+	$(document).on("click", ".viewNotesSmall", function () {
+		prevNotesModal(modalContactKey);
+	});
+	$(document).on("click","#saveNotesButton", function () {
+		addNote(modalContactKey);
+	});
 
-	function createNewModal() {
+	//Make sure this function can pass on the correct contactKey to the '#saveNotesButton' button
+	function newNoteModal(contactKey) {
+		$("#newNote").modal();
+	}
 
+	//Write this function to pull down all firebase notes that exist at contactsRef.child(contactKey+'/notes')
+	function prevNotesModal(contactKey) {
+		$("#viewPrevNotes").modal();
+	}
 
-	};
+	function addNote(key) {
+		//fill in this variable to make sure noteText has whatever the user types in the #longNoteInput field in the modal
+		var noteText;
 
-
-
+		//Edit this push to include the noteText. If noteText is blank, write a warning to the user
+		contactsRef.child(key).child('notes').push({
+			date: todayStr
+		})
+	}
 });

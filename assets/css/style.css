@@ -29,7 +29,7 @@ canvas {
 	font-size: 16px;
 }
 
-.panelTitle {
+/*.panelTitle {
 	font-size: 20px;
 	padding: 5px 0;
 	height: 100%;
@@ -37,7 +37,7 @@ canvas {
 	align-items: center;
 	color: #eee;
 }
-
+*/
 .addNotesSmall, .viewNotesSmall {
 	border: 1px solid #eee;
 }
@@ -67,7 +67,7 @@ canvas {
 	margin-left: 5px;
 }
 
-#contactTable {
+.linedTable {
 	width: 100%;
 }
 
@@ -79,20 +79,20 @@ canvas {
 	margin: auto;
 }
 
-#contactTable table {
+.linedTable table {
 	border-collapse: collapse;
 }
-
-#contactTable tr { 
+.linedTable tr { 
 	border: solid;
 	border-width: 1px 0;
 }
-#contactTable tr:first-child {
+.linedTable tr:first-child {
 	border-top: none;
 }
-#contactTable tr:last-child {
+.linedTable tr:last-child {
 	border-bottom: none;
 }
+
 .edit, .delete {
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -102,4 +102,3 @@ canvas {
 #newContact {
 	cursor: pointer;
 }
-#
