@@ -31,7 +31,7 @@ contactsRef.orderByChild('name').on("value", function(snap) {
 
 $(document).on("click", ".edit", editContact);
 $(document).on("click", "#newContact", newContact);
-$(document).on("click", "#deleteButtonModal", function () {
+$(document).on("click", "#deleteButtonEditModal", function () {
 	deleteContact(contactKey);
 });
 
@@ -43,6 +43,7 @@ function newContact () {
 	editContactEligible = false;
 	contactKey = '';
 	$("#editContact").modal();
+	$("#deleteButtonEditModal").hide();
 	$("#nameInput").val("");
 	$("#telephoneInput").val("");
 	$("#emailInput").val("");
@@ -88,6 +89,7 @@ function editContact () {
 	contactKey =  row.data('key');
 	console.log(contactKey);
 	$("#editContact").modal();
+	$("#deleteButtonEditModal").show();
 	$("#nameInput").val(row.data('values').name);
 	$("#telephoneInput").val(row.data('values').telephone);
 	$("#emailInput").val(row.data('values').email);
