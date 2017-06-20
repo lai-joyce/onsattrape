@@ -373,33 +373,30 @@ function selectionLogic(snapValues) {
 
 // $(document).on("click", ".viewNotes", createNewModal);
 
-// $(document).on("click",".checkMark", removeDiv);
+$(document).on("click",".checkMark", removeDiv);
 
-// function removeDiv() {
+function removeDiv() {
 
-// 	var key = $(this).parent().parent().parent().data('key');
+	//console.log("something");
+	key = $(this).parents('.mainDiv').remove();
+	// 	$("#dump-div").empty();
+	//addNote(key);
+	//mostRecentContact(key);
+	//createNewModal();
+}
 
-// 	//console.log("something");
-// 	$(this).parent().parent().parent().parent().remove();
-// 	// 	$("#dump-div").empty();
-// 	addNote(key);
-// 	mostRecentContact(key);
-// 	//createNewModal();
-	
-// }
+function addNote(key) {
+	console.log(key.notes);
+	contactsRef.child(key).child('notes').push({
+		date: '2017-06-14'
+	})
+}
 
-// function addNote(key) {
-// 	console.log(key.notes);
-// 	contactsRef.child(key).child('notes').push({
-// 		date: '2017-06-14'
-// 	})
-// }
-
-// function mostRecentContact(key) {
-// 	contactsRef.child(key).update({
-// 		lastTalked: todayStr
-// 	})
-// }
+function mostRecentContact(key) {
+	contactsRef.child(key).update({
+		lastTalked: todayStr
+	})
+}
 
 
 
