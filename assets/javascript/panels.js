@@ -82,6 +82,7 @@ $(function() {
 				break;
 			case 4: 
 				//Nearby
+				panelHeading.append($("<div><i class='fa fa-globe locIcon pull-left' aria-hidden='true'></i></div>"));
 				break;
 		}
 
