@@ -12,25 +12,21 @@ canvas {
 	align-items: center;
 }
 
-.modal-xl {
-	width: 98%;
-	height: 92%;
-	padding: 0;
-	margin: 0;
 
+#googleContactsSelectorModalDialog {
+	width: 90%!important;
 }
 
-.modal-dialog-xl {
-	width: 98%;
-	height: 92%;
-	padding: 0;
-	margin: 0;
+#selectAllCheckboxDiv {
+	margin-right: 10px;
 }
 
-.modal-content-xl {
-	height: 99%;
-	width: 97%;
-	background-color: yellow;
+#selectAllCheckbox {
+	margin-left: 10px;
+}
+
+#selectAllCheckboxText {
+	font-size: 16px;
 }
 
 .panelTitle {
@@ -55,15 +51,17 @@ canvas {
 	border: 1px solid rgb(235,104,100);
 }
 
+/*
 .btn {
 	border: 1px solid #eee;
 }
 
 .btn:hover {
-	/*border: black;*/
+	border: black;
 	background: #eee;
 	color: black;
 }
+*/
 
 .panelButton {
 	margin-left: 5px;
