@@ -15,11 +15,40 @@ var database = firebase.database();
 var contactsRef = database.ref('users/'+uid+'/contacts');
 
 $(document).on("click", "#importGoogleContacts", askForContactPermission);
+$(document).on("click", "#selectAllCheckbox", selectAll);
+$(document).on("click", "#saveButton", saveContactsToFirebase);
+
+function saveContactsToFirebase() {
+	$("tr.gContact").each(function() {
+		if($(this).find("input[type='checkbox']").is(':checked')) {
+			contactsRef.push({
+				name: $(this).children("#nameInput").text().trim(),
+				telephone: $(this).children("#telephoneInput").text().trim(),
+				email: $(this).children("#emailInput").text().trim(),
+				city: $(this).children("#locationInput").text().trim(),
+				days: Number($(this).find("#daysBetweenInput").val().trim()),
+				offset: Math.floor(Math.random()*1000000+1)
+			})
+		}
+	});
+	$('#googleContactsSelector').modal('hide');
+}
+
+
+
+function selectAll() { 
+	if ($(this).is(':checked')){
+		$("input[type='checkbox']").prop('checked', true).change();
+	} else {
+		$("input[type='checkbox']").prop('checked', false).change();
+	}
+}
 
 var provider = new firebase.auth.GoogleAuthProvider();
 
 var user;
 var token;
+
 
 
 function expandModal() {
@@ -30,33 +59,37 @@ function expandModal() {
 
 function displayGmailContacts(contactArray) {
 	expandModal();
+
 	var arrayLength = contactArray.length;
 	for (var i = 0; i< arrayLength; i++ ) {
-		if (contactArray[i].title.$t) {
+		if (contactArray[i].title.$t && contactArray[i].gd$postalAddress) {
 			console.log(contactArray[i]);
-			var tr = $('<tr>')
+			var tr = $('<tr class="gContact">')
 			.append($('<td>')
 				.append($('<input type="checkbox">')));
-			tr.append($('<td>')
-				.text(contactArray[i].title.$t));
+			tr.append($('<td id="nameInput">')
+				.data('fullName',contactArray[i].title.$t)
+				.text(contactArray[i].title.$t.substring(0,30)+((contactArray[i].title.$t.length > 30) ? "..." : "")));
 			if(contactArray[i].gd$phoneNumber){
-				tr.append($('<td>').text(contactArray[i].gd$phoneNumber["0"].$t));
+				tr.append($('<td id="telephoneInput">').text(contactArray[i].gd$phoneNumber["0"].$t));
 			} else {
-				tr.append($('<td>'));
+				tr.append($('<td id="telephoneInput">'));
 			}
 			if(contactArray[i].gd$email){
-				tr.append($('<td>').text(contactArray[i].gd$email["0"].address));
+				tr.append($('<td id="emailInput">')
+					.data('fullName',contactArray[i].gd$email["0"].address)
+					.text(contactArray[i].gd$email["0"].address.substring(0,30)+((contactArray[i].gd$email["0"].address.length > 30) ? "..." : "")));
 			} else {
-				tr.append($('<td>'));
+				tr.append($('<td id="emailInput">'));
 			}
 			if(contactArray[i].gd$postalAddress){
-				tr.append($('<td>').text(contactArray[i].gd$postalAddress["0"].$t));
+				var address = parseAddress.parseLocation(contactArray[i].gd$postalAddress["0"].$t);
+				tr.append($('<td id="locationInput">').text(address.city+", "+address.state));
 			} else {
-				tr.append($('<td>'));
+				tr.append($('<td id="locationInput">'));
 			}
-			tr.append($('<td>').text("bday"));
-			tr.append($('<td>').text("days"));
-			$('#contactTable').append(tr)
+			tr.append($('<td>').append($('<select class="form-control daysBetweenInput" id="daysBetweenInput"><option>1</option><option>2</option><option>3</option><option>7</option><option>14</option><option>28</option><option>90</option><option>180</option><option>365</option></select>').val(7)));
+			$('#contactTable').append(tr);
 		}
 	}
 }

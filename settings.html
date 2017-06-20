@@ -94,26 +94,29 @@
 </div>
 
 <div class="modal modal-xl fade" id="googleContactsSelector" tabindex="-1" role="dialog" aria-labelledby="editContactLabel">
-	<div class="modal-dialog modal-dialog-xl" role="document">
+	<div class="modal-dialog modal-dialog-xl" id="googleContactsSelectorModalDialog" role="document">
 		<div class="modal-content modal-content-xl">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="editContactLabel">Edit Contact</h4>
+				<h4 class="modal-title" id="editContactLabel">Edit Contact
+					<div class="pull-right" id="selectAllCheckboxDiv">
+						<span id="selectAllCheckboxText">Select All</span><input id="selectAllCheckbox" type="checkbox">
+					</div>
+				</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-12">
-					<table id="contactTable">
-						<tr>
-							<th>Include</th>
-							<th>Name</th>
-							<th>Tel</th>
-							<th>Email</th>
-							<th class='hidden-xs hidden-sm'>City</th>
-							<th class='hidden-xs hidden-sm'>Birthday</th>
-							<th>Days</th>
-						</tr>
-					</table>
+						<table id="contactTable">
+							<tr>
+								<th>Include</th>
+								<th>Name</th>
+								<th>Tel</th>
+								<th>Email</th>
+								<th class='hidden-xs hidden-sm'>City</th>
+								<th>Days</th>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -141,6 +144,7 @@
 	$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
 </script>
 <script src="assets/javascript/jquery.ajax-cross-origin.min.js"></script>
+<script src="assets/javascript/parse-address-master/parse-address.min.js"></script>
 <script src="assets/javascript/settings.js"></script>
 </body>
 </html>
