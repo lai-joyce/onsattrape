@@ -29,6 +29,12 @@ canvas {
 	font-size: 16px;
 }
 
+.bIcon {
+	padding-top: 14px;
+	padding-right: 5px;
+	color: lightyellow;
+}
+
 /*.panelTitle {
 	font-size: 20px;
 	padding: 5px 0;
