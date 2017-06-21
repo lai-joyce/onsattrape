@@ -1,33 +1,50 @@
 
 
-var testContact = {
-	name: "Michael",
-	phone: 6514429511,
-	email: "michael.t.halvorson@gmail.com"
-}
-
-var uid = "-KmUZTaohwghpuagw";
-
+var provider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
-var contactsRef = database.ref('users/'+uid+'/contacts');
+var user;
+var token;
+var contactsRef;
+var infoRef;
+var uid;
 
-contactsRef.orderByChild('name').on("value", function(snap) {
-	console.log();
-	$("#contactTable td").remove();
-	snap.forEach(function(contact) {
-		var contactVal = contact.val();
-		$("#contactTable")
-		.append($("<tr>").data('key',contact.key).data('values',contactVal)
-			.append($("<td>").text(contactVal.name))
-			.append($("<td>").text(contactVal.telephone))
-			.append($("<td>").text(contactVal.email).addClass('hidden-xs hidden-sm'))
-			.append($("<td>").text(contactVal.email.substring(0,5)+((contactVal.email.length > 5) ? "..." : "")).addClass('hidden-md hidden-lg'))
-			.append($("<td>").text(contactVal.days))
-			.append($("<td>").text(contactVal.city).addClass('hidden-xs hidden-sm'))
-			.append($("<td>").text(contactVal.birthday).addClass('hidden-xs hidden-sm'))
-			.append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))));
-	});
+firebase.auth().onAuthStateChanged(function(fbUser) {
+	if (fbUser) {
+		user = fbUser;
+		console.log(fbUser);
+		uid = user.uid;
+	}
+	else {
+		if (location.protocol != 'file:') {
+			window.location.href = 'auth.html';
+		} else {
+			uid = '-KmUZTaohwghpuagw';
+		}
+	}
+	contactsRef = database.ref('users/'+uid+'/contacts');
+	infoRef = database.ref('users/'+uid+'/info');
+	addToTable();
 });
+
+function addToTable() {
+	contactsRef.orderByChild('name').on("value", function(snap) {
+		console.log();
+		$("#contactTable td").remove();
+		snap.forEach(function(contact) {
+			var contactVal = contact.val();
+			$("#contactTable")
+			.append($("<tr>").data('key',contact.key).data('values',contactVal)
+				.append($("<td>").text(contactVal.name))
+				.append($("<td>").text(contactVal.telephone))
+				.append($("<td>").text(contactVal.email).addClass('hidden-xs hidden-sm'))
+				.append($("<td>").text(contactVal.email.substring(0,5)+((contactVal.email.length > 5) ? "..." : "")).addClass('hidden-md hidden-lg'))
+				.append($("<td>").text(contactVal.days))
+				.append($("<td>").text(contactVal.city).addClass('hidden-xs hidden-sm'))
+				.append($("<td>").text(contactVal.birthday).addClass('hidden-xs hidden-sm'))
+				.append($("<td>").append($("<button>").text("Edit").addClass("edit btn btn-default"))));
+		});
+	});
+}
 
 $(document).on("click", ".edit", editContact);
 $(document).on("click", "#newContact", newContact);

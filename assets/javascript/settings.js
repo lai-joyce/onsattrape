@@ -8,21 +8,42 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var uid = "-KmUZTaohwghpuagw";
-
+var provider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
+var user;
+var token;
+var contactsRef;
+var infoRef;
+var uid;
 
-var contactsRef = database.ref('users/'+uid+'/contacts');
-var infoRef = database.ref('users/'+uid+'/info');
-
-infoRef.on("value", function(snap) {
-	//console.log(snap.val());
-	$('#minThreshold').val(snap.val().minThreshold || 0.25);
-	$('#maxThreshold').val(snap.val().maxThreshold || 2);
-	$('#maxDistance').val(snap.val().maxDistance || 25);
-	$('#nameInput').val(snap.val().name);
-	$('#emailInput').val(snap.val().email);
+firebase.auth().onAuthStateChanged(function(fbUser) {
+	if (fbUser) {
+		user = fbUser;
+		console.log(fbUser);
+		uid = user.uid;
+	}
+	else {
+		if (location.protocol != 'file:') {
+			window.location.href = 'auth.html';
+		} else {
+			uid = '-KmUZTaohwghpuagw';
+		}
+	}
+	contactsRef = database.ref('users/'+uid+'/contacts');
+	infoRef = database.ref('users/'+uid+'/info');
+	populateInfoRef();
 });
+
+function populateInfoRef() {
+	infoRef.on("value", function(snap) {
+		console.log(snap.val());
+		$('#minThreshold').val(snap.val().minThreshold || 0.25);
+		$('#maxThreshold').val(snap.val().maxThreshold || 2);
+		$('#maxDistance').val(snap.val().maxDistance || 25);
+		$('#nameInput').val(snap.val().name);
+		$('#emailInput').val(snap.val().email);
+	});
+}
 
 $(document).on("click", "#importGoogleContacts", askForContactPermission);
 $(document).on("click", "#selectAllCheckbox", selectAll);
@@ -122,10 +143,7 @@ function selectAll() {
 	}
 }
 
-var provider = new firebase.auth.GoogleAuthProvider();
 
-var user;
-var token;
 
 function expandModal() {
 	$("#googleContactsSelector").modal();
