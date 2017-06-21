@@ -58,7 +58,7 @@ function newContact () {
 	$("#nameInput").val("");
 	$("#telephoneInput").val("");
 	$("#emailInput").val("");
-	$("#bdayInput").val();
+	$("#bdayInput").val("");
 	$("#locationInput").val("");
 	$("#saveButton").text("Add New Person");
 	$("#daysBetweenInput").val(7);
