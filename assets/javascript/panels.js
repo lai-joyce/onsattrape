@@ -5,7 +5,7 @@
 // jQuery document load
 $(function() {
 
-	var A_SHORT_DISTANCE = 25;
+	
 
 
 	var config = {
@@ -22,36 +22,17 @@ $(function() {
 
 	firebase.initializeApp(config);
 
-
 	var database = firebase.database();
 
 	var contactsRef = database.ref('users/'+uid+'/contacts');
 
-
-	var localContacts = []; // in memory storage of the contacts
-
-	function displayContacts() {
-
-		$("#dump-div").empty(); // dump the dump
-		blowUpCount++;
-		console.log("blowUpCount: " + (blowUpCount));
-
-		$.each(localContacts, function( index, contact ) {
-			console.log(contact);
-
-			var selectionVal = selectionLogic(contact.key, contact);
-
+	function populateContacts() {
+		contactsRef.on("child_added", function(snap) {
+			var selectionVal = selectionLogic(snap.key, snap.val());
 			if(selectionVal > 0) {
-				appendContactToDumpDiv(contact.key, contact, selectionVal);
-			}
+				appendContactToDumpDiv(snap.key, snap.val(), selectionVal);
+			};
 		});
-
-		for(var contactKey in localContacts) {
-			var contact = localContacts[contactKey];
-			var contactKey = contact.key;
-
-			
-		}
 	}
 
 	function appendContactToDumpDiv(contactKey, contactVal, selectionVal) {
@@ -75,98 +56,90 @@ $(function() {
 				//Birthday
 				panelHeading.append($("<div><i class='fa fa-birthday-cake bIcon pull-left' aria-hidden='true'></i></div>"));
 				break;
-			case 2:
+				case 2:
 				//Haven't talked in a while
 				break;
-			case 3: 
+				case 3: 
 				//Random chance
 				break;
-			case 4: 
+				case 4: 
 				//Nearby
 				panelHeading.append($("<div><i class='fa fa-globe locIcon pull-left' aria-hidden='true'></i></div>"));
 				break;
-		}
+			}
 
-		var panelHeadingIcons = $("<div>").addClass('pull-right');		
-
-		// var imageHolder = $("<img>");
-		// imageHolder.attr("src", "#");
-		// panelHeading.append(imageHolder);
-
-		
-
-		$("#dump-div").append(mainDiv);
+			var panelHeadingIcons = $("<div>").addClass('pull-right');		
 
 
-		var panelBody = $("<div>");
-		panelBody.addClass("panel-body hidden-sm hidden-xs");
+			var panelBody = $("<div>");
+			panelBody.addClass("panel-body hidden-sm hidden-xs");
 
-		var notes = $("<p>");
-		notes.attr("id", "notesParagraph");
-		if (contactVal.lastTalked) {
-			notes.append("<h4>" + " Last time talked about: " + contactVal.lastTalked + "</h4>");
-		}
-		if (contactVal.birthday) {
-			notes.append("<h5>" + " Birthday is on: " + contactVal.birthday + "</h5>");
-		}
-		if (contactVal.city) {
-			notes.append("<h6>" + " Located currently in: " + contactVal.city + "</h6>");
-		}
+			var notes = $("<p>");
+			notes.attr("id", "notesParagraph");
+			if (contactVal.lastTalked) {
+				notes.append("<h4>" + " Last time talked about: " + contactVal.lastTalked + "</h4>");
+			}
+			if (contactVal.birthday) {
+				notes.append("<h5>" + " Birthday is on: " + contactVal.birthday + "</h5>");
+			}
+			if (contactVal.city) {
+				notes.append("<h6>" + " Located currently in: " + contactVal.city + "</h6>");
+			}
 
 
 
-		panelBody.append(notes);
+			panelBody.append(notes);
 
-		var check = $("<a>");
-		check.addClass("checkMark btn btn-primary panelButton");
-		var icheck = $("<i>");
-		icheck.addClass("fa fa-check");
-		icheck.attr("aria-hidden", "true");
-		check.append(icheck);
-
-
-		if (contactVal.telephone) {
-			var phone = $("<a>");
-			phone.attr("href", "tel:" + contactVal.telephone);
-			phone.attr("id", "phoneLine");
-			phone.addClass("btn btn-primary panelButton");
-			var iphone = $("<i>");
-			iphone.addClass("fa fa-phone");
-			iphone.attr("aria-hidden", "true");
-			phone.append(iphone);
-			panelHeadingIcons.append(phone);
-		} else {
-			var phone = $("<a>");
-			phone.attr("id", "phoneLine");
-			phone.attr('disabled',true);
-			phone.addClass("btn btn-primary panelButton");
-			var iphone = $("<i>");
-			iphone.addClass("fa fa-phone");
-			iphone.attr("aria-hidden", "true");
-			phone.append(iphone);
-			panelHeadingIcons.append(phone);
-		}
+			var check = $("<a>");
+			check.addClass("checkMark btn btn-primary panelButton");
+			var icheck = $("<i>");
+			icheck.addClass("fa fa-check");
+			icheck.attr("aria-hidden", "true");
+			check.append(icheck);
 
 
-		if (contactVal.email) {
+			if (contactVal.telephone) {
+				var phone = $("<a>");
+				phone.attr("href", "tel:" + contactVal.telephone);
+				phone.attr("id", "phoneLine");
+				phone.addClass("btn btn-primary panelButton");
+				var iphone = $("<i>");
+				iphone.addClass("fa fa-phone");
+				iphone.attr("aria-hidden", "true");
+				phone.append(iphone);
+				panelHeadingIcons.append(phone);
+			} else {
+				var phone = $("<a>");
+				phone.attr("id", "phoneLine");
+				phone.attr('disabled',true);
+				phone.addClass("btn btn-primary panelButton");
+				var iphone = $("<i>");
+				iphone.addClass("fa fa-phone");
+				iphone.attr("aria-hidden", "true");
+				phone.append(iphone);
+				panelHeadingIcons.append(phone);
+			}
 
 
-			var email = $("<a>");
-			email.attr("href", "mailto:" + contactVal.email);
-			email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
-			var iemail = $("<i>");
-			iemail.addClass("fa fa-envelope-o");
-			iemail.attr("aria-hidden", "true");
-			email.append(iemail);
+			if (contactVal.email) {
 
-			var gmail = $("<a>");
-			gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + contactVal.email);
-			gmail.attr("target", "_blank");
-			gmail.attr("id", "gmailID");
-			gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
-			var igemail = $("<i>");
-			igemail.addClass("fa fa-envelope-o");
-			igemail.attr("aria-hidden", "true");
+
+				var email = $("<a>");
+				email.attr("href", "mailto:" + contactVal.email);
+				email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
+				var iemail = $("<i>");
+				iemail.addClass("fa fa-envelope-o");
+				iemail.attr("aria-hidden", "true");
+				email.append(iemail);
+
+				var gmail = $("<a>");
+				gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + contactVal.email);
+				gmail.attr("target", "_blank");
+				gmail.attr("id", "gmailID");
+				gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
+				var igemail = $("<i>");
+				igemail.addClass("fa fa-envelope-o");
+				igemail.attr("aria-hidden", "true");
 			//igemail.text("g");
 			gmail.append(igemail);
 
@@ -197,27 +170,12 @@ $(function() {
 			panelHeadingIcons.append(gmail);
 		}
 
-			// var location = $("<a>");
-			// //location.attr("href", "tel:" + snapshot.val().location);
-			// location.attr("id", "location");
-			// location.addClass("btn btn-primary panelButton");
-			// location.append('<i class="fa fa-globe" aria-hidden="true"></i>');
-			// var iLocation = $("<i>");
-			// //iLocation.addClass("fa fa-location");
-			// iLocation.attr("aria-hidden", "true");
-			// location.append(iLocation);
-			// panelHeadingIcons.append(location);
-
-
-// trying to display add notes and view notes buttons when screen is iphone size
-var viewNotesPhone = $("<a>");
-		//check.attr("href", "#");
+		var viewNotesPhone = $("<a>");
 		viewNotesPhone.addClass("btn btn-info");
 		viewNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg viewNotesSmall");
 		viewNotesPhone.append('<i class="fa fa-eye" aria-hidden="true"></i>');
 		var iNotesPhone = $("<i>");
 		iNotesPhone.addClass("fa");
-		//iNotes.addClass("fa-check");
 		iNotesPhone.attr("aria-hidden", "true");
 		iNotesPhone.text("View Notes");
 		viewNotesPhone.append(iNotes);
@@ -226,32 +184,24 @@ var viewNotesPhone = $("<a>");
 
 
 		var addNotesPhone = $("<a>");
-		//check.attr("href", "#");
 		addNotesPhone.addClass("btn btn-info addNotesSmall");
 		addNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg addNotesSmall");
 		addNotesPhone.append('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>');
 		var iaddNotesPhone = $("<i>");
 		iaddNotesPhone.addClass("fa");
-		//iNotes.addClass("fa-check");
 		iaddNotesPhone.attr("aria-hidden", "true");
 		iaddNotesPhone.text("Add Notes");
 		addNotesPhone.append(iaddNotes);
 
 		panelHeadingIcons.append(addNotesPhone);
-//-------------------------------------------------------- MIKE CHECK THIS IF OKEY -----------------
+
+		panelHeadingIcons.append(check);
 
 
-
-
-panelHeadingIcons.append(check);
-
-
-var viewNotes = $("<a>");
-		//check.attr("href", "#");
+		var viewNotes = $("<a>");
 		viewNotes.addClass("btn btn-info viewNotes");
 		var iNotes = $("<i>");
 		iNotes.addClass("fa");
-		//iNotes.addClass("fa-check");
 		iNotes.attr("aria-hidden", "true");
 		iNotes.text("View Notes");
 		viewNotes.append(iNotes);
@@ -260,11 +210,9 @@ var viewNotes = $("<a>");
 
 
 		var addNotes = $("<a>");
-		//check.attr("href", "#");
 		addNotes.addClass("btn btn-primary addNotes");
 		var iaddNotes = $("<i>");
 		iaddNotes.addClass("fa");
-		//iNotes.addClass("fa-check");
 		iaddNotes.attr("aria-hidden", "true");
 		iaddNotes.text("Add Notes");
 		addNotes.append(iaddNotes);
@@ -286,73 +234,7 @@ var viewNotes = $("<a>");
 		$("#dump-div").append(mainDiv);
 
 	}
-
-	function contactChildAddedHandler(snapshot) {
-
-		var contactVal = snapshot.val();
-		var contactKey = snapshot.key;
-
-		contactVal.key = contactKey;
-		localContacts.push(contactVal);
-
-		//localContacts[snapshot.key] = contactVal;
-		
-		// update display
-		displayContacts();
-		displayContactsCount++;
-
-		//Skips distance lookup if no city for contact
-
-		if (!contactVal.city) {
-			return;
-		}
-
-		//Skips geoquery logic
-		return;
-
-		var queryURL = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&" +
-		"origins=" + contactVal.city + "&destinations=" + myCoordinates.latitude + "," + 
-		myCoordinates.longitude + "&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
-
-		$.ajax({
-			url: queryURL, 
-			method: "GET",
-			dataType: 'JSON',
-			crossOrigin: true,
-		}).done(function(response) {
-			console.log(response); 
-			var data = JSON.parse(response);
-			// use Google Maps Distance Matrix API above to figure out distance 
-			// in km between Contact and User City
-
-			//Error handling if google does not return distance
-			if (!data.rows[0].elements[0].distance) {
-				return;
-			}
-			var distance = data.rows[0].elements[0].distance.value / 1609;
-			var localContact = localContacts.find(function(c) { return c.key === contactKey; });
-
-			if(distance <= A_SHORT_DISTANCE) {
-				localContact.isAShortDistanceAway = true;
-			}
-			else {
-				localContact.isAShortDistanceAway = false;
-			}
-
-			localContact.distanceAway = distance;
-			displayContacts();
-			displayContactsCount++;
-		});
-
-
-	}
-
-	function addContactChildAddedListener() {
-		contactsRef.on("child_added", contactChildAddedHandler);
-	}
 	
-	var displayContactsCount;
-	var blowUpCount;
 	var now;
 	var myrng;
 	var myrngInt;
@@ -360,6 +242,8 @@ var viewNotes = $("<a>");
 	var minThreshold;
 	var maxThreshold;
 	var todayStrNoYear;
+	var distanceThreshold;
+	var myCoordinates;
 
 	function setUpLogic() {
 		//Gets today's date
@@ -381,37 +265,35 @@ var viewNotes = $("<a>");
 				maxThreshold = snap.val().maxThreshold;
 			}
 		});
-		blowUpCount = 0;
+		distanceThreshold = 25;
 	}
 
 	setUpLogic();
-
-	//contactsRef.on("child_added", contactChildAddedHandler);
+	populateContacts();
 
 	function selectionLogic(contactKey, contact) {
-		
+	
+		console.log(contact);
+
 		if (contact.birthday) { 
 			var convertedBday = moment(contact.birthday).format("MM/DD");
+			if (convertedBday === todayStrNoYear) {
+				console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
+				return 1;
+			}
 		}
 
-		//console.log(convertedBday);
-		// console.log(todayStrNoYear);
-		if (convertedBday === todayStrNoYear) {
-			console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
-			return 1;
-		}
-
-		if (contact.isAShortDistanceAway) {
-			return 4;
+		if(myCoordinates && contact.long && contact.lat) {
+			var d = distance(myCoordinates.latitude, myCoordinates.longitude, contact.lat, contact.long);
+			console.log(d);
+			if (d <= distanceThreshold) {
+				return 4;
+			}
 		}
 
 		var lastTalkedNumberDays; 
 
 		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
-	 
-		// console.log((myrngInt + contact.offset) % contact.days === 0);
-		
-		console.log(contact);
 
 		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays > minThreshold * contact.days)) {
 			console.log("random Function working");
@@ -421,26 +303,30 @@ var viewNotes = $("<a>");
 		if (lastTalkedNumberDays > maxThreshold * contact.days) {
 			return 2; 
 		}
-	
+
 		return -1;
 	}
-
-	var myCoordinates;
 
 	function getLocation() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myCoordinates = position.coords;
-
-				$("#currentGeolocation").text("(" + 
-					myCoordinates.latitude + "," + myCoordinates.longitude + ")");
-
-				addContactChildAddedListener();
+				console.log(myCoordinates);
+				//Turns firebase off and on again now that we have location! Also blows up the contacts to avoid duplicates
+				contactsRef.off();
+				$(".mainDiv").remove();
+				populateContacts();
 			});
-		} else {
+		} 
+	}
 
-		}
-		
+	function distance(lat1, lon1, lat2, lon2) {
+		var p = 0.017453292519943295;    // Math.PI / 180
+		var c = Math.cos;
+		var a = 0.5 - c((lat2 - lat1) * p)/2 + 
+		c(lat1 * p) * c(lat2 * p) * 
+		(1 - c((lon2 - lon1) * p))/2;
+		return 3959 * 2 * Math.asin(Math.sqrt(a)); // R = 3959 miles
 	}
 
 	$("#geolocationUpdateButton").click(function() {
@@ -452,9 +338,6 @@ var viewNotes = $("<a>");
 
 
 	function removeDiv() {
-
-
-
 		var key = $(this).parents('.contact-panel').data('key');
 
 		console.log(key);
