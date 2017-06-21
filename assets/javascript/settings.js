@@ -21,13 +21,17 @@ firebase.auth().onAuthStateChanged(function(fbUser) {
 		user = fbUser;
 		console.log(fbUser);
 		uid = user.uid;
-		contactsRef = database.ref('users/'+uid+'/contacts');
-		infoRef = database.ref('users/'+uid+'/info');
-		populateInfoRef();
 	}
 	else {
-		window.location.href = 'auth.html';
+		if (location.protocol != 'file:') {
+			window.location.href = 'auth.html';
+		} else {
+			uid = '-KmUZTaohwghpuagw';
+		}
 	}
+	contactsRef = database.ref('users/'+uid+'/contacts');
+	infoRef = database.ref('users/'+uid+'/info');
+	populateInfoRef();
 });
 
 function populateInfoRef() {
