@@ -5,9 +5,6 @@
 // jQuery document load
 $(function() {
 
-	
-
-
 	var config = {
 		apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
 		authDomain: "onsattrape.firebaseapp.com",
@@ -22,10 +19,30 @@ $(function() {
 
 	firebase.initializeApp(config);
 
+	var provider = new firebase.auth.GoogleAuthProvider();
 	var database = firebase.database();
+	var user;
+	var token;
+	var contactsRef;
+	var infoRef;
+	var uid;
 
-	var contactsRef = database.ref('users/'+uid+'/contacts');
+	firebase.auth().onAuthStateChanged(function(fbUser) {
+		if (fbUser) {
+			user = fbUser;
+			console.log(fbUser);
+			uid = user.uid;
+			contactsRef = database.ref('users/'+uid+'/contacts');
+			infoRef = database.ref('users/'+uid+'/info');
+			setUpLogic();
+			populateContacts();
+		}
+		else {
+			window.location.href = 'auth.html';
+		}
+	});
 
+	
 	function populateContacts() {
 		contactsRef.on("child_added", function(snap) {
 			var selectionVal = selectionLogic(snap.key, snap.val());
@@ -254,7 +271,6 @@ $(function() {
 		myrng = new Math.seedrandom(todayStr);
 		myrngInt = Math.floor(myrng()*1000000+1);
 		//Grabs constants/user settings for minThreshold and maxThreshold and maxDistance
-		var infoRef = database.ref('users/'+uid+'/info');
 		minThreshold = 0.25;
 		maxThreshold = 2;
 		distanceThreshold = 25;
@@ -272,11 +288,10 @@ $(function() {
 		});
 	}
 
-	setUpLogic();
-	populateContacts();
+	
 
 	function selectionLogic(contactKey, contact) {
-	
+
 		//console.log(contact);
 
 		if (contact.birthday) { 
