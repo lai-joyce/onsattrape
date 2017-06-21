@@ -253,19 +253,23 @@ $(function() {
 		//Sets random number based on date
 		myrng = new Math.seedrandom(todayStr);
 		myrngInt = Math.floor(myrng()*1000000+1);
-		//Grabs constants/user settings for minThreshold and maxThreshold
+		//Grabs constants/user settings for minThreshold and maxThreshold and maxDistance
 		var infoRef = database.ref('users/'+uid+'/info');
 		minThreshold = 0.25;
 		maxThreshold = 2;
+		distanceThreshold = 25;
 		infoRef.on("value", function(snap) {
+			console.log(snap.val());
 			if (snap.val() !== null && (snap.val().minThreshold < 0.5 && snap.val().minThreshold >= 0)) {
 				minThreshold = snap.val().minThreshold;
 			}
 			if (snap.val() !== null && snap.val().maxThreshold >= 1.5) {
 				maxThreshold = snap.val().maxThreshold;
 			}
+			if (snap.val() !== null && snap.val().maxDistance >0) {
+				distanceThreshold = snap.val().maxDistance;
+			}
 		});
-		distanceThreshold = 25;
 	}
 
 	setUpLogic();
@@ -273,7 +277,7 @@ $(function() {
 
 	function selectionLogic(contactKey, contact) {
 	
-		console.log(contact);
+		//console.log(contact);
 
 		if (contact.birthday) { 
 			var convertedBday = moment(contact.birthday).format("MM/DD");
@@ -295,7 +299,7 @@ $(function() {
 
 		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
 
-		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays > minThreshold * contact.days)) {
+		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays >= minThreshold * contact.days)) {
 			console.log("random Function working");
 			return 3;
 		}

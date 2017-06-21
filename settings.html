@@ -72,6 +72,10 @@
 								<label for="maxThreshold">Maximum threshold:<br><small>Automatically contact person if not talked within X:</small></label>
 								<input class="form-control" id="maxThreshold" type="number">
 							</div>
+							<div class="form-group">
+								<label for="maxDistance">Maximum distance:<br><small>Only return friends within X miles:</small></label>
+								<input class="form-control" id="maxDistance" type="number">
+							</div>
 							<button type="button" id="saveLogic" class="btn btn-primary">Save settings</button>
 						</div>
 					</form>
@@ -86,8 +90,10 @@
 				<div class="panel-body">
 					<p>Beta: Since this app is in beta, to import contacts, you must join <a href="https://groups.google.com/forum/#!forum/risky-access-by-unreviewed-apps">this google group</a></p>
 					<button type="button" id="importGoogleContacts" class="btn btn-primary">Import Google Contacts</button>
+					<!-- 
 					<hr>
 					<button type="button" id="importGoogleSheet" class="btn btn-primary">Import Google Sheet</button>
+					 -->
 				</div>
 			</div>
 		</div>

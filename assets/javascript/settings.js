@@ -62,7 +62,7 @@ function displayGmailContacts(contactArray) {
 
 	var arrayLength = contactArray.length;
 	for (var i = 0; i< arrayLength; i++ ) {
-		if (contactArray[i].title.$t && contactArray[i].gd$postalAddress) {
+		if (contactArray[i].title.$t) {
 			console.log(contactArray[i]);
 			var tr = $('<tr class="gContact">')
 			.append($('<td>')
