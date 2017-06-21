@@ -41,16 +41,18 @@
 				</div>
 				<div class="panel-body">
 					<form id="editUserInfo">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label for="nameInput">Name:</label>
-								<input class="form-control" id="nameInput" type="text">
-							</div>
-							<div class="form-group">
-								<label for="emailInput">Email:</label>
-								<input class="form-control" id="emailInput" type="email">
-							</div>
-							<button type="button" id="saveUserInfo" class="btn btn-primary">Save user info</button>
+						<div class="form-group">
+							<label for="nameInput">Name:</label>
+							<input class="form-control" id="nameInput" type="text" required>
+						</div>
+						<div class="form-group">
+							<label for="emailInput">Email:</label>
+							<input class="form-control" id="emailInput" type="email" required>
+						</div>
+						<button type="button" id="saveUserInfo" class="btn btn-primary">Save user info</button>
+						<hr>
+						<div class='text-center'>
+							<button type="button" id="signOut" class="btn btn-primary text-center">Sign Out</button>
 						</div>
 					</form>
 				</div>
@@ -63,21 +65,19 @@
 				</div>
 				<div class="panel-body">
 					<form id="editLogic">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label for="minThreshold">Minimum threshold:<br><small>Do not contact person within __* regular cadence:</small></label>
-								<input class="form-control" id="minThreshold" type="number">
-							</div>
-							<div class="form-group">
-								<label for="maxThreshold">Maximum threshold:<br><small>Automatically contact person if not talked within X:</small></label>
-								<input class="form-control" id="maxThreshold" type="number">
-							</div>
-							<div class="form-group">
-								<label for="maxDistance">Maximum distance:<br><small>Only return friends within X miles:</small></label>
-								<input class="form-control" id="maxDistance" type="number">
-							</div>
-							<button type="button" id="saveLogic" class="btn btn-primary">Save settings</button>
+						<div class="form-group">
+							<label for="minThreshold">Minimum threshold:<br><small>Do not contact person within X times regular cadence (0-0.99):</small></label>
+							<input class="form-control" id="minThreshold" type="number">
 						</div>
+						<div class="form-group">
+							<label for="maxThreshold">Maximum threshold:<br><small>Automatically contact person if not talked within X (1.5+):</small></label>
+							<input class="form-control" id="maxThreshold" type="number">
+						</div>
+						<div class="form-group">
+							<label for="maxDistance">Maximum distance:<br><small>Only return friends within X miles:</small></label>
+							<input class="form-control" id="maxDistance" type="number">
+						</div>
+						<button type="button" id="saveLogic" class="btn btn-primary">Save settings</button>
 					</form>
 				</div>
 			</div>
@@ -93,11 +93,11 @@
 					<!-- 
 					<hr>
 					<button type="button" id="importGoogleSheet" class="btn btn-primary">Import Google Sheet</button>
-					 -->
-				</div>
+				-->
 			</div>
 		</div>
 	</div>
+</div>
 </div>
 
 <div class="modal fade" id="googleContactsSelector" tabindex="-1" role="dialog" aria-labelledby="googleContactsSelector">
@@ -145,13 +145,12 @@
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/seedrandom.js"></script>
+<script src="assets/javascript/jquery.ajax-cross-origin.min.js"></script>
+<script src="assets/javascript/parse-address-master/parse-address.min.js"></script>
 <!-- Our Logic -->
 <script>
 	$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
 </script>
-<script src="assets/javascript/jquery.ajax-cross-origin.min.js"></script>
-<script src="assets/javascript/parse-address-master/parse-address.min.js"></script>
 <script src="assets/javascript/settings.js"></script>
 </body>
 </html>
