@@ -73,7 +73,6 @@ $(function() {
 		switch(selectionVal){
 			case 1: 
 				//Birthday
-				panelHeading.append($("<div><i class='fa fa-birthday-cake bIcon pull-left' aria-hidden='true'></i></div>"));
 				break;
 			case 2:
 				//Haven't talked in a while
