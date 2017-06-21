@@ -17,7 +17,7 @@ contactsRef.orderByChild('name').on("value", function(snap) {
 	snap.forEach(function(contact) {
 		var contactVal = contact.val();
 		$("#contactTable")
-			.append($("<tr>").data('key',contact.key).data('values',contactVal)
+		.append($("<tr>").data('key',contact.key).data('values',contactVal)
 			.append($("<td>").text(contactVal.name))
 			.append($("<td>").text(contactVal.telephone))
 			.append($("<td>").text(contactVal.email).addClass('hidden-xs hidden-sm'))
@@ -34,14 +34,25 @@ $(document).on("click", "#newContact", newContact);
 $(document).on("click", "#deleteButtonEditModal", function () {
 	deleteContact(contactKey);
 });
+$(document).on("change", "#locationInput", function() {
+	if($('#locationInput') && $('#locationInput') !== oldLocation) {
+		getLatLong($("#locationInput").val().trim());
+	}
+});
 
 var newContactEligible = false;
 var editContactEligible = false;
+var contactLong;
+var contactLat;
+var contactKey = '';
+var oldLocation;
 
 function newContact () {
 	newContactEligible = true;
 	editContactEligible = false;
 	contactKey = '';
+	contactLong = '';
+	contactLat = '';
 	$("#editContact").modal();
 	$("#deleteButtonEditModal").hide();
 	$("#nameInput").val("");
@@ -60,7 +71,9 @@ function newContact () {
 				birthday: $("#bdayInput").val().trim(),
 				city: $("#locationInput").val().trim(),
 				days: Number($("#daysBetweenInput").val().trim()),
-				offset: Math.floor(Math.random()*1000000+1)
+				offset: Math.floor(Math.random()*1000000+1),
+				long: contactLong,
+				lat: contactLat
 			});
 			newContactEligible = false;
 		}
@@ -80,14 +93,15 @@ function deleteContact (contactKey) {
 	});
 }
 
-var contactKey = '';
-
 function editContact () {
 	newContactEligible = false;
 	editContactEligible = true;
 	var row = $(this).parents('tr');
 	contactKey =  row.data('key');
-	console.log(contactKey);
+	contactLong = row.data('values').long || "";
+	contactLat = row.data('values').lat || "";
+	oldLocation = row.data('values').city;
+	//console.log(contactKey);
 	$("#editContact").modal();
 	$("#deleteButtonEditModal").show();
 	$("#nameInput").val(row.data('values').name);
@@ -105,10 +119,29 @@ function editContact () {
 				email: $("#emailInput").val().trim(),
 				birthday: $("#bdayInput").val().trim(),
 				city: $("#locationInput").val().trim(),
-				days: Number($("#daysBetweenInput").val().trim())
+				days: Number($("#daysBetweenInput").val().trim()),
+				long: contactLong,
+				lat: contactLat,
 			});
 			editContactEligible = false;
 		}
 		$('#editContact').modal('hide');
 	});
+}
+
+function getLatLong (address) {
+
+	var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
+
+	$.ajax({
+		url: queryURL, 
+		method: "GET",
+		dataType: 'JSON',
+		crossOrigin: true,
+	}).done(function(response) {
+		console.log(response);
+		contactLat = response.results[0].geometry.location.lat;
+		contactLong = response.results[0].geometry.location.lng;
+	});
+
 }
