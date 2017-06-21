@@ -13,10 +13,88 @@ var uid = "-KmUZTaohwghpuagw";
 var database = firebase.database();
 
 var contactsRef = database.ref('users/'+uid+'/contacts');
+var infoRef = database.ref('users/'+uid+'/info');
+
+infoRef.on("value", function(snap) {
+	//console.log(snap.val());
+	$('#minThreshold').val(snap.val().minThreshold || 0.25);
+	$('#maxThreshold').val(snap.val().maxThreshold || 2);
+	$('#maxDistance').val(snap.val().maxDistance || 25);
+	$('#nameInput').val(snap.val().name);
+	$('#emailInput').val(snap.val().email);
+});
 
 $(document).on("click", "#importGoogleContacts", askForContactPermission);
 $(document).on("click", "#selectAllCheckbox", selectAll);
 $(document).on("click", "#saveButton", saveContactsToFirebase);
+$(document).on("click", "#saveUserInfo", saveUserInfo);
+$(document).on("click", "#saveLogic", saveLogic);
+$(document).on("click", "#signOut", signOut);
+$(document).on("change", ".includeCheckbox", function () {
+	geoTagRow($(this));
+});
+
+function geoTagRow(checkbox) {
+	//console.log(checkbox);
+	var row = checkbox.parents(".gContact")
+	var city = row.find("#locationInput").text();
+	if(city) {
+		//getLatLong(city, row);
+	}
+}
+
+function getLatLong (city, row) {
+	var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address="+city+"&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
+	$.ajax({
+		url: queryURL, 
+		method: "GET",
+		dataType: 'JSON',
+		crossOrigin: true,
+	}).done(function(response) {
+		row.data('lat', response.results[0].geometry.location.lat);
+		row.data('long', response.results[0].geometry.location.lng);
+	});
+
+}
+
+function saveLogic() {
+	if (validateLogicInputs()) {
+		infoRef.update({
+			maxDistance: Number($('#maxDistance').val().trim()),
+			minThreshold: Number($('#minThreshold').val().trim()),
+			maxThreshold: Number($('#maxThreshold').val().trim()),
+		});
+	}
+}
+
+function validateLogicInputs () {
+	if(!($("#maxDistance").val().trim() > 0)) {
+		$("#maxDistance").focus().parent().addClass('has-error').append($('<small>').text("Must be a number greater than 0"));
+		return false;
+	}
+	if(!($("#minThreshold").val().trim() >= 0 && $("#minThreshold").val().trim() < 1)) {
+		$("#minThreshold").focus().parent().addClass('has-error').append($('<small>').text("Must be a number between 0 & 1"));
+		return false;
+	}
+	if(!($("#maxThreshold").val().trim() >= 1)) {
+		$("#maxThreshold").focus().parent().addClass('has-error').append($('<small>').text("Must be a number greater than 1"));
+		return false;
+	}
+	return true;
+}
+
+function saveUserInfo() {
+	if (validateLogicInputs()) {
+		infoRef.update({
+			name: $('#nameInput').val().trim(),
+			email: $('#emailInput').val().trim()
+		});
+	}
+}
+
+function validateUserInputs () {
+	return true;
+}
 
 function saveContactsToFirebase() {
 	$("tr.gContact").each(function() {
@@ -49,8 +127,6 @@ var provider = new firebase.auth.GoogleAuthProvider();
 var user;
 var token;
 
-
-
 function expandModal() {
 	$("#googleContactsSelector").modal();
 }
@@ -62,11 +138,11 @@ function displayGmailContacts(contactArray) {
 
 	var arrayLength = contactArray.length;
 	for (var i = 0; i< arrayLength; i++ ) {
-		if (contactArray[i].title.$t && contactArray[i].gd$postalAddress) {
-			console.log(contactArray[i]);
+		if (contactArray[i].title.$t) {
+			//console.log(contactArray[i]);
 			var tr = $('<tr class="gContact">')
 			.append($('<td>')
-				.append($('<input type="checkbox">')));
+				.append($('<input type="checkbox" class="includeCheckbox">')));
 			tr.append($('<td id="nameInput">')
 				.data('fullName',contactArray[i].title.$t)
 				.text(contactArray[i].title.$t.substring(0,30)+((contactArray[i].title.$t.length > 30) ? "..." : "")));
@@ -123,5 +199,12 @@ function grabContacts() {
 			console.log(status);
 			console.log(error);
 		}
+	});
+}
+
+function signOut() {
+	firebase.auth().signOut().then(function() {
+		window.location.href = 'auth.html';
+	}).catch(function(error) {
 	});
 }
