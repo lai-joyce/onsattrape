@@ -96,17 +96,18 @@ $(function() {
 			var panelBody = $("<div>");
 			panelBody.addClass("panel-body hidden-sm hidden-xs");
 
-			var notes = $("<p>");
-			notes.attr("id", "notesParagraph");
+			var notes = $("<span>");
 			if (contactVal.lastTalked) {
-				notes.append("<h4>" + " Last time talked about: " + contactVal.lastTalked + "</h4>");
+				notes.append('<span><i class="fa fa-clock-o" aria-hidden="true"></i>' + " " + contactVal.lastTalked + "   " + "</span>");
 			}
 			if (contactVal.birthday) {
-				notes.append("<h5>" + " Birthday is on: " + contactVal.birthday + "</h5>");
+				notes.append('<span class="text-center"><i class="fa fa-birthday-cake" aria-hidden="true"></i>' + " " + contactVal.birthday + "   " + "</span>");
 			}
 			if (contactVal.city) {
-				notes.append("<h6>" + " Located currently in: " + contactVal.city + "</h6>");
+				notes.append('<span class="text-center"><i class="fa fa-home" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
 			}
+			notes.append('<br><br>');
+			notes.text();
 
 
 
