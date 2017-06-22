@@ -38,6 +38,10 @@ canvas {
 	margin: auto;
 }
 
+.text-muted {
+    color: white;
+}
+
 #page-title {
     color: white;
     font-size: 64px;
