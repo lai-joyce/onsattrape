@@ -18,18 +18,21 @@
 		<div class='rowfullscreen'>
 			<div class="col-xs-12 text-center"> 
 				<h1 class="appName">On S'Attrape</h1>
-				<button id="loginButton" name="loginButton" class="btn btn-success">Login with Gmail</button> 
+				<!-- <button id="loginButton" name="loginButton" class="btn btn-success">Login with Gmail</button>  -->
 			</div>
 		</div>
 		<!-- </div> -->
 
 		<div class="page-title-wrapper">
 			<div class="row-title-wrapper">
-				<h1 class="col-xs-12 text-center" id="page-title" data-content-field="title">CONQUER THE ODDS OF FORGETTING</h1>
+				<div class="col-xs-12 text-center" data-content-field="title"><h1 id="page-title" >CONQUER THE ODDS OF FORGETTING</h1>
+				<p id="page-blurb">Friends to contact brought right to you.</p>
+				<button id="loginButton" name="loginButton" class="btn btn-success">Login with Gmail</button> 
+				</div>
 			</div>
 		</div>
 		<br> <!-- this keeps the inline-blocks from collapsing -->
-		<div class="page-desc" data-content-field="description"><p>Friends to contact brought right to you.</p></div>
+		<div class="page-desc" data-content-field="description" id="page-blurb"></div>
 	</div>
 
 	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>

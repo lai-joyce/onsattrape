@@ -1,12 +1,7 @@
-
-
 // $("#dump-div").append("<h1>" + "Hello World" + "</h1>");
 
 // jQuery document load
 $(function() {
-
-	
-
 
 	var config = {
 		apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
@@ -22,10 +17,37 @@ $(function() {
 
 	firebase.initializeApp(config);
 
+	var provider = new firebase.auth.GoogleAuthProvider();
 	var database = firebase.database();
+	var user;
+	var token;
+	var contactsRef;
+	var infoRef;
+	var uid;
 
-	var contactsRef = database.ref('users/'+uid+'/contacts');
+	firebase.auth().onAuthStateChanged(function(fbUser) {
+		if (fbUser) {
+			user = fbUser;
+			console.log(fbUser);
+			uid = user.uid;
+		}
+		else {
+			if (location.protocol != 'file:') {
+				window.location.href = 'auth.html';
+			} else {
+				uid = '-KmUZTaohwghpuagw';
+			}
+		}
+		contactsRef = database.ref('users/'+uid+'/contacts');
+		infoRef = database.ref('users/'+uid+'/info');
+		contactsRef = database.ref('users/'+uid+'/contacts');
+		infoRef = database.ref('users/'+uid+'/info');
+		setUpLogic();
+		populateContacts();
+		
+	});
 
+	
 	function populateContacts() {
 		contactsRef.on("child_added", function(snap) {
 			var selectionVal = selectionLogic(snap.key, snap.val());
@@ -253,27 +275,29 @@ $(function() {
 		//Sets random number based on date
 		myrng = new Math.seedrandom(todayStr);
 		myrngInt = Math.floor(myrng()*1000000+1);
-		//Grabs constants/user settings for minThreshold and maxThreshold
-		var infoRef = database.ref('users/'+uid+'/info');
+		//Grabs constants/user settings for minThreshold and maxThreshold and maxDistance
 		minThreshold = 0.25;
 		maxThreshold = 2;
+		distanceThreshold = 25;
 		infoRef.on("value", function(snap) {
+			console.log(snap.val());
 			if (snap.val() !== null && (snap.val().minThreshold < 0.5 && snap.val().minThreshold >= 0)) {
 				minThreshold = snap.val().minThreshold;
 			}
 			if (snap.val() !== null && snap.val().maxThreshold >= 1.5) {
 				maxThreshold = snap.val().maxThreshold;
 			}
+			if (snap.val() !== null && snap.val().maxDistance >0) {
+				distanceThreshold = snap.val().maxDistance;
+			}
 		});
-		distanceThreshold = 25;
 	}
 
-	setUpLogic();
-	populateContacts();
+	
 
 	function selectionLogic(contactKey, contact) {
-	
-		console.log(contact);
+
+		//console.log(contact);
 
 		if (contact.birthday) { 
 			var convertedBday = moment(contact.birthday).format("MM/DD");
@@ -295,7 +319,7 @@ $(function() {
 
 		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
 
-		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays > minThreshold * contact.days)) {
+		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays >= minThreshold * contact.days)) {
 			console.log("random Function working");
 			return 3;
 		}
