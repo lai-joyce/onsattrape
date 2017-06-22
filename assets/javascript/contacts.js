@@ -207,7 +207,7 @@ function editContact () {
             location: ""//"NYC"
         };
 
-        $("#locationInput").geocomplete(options);
+        $("#locationInput").geocomplete(options); //create a new input pour la map
 
     });
 
