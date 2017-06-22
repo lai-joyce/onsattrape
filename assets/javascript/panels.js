@@ -379,7 +379,7 @@ $(function() {
 	//Notes modal functions
 
 	//Set modalContactKey so we can test it.
-	var modalContactKey = "-KmdM1du_4dVi0-vlvyq"
+	var modalContactKey = "";
 
 	//Change 'modalContactKey' below to update based on where the 
 	$(document).on("click", ".addNotes", function () {
@@ -393,28 +393,29 @@ $(function() {
 		prevNotesModal($(this).parents('.contact-panel').data('key'));
 	});
 	$(document).on("click", ".viewNotesSmall", function () {
-		console.log("something")
+		console.log($(this).parents('.contact-panel').data('key'));
+		console.log("something");
 		prevNotesModal($(this).parents('.contact-panel').data('key'));
 	});
 	$(document).on("click","#saveNotesButton", function () {
-		//addNote(modalContactKey);
-		var noteKey = $(this).parents('.contact-panel').data('key');
-		addNote(noteKey);
+		addNote(modalContactKey);
+		$("#newNote").modal('hide');
 	});
 
 	//Make sure this function can pass on the correct contactKey to the '#saveNotesButton' button
 	function newNoteModal(contactKey) {
 		$("#newNote").modal();
-
+		modalContactKey = contactKey;
 	}
 
 	//Write this function to pull down all firebase notes that exist at contactsRef.child(contactKey+'/notes')
 	function prevNotesModal(contactKey) {
 		$("#viewPrevNotes").modal();
+		$("#prevNotesTable").children().children("tr:not(:first)").remove();
 		console.log("contact key BLAH BALHA FLDASFJSDFS " + contactKey + ":::::" + database.ref('users/'+uid+'/contacts/' + contactKey + "/notes"));
 		var notesRef; 
 		notesRef = database.ref('users/'+uid+'/contacts/'+contactKey+'/notes');
-		notesRef.on("child_added", function(snapshot) {
+		notesRef.orderByKey().on("child_added", function(snapshot) {
 			$("#prevNotesTable").append($('<tr>').append($('<td>').text(snapshot.val().date)).append($('<td>').text(snapshot.val().text)));
 		});
 	}
