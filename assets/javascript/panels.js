@@ -385,38 +385,50 @@ $(function() {
 
 	//Change 'modalContactKey' below to update based on where the 
 	$(document).on("click", ".addNotes", function () {
-		newNoteModal(modalContactKey);
+		newNoteModal($(this).parents('.contact-panel').data('key'));
 	});
 	$(document).on("click", ".addNotesSmall", function () {
-		newNoteModal(modalContactKey);
+		newNoteModal($(this).parents('.contact-panel').data('key'));
+		console.log("Key " + $(this).parents('.contact-panel').data('key'));
 	});
 	$(document).on("click", ".viewNotes", function () {
-		prevNotesModal(modalContactKey);
+		prevNotesModal($(this).parents('.contact-panel').data('key'));
 	});
 	$(document).on("click", ".viewNotesSmall", function () {
-		prevNotesModal(modalContactKey);
+		console.log("something")
+		prevNotesModal($(this).parents('.contact-panel').data('key'));
 	});
 	$(document).on("click","#saveNotesButton", function () {
-		addNote(modalContactKey);
+		//addNote(modalContactKey);
+		var noteKey = $(this).parents('.contact-panel').data('key');
+		addNote(noteKey);
 	});
 
 	//Make sure this function can pass on the correct contactKey to the '#saveNotesButton' button
 	function newNoteModal(contactKey) {
 		$("#newNote").modal();
+
 	}
 
 	//Write this function to pull down all firebase notes that exist at contactsRef.child(contactKey+'/notes')
 	function prevNotesModal(contactKey) {
 		$("#viewPrevNotes").modal();
+		console.log("contact key BLAH BALHA FLDASFJSDFS " + contactKey + ":::::" + database.ref('users/'+uid+'/contacts/' + contactKey + "/notes"));
+		var notesRef; 
+		notesRef = database.ref('users/'+uid+'/contacts/'+contactKey+'/notes');
+		notesRef.on("child_added", function(snapshot) {
+			$("#prevNotesTable").append($('<tr>').append($('<td>').text(snapshot.val().date)).append($('<td>').text(snapshot.val().text)));
+		});
 	}
 
 	function addNote(key) {
 		//fill in this variable to make sure noteText has whatever the user types in the #longNoteInput field in the modal
 		var noteText;
-
+		noteText = $("#longNoteInput").val();
 		//Edit this push to include the noteText. If noteText is blank, write a warning to the user
 		contactsRef.child(key).child('notes').push({
-			date: todayStr
+			date: todayStr,
+			text: noteText
 		})
 	}
 });
