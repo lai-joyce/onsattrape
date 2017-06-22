@@ -85,7 +85,7 @@ canvas {
 }
 
 .bIcon {
-	padding-top: 14px;
+	padding-top: 12px;
 	padding-right: 5px;
 	color: lightyellow;
 }
@@ -150,8 +150,9 @@ canvas {
 	border-collapse: collapse;
 }
 .linedTable tr { 
-	border: solid;
+	border: dotted;
 	border-width: 1px 0;
+	border-color: #eee;
 }
 .linedTable tr:first-child {
 	border-top: none;
