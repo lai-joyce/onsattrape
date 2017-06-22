@@ -154,6 +154,15 @@
 	<script>
 		$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
 	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
+	<script>
+		var pattern = Trianglify({
+			width: window.innerWidth,
+			height: window.innerHeight,
+			x_colors: 'PuBu'
+		});
+		$('body').append(pattern.canvas())
+	</script>
 	<script src="assets/javascript/contacts.js"></script>
 </body>
 </html>
