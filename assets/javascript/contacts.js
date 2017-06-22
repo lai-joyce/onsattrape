@@ -80,8 +80,9 @@ function newContact () {
 	$("#saveButton").text("Add New Person");
 	$("#daysBetweenInput").val(7);
 	$("#saveButton").on("click", function() {
-        var isCreateRight = validateName() && validatePhone();
-		if (newContactEligible && isCreateRight) {
+		event.preventDefault();
+        var isValid = validateName() && validatePhone();
+		if (newContactEligible && isValid) {
 			contactsRef.push({
 				name: $("#nameInput").val().trim(),
 				telephone: $("#telephoneInput").val().trim(),
@@ -128,8 +129,8 @@ function editContact () {
 	$("#daysBetweenInput").val(row.data('values').days);
 	$("#saveButton").text("Save");
 	$("#saveButton").on("click", function() {
+		event.preventDefault();
 	    var isValid = validateName() && validatePhone(); // && validateEmail()
-
 		if (editContactEligible && isValid) {
 			contactsRef.child(contactKey).update({
 				name: $("#nameInput").val().trim(),
