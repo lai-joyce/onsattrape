@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="https://bootswatch.com/journal/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="assets/css/style.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -16,7 +18,7 @@
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>                        
+					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#">On S'attrape!</a>
 			</div>
@@ -38,13 +40,13 @@
 					<span id="newContact"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New</span>
 				</div>
 				<div class="panel-body">
-					<table class="linedTable" id="contactTable">
+					<table id="contactTable" class="linedTable">
 						<tr>
 							<th>Name</th>
 							<th>Tel</th>
 							<th>Email</th>
 							<th>Days</th>
-							<th class='hidden-xs hidden-sm'>City, State</th>
+							<th class='hidden-xs hidden-sm'>City</th>
 							<th class='hidden-xs hidden-sm'>Birthday</th>
 							<th>Edit</th>
 						</tr>
@@ -59,110 +61,147 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<button type="button" class="close" id="closeUpWindowBtn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="editContactLabel">Edit Contact</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<form id="editForm">
-							<div class="col-sm-8">
-								<div class="form-group">
-									<label for="nameInput">Name:</label>
-									<input class="form-control" id="nameInput" type="text" required>
-								</div>
 
-								<div class="form-group">
-									<label for="telephoneInput">Telephone:</label>
-									<input class="form-control" id="telephoneInput" type="text">
-								</div>
-							</div>
-							<div class="col-sm-4">
-								<img id="headshot" src="https://via.placeholder.com/150x150"> 
-							</div>
-							<div class="col-sm-12">
-								<div class="form-group">
-									<label for="emailInput">Email:</label>
-									<input class="form-control" id="emailInput" type="email">
-								</div>
-								<div class="form-group">
-									<label for="bdayInput">Birthday:</label>
-									<input class="form-control" id="bdayInput" type="date">
-								</div>
-								<div class="form-group">
-									<label for="locationInput">Location <small>(City, State)</small>:</label>
-									<input class="form-control" id="locationInput" type="email">
-								</div>
-								<div class="form-group">
-									<label for="daysBetweenInput">Days between:</label>
-									<select class="form-control" id="daysBetweenInput">
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>7</option>
-										<option>14</option>
-										<option>28</option>
-										<option>90</option>
-										<option>180</option>
-										<option>365</option>
-									</select>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left">Delete contact</button>
-					<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" id="saveButton" class="btn btn-primary">Save changes</button>
-				</div>
+                    <!--<div class="panel-body">
+                        <div class="alert alert-success">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Successfully submitted!</strong> The form is valid.
+                        </div>-->
+
+                        <form  id="editForm">
+                        	<div class="col-sm-8">
+                        		<div class="form-group">
+                        			<label for="nameInput" class="control-label">Name:</label>
+                        			<input class="form-control" id="nameInput" type="text" oninput="validateName()" required>
+                        			<span id="errName" class="error"></span>
+                        		</div>
+                        		<!--<i class="form-control-feedback glyphicon glyphicon-ok" data-fv-icon-for="address" style="display: block;"></i>-->
+
+                        		<div class="form-group">
+                        			<label class="control-label" for="telephoneInput">Telephone:</label>
+                        			<input class="form-control" id="telephoneInput" type="text" oninput="validatePhone()" required>
+                        			<span id="errTelephone" class="error"></span>
+                        		</div>
+                        	</div>
+                        	<div class="col-sm-4">
+                        		<img id="headshot" src="https://via.placeholder.com/150x150">
+                        	</div>
+                        	<div class="col-sm-12">
+                        		<div class="form-group">
+                        			<label for="emailInput" class="control-label">Email:</label>
+                        			<input class="form-control" id="emailInput" type="email" oninput="validateEmail()">
+                        			<span id="errMail" class="error"></span>
+                        		</div>
+
+                        		<div class="form-group ">
+                        			<label for="bdayInput" class="control-label">Birthday:</label>
+                        			<input class="form-control" id="bdayInput" type="date">
+                        			<span id="errBday" class="error"></span>
+                        		</div>
+
+                        		<div class="form-group">
+                        			<label for="locationInput" class="control-label">Location:</label>
+                        			<input class="form-control" id="locationInput" type="text" required> <!--onkeyup="validateLocation()" required?-->
+                        			<input id="find" type="button" class="pull-right" value="find!" /> <br>
+                        			<span id="errLocation" class="error"></span> <!--<pre id="logger">Log:</pre>-->
+                                <!--<div class="form-group">
+                                    <label class="col-xs-3 control-label">Map</label>
+                                    <div class="col-xs-9">
+                                        <div id="map" class="mapCanvas"></div>
+                                    </div>
+                                </div>
+                                <div id="addressDetails" class="hide">
+                                    <input id="lat" type="hidden" class="form-control" />
+                                    <input id="lng" type="hidden" class="form-control" />
+                                </div>-->
+                            </div>
+
+                            <div class="form-group">
+                            	<label for="daysBetweenInput" class="control-label">Days between:</label>
+                            	<select class="form-control" id="daysBetweenInput"> <!--required?-->
+                            		<option>1</option>
+                            		<option>2</option>
+                            		<option>3</option>
+                            		<option>7</option>
+                            		<option>14</option>
+                            		<option>28</option>
+                            		<option>90</option>
+                            		<option>180</option>
+                            		<option>365</option>
+                            	</select>
+                            	<span id="errDayBetween" class="error"></span>
+                            </div>
+
+                            <div class="form-group">
+                            	<button type="submit" id="saveButton" class="btn btn-primary pull-right">Save</button>
+                            	<span id="errSubmit" class="error"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer text-right">
+                	<button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left">Delete contact</button>
+                	<button type="button" id="cancelButton" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="deleteConfirm">Are you sure you want to delete?</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" id="deleteButton" class="btn btn-primary">Delete Contact</button>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="deleteConfirm">Are you sure you want to delete?</h4>
-				</div>
-				<div class="modal-footer">
-					<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" id="deleteButton" class="btn btn-primary">Delete Contact</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Firebase scripts -->
-	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-	<script>
-		var config = {
-			apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
-			authDomain: "onsattrape.firebaseapp.com",
-			databaseURL: "https://onsattrape.firebaseio.com",
-			projectId: "onsattrape",
-			storageBucket: "onsattrape.appspot.com",
-			messagingSenderId: "1094671185695"
-		};
-		firebase.initializeApp(config);
-	</script>
-	<!-- Jquery scripts -->
-	<script src="https://code.jquery.com/jquery.js"></script>
-	<!-- Bootstrap scripts -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<!-- User scripts -->
-	<script>
-		$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
-	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
-	<script>
-		var pattern = Trianglify({
-			width: window.innerWidth,
-			height: window.innerHeight,
-			x_colors: 'PuBu'
-		});
-		$('body').append(pattern.canvas())
-	</script>
-	<script src="assets/javascript/contacts.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+<script>
+	var config = {
+		apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
+		authDomain: "onsattrape.firebaseapp.com",
+		databaseURL: "https://onsattrape.firebaseio.com",
+		projectId: "onsattrape",
+		storageBucket: "onsattrape.appspot.com",
+		messagingSenderId: "1094671185695"
+	};
+	firebase.initializeApp(config);
+</script>
+<script src="https://code.jquery.com/jquery.js"></script>
+
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c&libraries=geometry"></script>-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpu1l6O8-3WNqF8jklFR3hYu-iCwQT3-g&libraries=places"></script>
+<script src="assets/javascript/jquery.geocomplete.js"></script>
+
+<script>
+	$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
+<script>
+	var pattern = Trianglify({
+		width: window.innerWidth,
+		height: window.innerHeight,
+		x_colors: 'PuBu'
+	});
+	$('body').append(pattern.canvas())
+</script>
+<script src="assets/javascript/contacts.js"></script>
+
 </body>
 </html>

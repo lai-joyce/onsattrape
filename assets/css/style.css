@@ -170,3 +170,17 @@ canvas {
 	cursor: pointer;
 }
 
+
+.error {
+    color: red;
+    font-style: italic;
+    font-size: 10px;
+    /*visibility: hidden;*/
+}
+
+.mapCanvas {
+    width: 600px;
+    height: 400px;
+}
+
+#geocomplete { width: 200px}
