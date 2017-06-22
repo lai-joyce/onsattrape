@@ -1,5 +1,3 @@
-
-
 var provider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
 var user;
