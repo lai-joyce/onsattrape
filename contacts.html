@@ -26,7 +26,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="index.html"><i class="fa fa-calendar-o" aria-hidden="true"></i></a></li>
                 <li><a href="contacts.html"><i class="fa fa-address-book-o" aria-hidden="true"></i></a></li>
-                <li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                <li><a href="settings.html"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
             </ul>
         </div>
     </div>
@@ -40,7 +40,7 @@
                 <span id="newContact"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New</span>
             </div>
             <div class="panel-body">
-                <table id="contactTable">
+                <table id="contactTable" class="linedTable">
                     <tr>
                         <th>Name</th>
                         <th>Tel</th>
@@ -49,7 +49,6 @@
                         <th class='hidden-xs hidden-sm'>City</th>
                         <th class='hidden-xs hidden-sm'>Birthday</th>
                         <th>Edit</th>
-                        <th>Delete</th>
                     </tr>
                 </table>
             </div>
@@ -146,6 +145,7 @@
                     </form>
                 </div>
                 <div class="modal-footer text-right">
+                    <button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left">Delete contact</button>
                     <button type="button" id="cancelButton" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
                 </div>
             </div>
