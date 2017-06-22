@@ -74,7 +74,7 @@
                         </div>-->
 
                         <form  id="editForm">
-                        	<div class="col-sm-8">
+                        	<div class="col-sm-12">
                         		<div class="form-group">
                         			<label for="nameInput" class="control-label">Name:</label>
                         			<input class="form-control" id="nameInput" type="text" oninput="validateName()" required>
@@ -86,12 +86,7 @@
                         			<label class="control-label" for="telephoneInput">Telephone:</label>
                         			<input class="form-control" id="telephoneInput" type="text" oninput="validatePhone()" required>
                         			<span id="errTelephone" class="error"></span>
-                        		</div>
-                        	</div>
-                        	<div class="col-sm-4">
-                        		<img id="headshot" src="https://via.placeholder.com/150x150">
-                        	</div>
-                        	<div class="col-sm-12">
+                        		</div>                        	
                         		<div class="form-group">
                         			<label for="emailInput" class="control-label">Email:</label>
                         			<input class="form-control" id="emailInput" type="email" oninput="validateEmail()">
@@ -106,8 +101,12 @@
 
                         		<div class="form-group">
                         			<label for="locationInput" class="control-label">Location:</label>
-                        			<input class="form-control" id="locationInput" type="text" required> <!--onkeyup="validateLocation()" required?-->
-                        			<input id="find" type="button" class="pull-right" value="find!" /> <br>
+                        			<div class="input-group">
+                        				<input class="form-control" id="locationInput" type="text" required> <!--onkeyup="validateLocation()" required?-->
+                        				<span class="input-group-btn">
+                        				<button class="btn btn-default" type="button" id="find">Find!</button>
+                        				</span>
+                        			</div>
                         			<span id="errLocation" class="error"></span> <!--<pre id="logger">Log:</pre>-->
                                 <!--<div class="form-group">
                                     <label class="col-xs-3 control-label">Map</label>
@@ -136,17 +135,15 @@
                             	</select>
                             	<span id="errDayBetween" class="error"></span>
                             </div>
-
+                            <hr>
                             <div class="form-group">
-                            	<button type="submit" id="saveButton" class="btn btn-primary pull-right">Save</button>
+                            	<button type="submit" id="saveButton" class="btn btn-primary pull-right panelButton">Save</button>
+                            	<button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left panelButton">Delete contact</button>
+                            	<button type="button" id="cancelButton" class="btn btn-default pull-right panelButton" data-dismiss="modal">Close</button>
                             	<span id="errSubmit" class="error"></span>
                             </div>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer text-right">
-                	<button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left">Delete contact</button>
-                	<button type="button" id="cancelButton" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
                 </div>
             </div>
 
