@@ -72,6 +72,7 @@ $(function() {
 
 
 		var panelTitle = $("<div>").addClass('panelTitle pull-left').append($("<h4>").text(contactVal.name));
+		
 
 		switch(selectionVal){
 			case 1: 
@@ -98,13 +99,13 @@ $(function() {
 
 			var notes = $("<span>");
 			if (contactVal.lastTalked) {
-				notes.append('<span><i class="fa fa-clock-o" aria-hidden="true"></i>' + " " + contactVal.lastTalked + "   " + "</span>");
+				notes.append('<span><i class="fa fa-clock-o clockIcon" aria-hidden="true"></i>' + " " + contactVal.lastTalked + "   " + "</span>");
 			}
 			if (contactVal.birthday) {
-				notes.append('<span class="text-center"><i class="fa fa-birthday-cake" aria-hidden="true"></i>' + " " + contactVal.birthday + "   " + "</span>");
+				notes.append('<span class="text-center"><i class="fa fa-birthday-cake bCakeIcon" aria-hidden="true"></i>' + " " + contactVal.birthday + "   " + "</span>");
 			}
 			if (contactVal.city) {
-				notes.append('<span class="text-center"><i class="fa fa-home" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
+				notes.append('<span class="text-center"><i class="fa fa-home homeIcon" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
 			}
 			notes.append('<br><br>');
 			notes.text();
@@ -227,6 +228,7 @@ $(function() {
 		iNotes.addClass("fa");
 		iNotes.attr("aria-hidden", "true");
 		iNotes.text("View Notes");
+		iNotes.addClass("viewNotesButton");
 		viewNotes.append(iNotes);
 
 		panelBody.append(viewNotes);
@@ -238,6 +240,7 @@ $(function() {
 		iaddNotes.addClass("fa");
 		iaddNotes.attr("aria-hidden", "true");
 		iaddNotes.text("Add Notes");
+		iaddNotes.addClass("addNotesButton");
 		addNotes.append(iaddNotes);
 
 		panelBody.append(addNotes);
