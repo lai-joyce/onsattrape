@@ -81,7 +81,7 @@ function newContact () {
 	$("#daysBetweenInput").val(7);
 	$("#saveButton").on("click", function() {
 		event.preventDefault();
-        var isValid = validateName() && validatePhone();
+		var isValid = validateName() && validatePhone();
 		if (newContactEligible && isValid) {
 			contactsRef.push({
 				name: $("#nameInput").val().trim(),
@@ -95,7 +95,7 @@ function newContact () {
 				lat: contactLat
 			});
 			newContactEligible = false;
-            $("#editContact").modal("hide");
+			$("#editContact").modal("hide");
 		}
 
 	});
@@ -130,7 +130,7 @@ function editContact () {
 	$("#saveButton").text("Save");
 	$("#saveButton").on("click", function() {
 		event.preventDefault();
-	    var isValid = validateName() && validatePhone(); // && validateEmail()
+		var isValid = validateName() && validatePhone(); // && validateEmail()
 		if (editContactEligible && isValid) {
 			contactsRef.child(contactKey).update({
 				name: $("#nameInput").val().trim(),
@@ -143,7 +143,7 @@ function editContact () {
 				lat: contactLat,
 			});
 			editContactEligible = false;
-		    $("#editContact").modal("hide");
+			$("#editContact").modal("hide");
 		}
 	});
 }
@@ -151,135 +151,142 @@ function editContact () {
 
 
 
-    function validateName() {
-        var name = document.getElementById("nameInput").value;
+	function validateName() {
+		var name = document.getElementById("nameInput").value;
 
-        if (name.length === 0)
-        {
-            producePrompt("Name is required", "errName", "red");
-            return false;
+		if (name.length === 0)
+		{
+			producePrompt("Name is required", "errName", "red");
+			return false;
 
-        } else if (!name.match(/[A-Za-z]*\s{1}[A-Za-z]*$/)) {
-            producePrompt("First and Last Name Please", "errName", "red");
-            return false;
+		} else if (!name.match(/[A-Za-z]*\s{1}[A-Za-z]*$/)) {
+			producePrompt("First and Last Name Please", "errName", "red");
+			return false;
 
-        } else {
-            producePrompt("Welcome " + name , "errName", "green");
-            return true;
-        }
-    }
-
-
-
-    function validatePhone() {
-        var phone= document.getElementById("telephoneInput").value;
-
-        if (phone.length === 0){
-
-            producePrompt("Phone Number is Required",  "errTelephone", "red");
-            return false;
-
-        } if (phone.length !== 10) {
-
-            producePrompt("Phone Number Must Include Area Code", "errTelephone", "red");
-            return false;
-
-        }else if (!phone.match(/^[0-9]{10}$/)) {
-            producePrompt("Please Only Include Digits", "errTelephone", "red");
-            return false;
-
-        } else {
-            producePrompt("Valid Number", "errTelephone", "green");
-            return true;
+		} else {
+			producePrompt("Welcome " + name , "errName", "green");
+			return true;
+		}
+	}
 
 
-        }}
+
+	function validatePhone() {
+		var phone= document.getElementById("telephoneInput").value;
+
+		if (phone.length === 0){
+
+			producePrompt("Phone Number is Required",  "errTelephone", "red");
+			return false;
+
+		} 
+		if (phone.match(/\d/g).length!== 10) {
+
+			producePrompt("Phone Number Must Include Area Code, and no leading '1'", "errTelephone", "red");
+			return false;
+
+		} 
+		if (phone.match(/[a-zA-Z]/g)) {
+			producePrompt("Phone Number cannot include letters", "errTelephone", "red");
+			return false;
+		} 
+		// else if (!phone.match(/^[0-9]{10}$/)) {
+		//     producePrompt("Please Only Include Digits", "errTelephone", "red");
+		//     return false;
+
+		// } 
+		else {
+			producePrompt("Valid Number", "errTelephone", "green");
+			return true;
 
 
-    function validateEmail() {
-        var email = document.getElementById("emailInput").value;
+		}}
 
-        if (email.length === 0) {
-            producePrompt("Email is Required", "errMail", "red");
-            return false;
 
-        }else if(!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
-            producePrompt("Email Address Invalid", "errMail", "red");
-            return false;
+	function validateEmail() {
+		var email = document.getElementById("emailInput").value;
 
-        }else {
-            producePrompt("Valid Email Address", "errMail", "green");
-            return true;
-        }
+		if (email.length === 0) {
+			producePrompt("Email is Required", "errMail", "red");
+			return false;
 
-    }
+		}else if(!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+			producePrompt("Email Address Invalid", "errMail", "red");
+			return false;
+
+		}else {
+			producePrompt("Valid Email Address", "errMail", "green");
+			return true;
+		}
+
+	}
 
 //$("locationInput").geocomplete();
 
-    $.log = function(message){
-        var $logger = $("#logger");
-        $logger.html($logger.html() + "\n * " + message );
-    }
+	$.log = function(message){
+		var $logger = $("#logger");
+		$logger.html($logger.html() + "\n * " + message );
+	}
 
-    $(function(){
+	$(function(){
 
-        $("#locationInput").geocomplete()
-            .bind("geocode:result", function(event, result){
-                $.log("Result: " + result.formatted_address);
-            })
-            .bind("geocode:error", function(event, status){
-                $.log("ERROR: " + status);
-            })
-            .bind("geocode:multiple", function(event, results){
-                $.log("Multiple: " + results.length + " results found");
-            });
+		$("#locationInput").geocomplete()
+			.bind("geocode:result", function(event, result){
+				$.log("Result: " + result.formatted_address);
+			})
+			.bind("geocode:error", function(event, status){
+				$.log("ERROR: " + status);
+			})
+			.bind("geocode:multiple", function(event, results){
+				$.log("Multiple: " + results.length + " results found");
+			});
 
-        $("#find").click(function(){
-            $("#locationInput").trigger("geocode");
-        });
+		$("#find").click(function(){
+			$("#locationInput").trigger("geocode");
+		});
 
 
-        /*$("#examples a").click(function(){
-            $("#locationInput").val($(this).text()).trigger("geocode");
-            return false;
-        });*/
+		/*$("#examples a").click(function(){
+			$("#locationInput").val($(this).text()).trigger("geocode");
+			return false;
+		});*/
 
-    });
+	});
 
-    // For the Map
-    $(function(){
+	// For the Map
+	$(function(){
 
-        var options = {
-            map: "",//".map_canvas"
-            location: ""//"NYC"
-        };
+		var options = {
+			map: "",//".map_canvas"
+			location: ""//"NYC"
+		};
 
-        $("#locationInput").geocomplete(options); //create a new input pour la map
+		$("#locationInput").geocomplete(options); //create a new input pour la map
 
-    });
+	});
 
-    // function validateForm(){
-    //     if(!validateName() || !validatePhone() || !validateEmail())
-    //     {
-    //         jsShow("errSubmit");
-    //         producePrompt("Form Must be Valid to Submit", "errSubmit", "red");
-    //         setTimeout(function (){jsHide("errSubmit");}, 2000);
-    //     }
-    // }
-    //
-    // function jsShow(id){
-    //     document.getElementById(id).style.display = "block";
-    // }
-    //
-    // function jsHide(id){
-    //     document.getElementById(id).style.display = "none";
-    // }
+	// function validateForm(){
+	//     if(!validateName() || !validatePhone() || !validateEmail())
+	//     {
+	//         jsShow("errSubmit");
+	//         producePrompt("Form Must be Valid to Submit", "errSubmit", "red");
+	//         setTimeout(function (){jsHide("errSubmit");}, 2000);
+	//     }
+	// }
+	//
+	// function jsShow(id){
+	//     document.getElementById(id).style.display = "block";
+	// }
+	//
+	// function jsHide(id){
+	//     document.getElementById(id).style.display = "none";
+	// }
 
-    function producePrompt(message, promptLocation, color)
-        {
-            document.getElementById(promptLocation).innerHTML = message;
-            document.getElementById(promptLocation).style.color = color;
-        }
+	function producePrompt(message, promptLocation, color)
+		{
+			document.getElementById(promptLocation).innerHTML = message;
+			document.getElementById(promptLocation).style.color = color;
+		}
 
 
 function getLatLong (address) {
