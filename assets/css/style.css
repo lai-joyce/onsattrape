@@ -88,6 +88,26 @@ canvas {
 	font-size: 16px;
 }
 
+.homeIcon, .bCakeIcon, .clockIcon {
+	color: rgb(51,102,153);
+	padding-left: 5px;
+	border-left: 1px dotted #eeeeee;
+}
+
+div {
+	font-family: "Bubbler One";
+	/*font-size: 12px;*/
+}
+
+.panel.body {
+	font-size: 10px;
+}
+
+.navbar-brand {
+	font-family: "Architects Daughter";
+	font-size: 25px;
+}
+
 .bIcon {
 	padding-top: 12px;
 	padding-right: 5px;

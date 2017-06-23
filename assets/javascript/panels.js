@@ -98,13 +98,13 @@ $(function() {
 
 			var notes = $("<span>");
 			if (contactVal.lastTalked) {
-				notes.append('<span><i class="fa fa-clock-o" aria-hidden="true"></i>' + " " + contactVal.lastTalked + "   " + "</span>");
+				notes.append('<span><i class="fa fa-clock-o clockIcon" aria-hidden="true"></i>' + " " + contactVal.lastTalked + "   " + "</span>");
 			}
 			if (contactVal.birthday) {
-				notes.append('<span class="text-center"><i class="fa fa-birthday-cake" aria-hidden="true"></i>' + " " + contactVal.birthday + "   " + "</span>");
+				notes.append('<span class="text-center"><i class="fa fa-birthday-cake bCakeIcon" aria-hidden="true"></i>' + " " + contactVal.birthday + "   " + "</span>");
 			}
 			if (contactVal.city) {
-				notes.append('<span class="text-center"><i class="fa fa-home" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
+				notes.append('<span class="text-center"><i class="fa fa-home homeIcon" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
 			}
 			notes.append('<br><br>');
 			notes.text();
