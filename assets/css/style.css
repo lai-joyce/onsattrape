@@ -75,7 +75,7 @@ canvas {
 #googleContactsSelectorModalDialog {
 	width: 90%!important;
 }
-
+ 
 #selectAllCheckboxDiv {
 	margin-right: 10px;
 }
@@ -94,9 +94,21 @@ canvas {
 	border-left: 1px dotted #eeeeee;
 }
 
-div {
+.bCakeIcon {
+	font-size: 12px;
+}
+
+div, .page-header, .panelTitle, .viewNotesText, .addNotesText {
 	font-family: "Bubbler One";
 	/*font-size: 12px;*/
+}
+
+.panel-header {
+	font-weight: bold;
+}
+
+.viewNotesText, .addNotesText {
+	font-weight: bold;
 }
 
 .panel.body {
