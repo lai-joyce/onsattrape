@@ -104,7 +104,15 @@ function newContact () {
 function deleteContact (contactKey) {
 	$("#deleteConfirm").modal();
 	$("#deleteButton").on("click", function() {
-		contactsRef.child(contactKey).remove();
+		contactsRef.child(contactKey).once('value', function(snap) {
+			database.ref('users/'+uid+'/dinosaurs').push( snap.val(), function(error) {
+				if( !error ) {
+					contactsRef.child(contactKey).remove(); 
+				} else if( typeof(console) !== 'undefined' && console.error ) {  
+					console.error(error); 
+				}
+			});
+		});
 		$('#deleteConfirm').modal('hide');
 		$('#editContact').modal('hide');
 	});
@@ -151,45 +159,45 @@ function editContact () {
 
 
 
-	function validateName() {
-		var name = document.getElementById("nameInput").value;
+function validateName() {
+	var name = document.getElementById("nameInput").value;
 
-		if (name.length === 0)
-		{
-			producePrompt("Name is required", "errName", "red");
-			return false;
+	if (name.length === 0)
+	{
+		producePrompt("Name is required", "errName", "red");
+		return false;
 
-		} else if (!name.match(/[A-Za-z]*\s{1}[A-Za-z]*$/)) {
-			producePrompt("First and Last Name Please", "errName", "red");
-			return false;
+	} else if (!name.match(/[A-Za-z]*\s{1}[A-Za-z]*$/)) {
+		producePrompt("First and Last Name Please", "errName", "red");
+		return false;
 
-		} else {
-			producePrompt("Welcome " + name , "errName", "green");
-			return true;
-		}
+	} else {
+		producePrompt("Welcome " + name , "errName", "green");
+		return true;
 	}
+}
 
 
 
-	function validatePhone() {
-		var phone= document.getElementById("telephoneInput").value;
+function validatePhone() {
+	var phone= document.getElementById("telephoneInput").value;
 
-		if (phone.length === 0){
+	if (phone.length === 0){
 
-			producePrompt("Phone Number is Required",  "errTelephone", "red");
-			return false;
+		producePrompt("Phone Number is Required",  "errTelephone", "red");
+		return false;
 
-		} 
-		if (phone.match(/\d/g).length!== 10) {
+	} 
+	if (phone.match(/\d/g).length!== 10) {
 
-			producePrompt("Phone Number Must Include Area Code, and no leading '1'", "errTelephone", "red");
-			return false;
+		producePrompt("Phone Number Must Include Area Code, and no leading '1'", "errTelephone", "red");
+		return false;
 
-		} 
-		if (phone.match(/[a-zA-Z]/g)) {
-			producePrompt("Phone Number cannot include letters", "errTelephone", "red");
-			return false;
-		} 
+	} 
+	if (phone.match(/[a-zA-Z]/g)) {
+		producePrompt("Phone Number cannot include letters", "errTelephone", "red");
+		return false;
+	} 
 		// else if (!phone.match(/^[0-9]{10}$/)) {
 		//     producePrompt("Please Only Include Digits", "errTelephone", "red");
 		//     return false;
@@ -203,47 +211,47 @@ function editContact () {
 		}}
 
 
-	function validateEmail() {
-		var email = document.getElementById("emailInput").value;
+		function validateEmail() {
+			var email = document.getElementById("emailInput").value;
 
-		if (email.length === 0) {
-			producePrompt("Email is Required", "errMail", "red");
-			return false;
+			if (email.length === 0) {
+				producePrompt("Email is Required", "errMail", "red");
+				return false;
 
-		}else if(!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
-			producePrompt("Email Address Invalid", "errMail", "red");
-			return false;
+			}else if(!email.match(/^[A-Za-z\._\-0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)) {
+				producePrompt("Email Address Invalid", "errMail", "red");
+				return false;
 
-		}else {
-			producePrompt("Valid Email Address", "errMail", "green");
-			return true;
+			}else {
+				producePrompt("Valid Email Address", "errMail", "green");
+				return true;
+			}
+
 		}
-
-	}
 
 //$("locationInput").geocomplete();
 
-	$.log = function(message){
-		var $logger = $("#logger");
-		$logger.html($logger.html() + "\n * " + message );
-	}
+$.log = function(message){
+	var $logger = $("#logger");
+	$logger.html($logger.html() + "\n * " + message );
+}
 
-	$(function(){
+$(function(){
 
-		$("#locationInput").geocomplete()
-			.bind("geocode:result", function(event, result){
-				$.log("Result: " + result.formatted_address);
-			})
-			.bind("geocode:error", function(event, status){
-				$.log("ERROR: " + status);
-			})
-			.bind("geocode:multiple", function(event, results){
-				$.log("Multiple: " + results.length + " results found");
-			});
+	$("#locationInput").geocomplete()
+	.bind("geocode:result", function(event, result){
+		$.log("Result: " + result.formatted_address);
+	})
+	.bind("geocode:error", function(event, status){
+		$.log("ERROR: " + status);
+	})
+	.bind("geocode:multiple", function(event, results){
+		$.log("Multiple: " + results.length + " results found");
+	});
 
-		$("#find").click(function(){
-			$("#locationInput").trigger("geocode");
-		});
+	$("#find").click(function(){
+		$("#locationInput").trigger("geocode");
+	});
 
 
 		/*$("#examples a").click(function(){
@@ -283,25 +291,25 @@ function editContact () {
 	// }
 
 	function producePrompt(message, promptLocation, color)
-		{
-			document.getElementById(promptLocation).innerHTML = message;
-			document.getElementById(promptLocation).style.color = color;
-		}
+	{
+		document.getElementById(promptLocation).innerHTML = message;
+		document.getElementById(promptLocation).style.color = color;
+	}
 
 
-function getLatLong (address) {
+	function getLatLong (address) {
 
-	var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
+		var queryURL = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c";
 
-	$.ajax({
-		url: queryURL, 
-		method: "GET",
-		dataType: 'JSON',
-		crossOrigin: true,
-	}).done(function(response) {
-		console.log(response);
-		contactLat = response.results[0].geometry.location.lat;
-		contactLong = response.results[0].geometry.location.lng;
-	});
+		$.ajax({
+			url: queryURL, 
+			method: "GET",
+			dataType: 'JSON',
+			crossOrigin: true,
+		}).done(function(response) {
+			console.log(response);
+			contactLat = response.results[0].geometry.location.lat;
+			contactLong = response.results[0].geometry.location.lng;
+		});
 
-}
+	}

@@ -67,13 +67,6 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-
-					<!--<div class="panel-body">
-						<div class="alert alert-success">
-							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-							<strong>Successfully submitted!</strong> The form is valid.
-						</div>-->
-
 						<form  id="editForm">
 							<div class="col-sm-12">
 								<div class="form-group">
@@ -81,11 +74,9 @@
 									<input class="form-control" id="nameInput" type="text" oninput="validateName()" required>
 									<span id="errName" class="error"></span>
 								</div>
-								<!--<i class="form-control-feedback glyphicon glyphicon-ok" data-fv-icon-for="address" style="display: block;"></i>-->
-
 								<div class="form-group">
 									<label class="control-label" for="telephoneInput">Telephone:</label>
-									<input class="form-control" id="telephoneInput" type="text" oninput="validatePhone()" required>
+									<input class="form-control" id="telephoneInput" type="text" oninput="validatePhone()">
 									<span id="errTelephone" class="error"></span>
 								</div>                        	
 								<div class="form-group">
@@ -103,27 +94,16 @@
 								<div class="form-group">
 									<label for="locationInput" class="control-label">Location:</label>
 									<div class="input-group">
-										<input class="form-control" id="locationInput" type="text" required> <!--onkeyup="validateLocation()" required?-->
+										<input class="form-control" id="locationInput" type="text" required>
 										<span class="input-group-btn">
 										<button class="btn btn-default" type="button" id="find">Find!</button>
 										</span>
 									</div>
-									<span id="errLocation" class="error"></span> <!--<pre id="logger">Log:</pre>-->
-								<!--<div class="form-group">
-									<label class="col-xs-3 control-label">Map</label>
-									<div class="col-xs-9">
-										<div id="map" class="mapCanvas"></div>
-									</div>
-								</div>
-								<div id="addressDetails" class="hide">
-									<input id="lat" type="hidden" class="form-control" />
-									<input id="lng" type="hidden" class="form-control" />
-								</div>-->
+									<span id="errLocation" class="error"></span>
 							</div>
-
 							<div class="form-group">
 								<label for="daysBetweenInput" class="control-label">Days between:</label>
-								<select class="form-control" id="daysBetweenInput"> <!--required?-->
+								<select class="form-control" id="daysBetweenInput">
 									<option>1</option>
 									<option>2</option>
 									<option>3</option>
