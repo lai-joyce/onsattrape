@@ -57,7 +57,7 @@
 		</div>
 	</div>
 
-	<!-- Modal -->
+	<!-- Modal for new contacts and to edit contacts -->
 	<div class="modal fade" id="editContact" tabindex="-1" role="dialog" aria-labelledby="editContactLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -96,90 +96,87 @@
 									<div class="input-group">
 										<input class="form-control" id="locationInput" type="text" required>
 										<span class="input-group-btn">
-										<button class="btn btn-default" type="button" id="find">Find!</button>
+											<button class="btn btn-default" type="button" id="find">Find!</button>
 										</span>
 									</div>
 									<span id="errLocation" class="error"></span>
+								</div>
+								<div class="form-group">
+									<label for="daysBetweenInput" class="control-label">Days between:</label>
+									<select class="form-control" id="daysBetweenInput">
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>7</option>
+										<option>14</option>
+										<option>28</option>
+										<option>90</option>
+										<option>180</option>
+										<option>365</option>
+									</select>
+									<span id="errDayBetween" class="error"></span>
+								</div>
+								<hr>
+								<div class="form-group">
+									<button type="submit" id="saveButton" class="btn btn-primary pull-right panelButton">Save</button>
+									<button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left panelButton">Delete contact</button>
+									<button type="button" id="cancelButton" class="btn btn-default pull-right panelButton" data-dismiss="modal">Close</button>
+									<span id="errSubmit" class="error"></span>
+								</div>
 							</div>
-							<div class="form-group">
-								<label for="daysBetweenInput" class="control-label">Days between:</label>
-								<select class="form-control" id="daysBetweenInput">
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>7</option>
-									<option>14</option>
-									<option>28</option>
-									<option>90</option>
-									<option>180</option>
-									<option>365</option>
-								</select>
-								<span id="errDayBetween" class="error"></span>
-							</div>
-							<hr>
-							<div class="form-group">
-								<button type="submit" id="saveButton" class="btn btn-primary pull-right panelButton">Save</button>
-								<button type="button" id="deleteButtonEditModal" class="btn btn-danger pull-left panelButton">Delete contact</button>
-								<button type="button" id="cancelButton" class="btn btn-default pull-right panelButton" data-dismiss="modal">Close</button>
-								<span id="errSubmit" class="error"></span>
-							</div>
-						</div>
-					</form>
+						</form>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	<!-- Modal for delete confirm -->
+	<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="deleteConfirm">Are you sure you want to delete?</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="deleteButton" class="btn btn-primary">Delete Contact</button>
 				</div>
 			</div>
-
-
 		</div>
 	</div>
-</div>
-
-<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="deleteConfirm">Are you sure you want to delete?</h4>
-			</div>
-			<div class="modal-footer">
-				<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="deleteButton" class="btn btn-primary">Delete Contact</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-<script>
-	var config = {
-		apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
-		authDomain: "onsattrape.firebaseapp.com",
-		databaseURL: "https://onsattrape.firebaseio.com",
-		projectId: "onsattrape",
-		storageBucket: "onsattrape.appspot.com",
-		messagingSenderId: "1094671185695"
-	};
-	firebase.initializeApp(config);
-</script>
-<script src="https://code.jquery.com/jquery.js"></script>
-
-<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa98pCggkp_lKy9w2FkWXJTWoDIJNoI9c&libraries=geometry"></script>-->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpu1l6O8-3WNqF8jklFR3hYu-iCwQT3-g&libraries=places"></script>
-<script src="assets/javascript/jquery.geocomplete.js"></script>
-
-<script>
-	$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
-</script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
-<script>
-	var pattern = Trianglify({
-		width: window.innerWidth,
-		height: window.innerHeight,
-		x_colors: 'PuBu'
-	});
-	$('body').append(pattern.canvas())
-</script>
-<script src="assets/javascript/contacts.js"></script>
-
+	<!-- Shared scripts -->
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+	<script>
+		var config = {
+			apiKey: "AIzaSyDp8OOm78pBLJEKkE6r4JKBg_MPzqhiCVQ",
+			authDomain: "onsattrape.firebaseapp.com",
+			databaseURL: "https://onsattrape.firebaseio.com",
+			projectId: "onsattrape",
+			storageBucket: "onsattrape.appspot.com",
+			messagingSenderId: "1094671185695"
+		};
+		firebase.initializeApp(config);
+	</script>
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpu1l6O8-3WNqF8jklFR3hYu-iCwQT3-g&libraries=places"></script>
+	<script src="assets/javascript/jquery.geocomplete.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
+	<script>
+		var pattern = Trianglify({
+			width: window.innerWidth,
+			height: window.innerHeight,
+			x_colors: 'PuBu'
+		});
+		$('body').append(pattern.canvas())
+	</script>
+	<!-- Our scripts -->
+	<script>
+		$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
+	</script>
+	<script src="assets/javascript/contacts.js"></script>
 </body>
 </html>
