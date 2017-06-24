@@ -78,6 +78,7 @@ $(function() {
 		$("#editContact").modal();
 		$("#deleteButtonEditModal").hide();
 		$("#nameInput").val("");
+		$(".error").empty();
 		$("#telephoneInput").val("");
 		$("#emailInput").val("");
 		$("#bdayInput").val("");
@@ -134,6 +135,7 @@ $(function() {
 		oldLocation = row.data('values').city;
 		//console.log(contactKey);
 		$("#editContact").modal();
+		$(".error").empty();
 		$("#deleteButtonEditModal").show();
 		$("#nameInput").val(row.data('values').name);
 		$("#telephoneInput").val(row.data('values').telephone);
@@ -238,7 +240,7 @@ function validatePhone() {
 	// 	producePrompt("Phone Number is Required",  "errTelephone", "red");
 	// 	return false;
 	// } 
-	if (phone.match(/\d/g).length!== 10) {
+	if (!phone.match(/\d/g) || phone.match(/\d/g).length !== 10) {
 		producePrompt("Phone Number Must Include Area Code, and no leading '1'", "errTelephone", "red");
 		return false;
 	} 
