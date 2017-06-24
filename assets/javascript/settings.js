@@ -19,7 +19,7 @@ var uid;
 firebase.auth().onAuthStateChanged(function(fbUser) {
 	if (fbUser) {
 		user = fbUser;
-		console.log(fbUser);
+		//console.log(fbUser);
 		uid = user.uid;
 	}
 	else {
@@ -36,7 +36,7 @@ firebase.auth().onAuthStateChanged(function(fbUser) {
 
 function populateInfoRef() {
 	infoRef.on("value", function(snap) {
-		console.log(snap.val());
+		//console.log(snap.val());
 		$('#minThreshold').val(snap.val().minThreshold || 0.25);
 		$('#maxThreshold').val(snap.val().maxThreshold || 2);
 		$('#maxDistance').val(snap.val().maxDistance || 25);
