@@ -129,8 +129,10 @@ $(function() {
 		var iphone = $("<i>").addClass("fa fa-phone").attr("aria-hidden", "true");
 		if (contactVal.telephone) {
 			phone.attr("href", "tel:" + contactVal.telephone);
+			phoneMobile.attr("href", "tel:" + contactVal.telephone);
 		} else {
 			phone.attr('disabled',true);
+			phoneMobile.attr('disabled',true);
 		}
 		phone.append(iphone);
 		phoneMobile.append(iphone.clone());
@@ -164,7 +166,7 @@ $(function() {
 		if (lightweightMobile) {
 			email.addClass("dismissOnClick");
 			phoneMobile.addClass("dismissOnClick");
-			check.addClass("hidden-sm hidden-xs")
+			check.addClass("hidden-sm hidden-xs");
 		} else {
 			panelHeadingIcons.append(viewNotesPhone);
 			panelHeadingIcons.append(addNotesPhone);
@@ -336,7 +338,9 @@ $(function() {
 		removeDiv($(this));
 	});
 	$(document).on("click", ".dismissOnClick", function() {
-		removeDiv($(this));
+		if($(this).attr('disabled') !== 'disabled') {
+			removeDiv($(this));
+		}
 	});
 
 	//Pops up new modal and sets the global variable modalContactKey to whichever row we clicked on
