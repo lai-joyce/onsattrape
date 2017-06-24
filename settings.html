@@ -67,16 +67,19 @@
 				<div class="panel-body">
 					<form id="editLogic">
 						<div class="form-group">
-							<label for="minThreshold">Minimum threshold:<br><small>Do not contact person within X times regular cadence (0-0.99):</small></label>
+							<label for="minThreshold"><a href="#" data-toggle="tooltip" data-placement="top" title="Do not contact person within X times regular cadence (0-0.99)">Minimum threshold:</a></label>
 							<input class="form-control" id="minThreshold" type="number">
 						</div>
 						<div class="form-group">
-							<label for="maxThreshold">Maximum threshold:<br><small>Automatically contact person if not talked within X (1.5+):</small></label>
+							<label for="maxThreshold"><a href="#" data-toggle="tooltip" data-placement="top" title="Automatically contact person if not talked within X (1.5+)">Maximum threshold:</a></label>
 							<input class="form-control" id="maxThreshold" type="number">
 						</div>
 						<div class="form-group">
-							<label for="maxDistance">Maximum distance:<br><small>Only return friends within X miles:</small></label>
+							<label for="maxDistance"><a href="#" data-toggle="tooltip" data-placement="top" title="Only return friends within X miles">Maximum distance:</a></label>
 							<input class="form-control" id="maxDistance" type="number">
+						</div>
+						<div class="form-group">
+							<label for="lightweightMobile"><a href="#" data-toggle="tooltip" data-placement="top" title="On mobile, remove notes buttons and dismiss contact when pressing phone or email button">'Lightweight mode' on mobile:</a></label><input id="lightweightMobile" class="pull-right" type="checkbox">
 						</div>
 						<button type="button" id="saveLogic" class="btn btn-primary">Save settings</button>
 					</form>

@@ -19,7 +19,7 @@ var uid;
 firebase.auth().onAuthStateChanged(function(fbUser) {
 	if (fbUser) {
 		user = fbUser;
-		console.log(fbUser);
+		//console.log(fbUser);
 		uid = user.uid;
 	}
 	else {
@@ -36,12 +36,15 @@ firebase.auth().onAuthStateChanged(function(fbUser) {
 
 function populateInfoRef() {
 	infoRef.on("value", function(snap) {
-		console.log(snap.val());
+		//console.log(snap.val());
 		$('#minThreshold').val(snap.val().minThreshold || 0.25);
 		$('#maxThreshold').val(snap.val().maxThreshold || 2);
 		$('#maxDistance').val(snap.val().maxDistance || 25);
 		$('#nameInput').val(snap.val().name);
 		$('#emailInput').val(snap.val().email);
+		if(snap.val().lightweightMobile) {
+			$('#lightweightMobile').prop('checked', true);
+		}
 	});
 }
 
@@ -53,6 +56,9 @@ $(document).on("click", "#saveLogic", saveLogic);
 $(document).on("click", "#signOut", signOut);
 $(document).on("change", ".includeCheckbox", function () {
 	geoTagRow($(this));
+});
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
 });
 
 function geoTagRow(checkbox) {
@@ -84,6 +90,7 @@ function saveLogic() {
 			maxDistance: Number($('#maxDistance').val().trim()),
 			minThreshold: Number($('#minThreshold').val().trim()),
 			maxThreshold: Number($('#maxThreshold').val().trim()),
+			lightweightMobile: $('#lightweightMobile').is(':checked')
 		});
 	}
 }
