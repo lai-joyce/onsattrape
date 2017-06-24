@@ -138,7 +138,7 @@ $(function() {
 				contactsRef.push({
 					name: $(this).children("#nameInput").data('fullName').trim(),
 					telephone: $(this).children("#telephoneInput").text().trim(),
-					email: $(this).children("#emailInput").data('fullEmail').trim(),
+					email: $(this).children("#emailInput").data('fullEmail'),
 					city: $(this).children("#locationInput").text().trim(),
 					days: Number($(this).find("#daysBetweenInput").val().trim()),
 					offset: Math.floor(Math.random()*1000000+1)
