@@ -88,6 +88,34 @@ canvas {
 	font-size: 16px;
 }
 
+.appName {
+	font-family: "Love Ya Like A Sister";
+	color: black;
+	font-size: 160%;
+}
+
+.contactTodayText {
+	font-family: "Forum";
+}
+
+div, h4 {
+	font-family: "Assistant";
+}
+
+h4 {
+	font-weight: bold;
+	color: lightyellow;
+}
+
+th, label {
+	font-weight: bold; 
+	color: black;
+}
+
+.viewNotesButton, .addNotesButton, .panelTitleName {
+	font-family: "Assistant";
+}
+
 .bIcon {
 	padding-top: 12px;
 	padding-right: 5px;
@@ -98,6 +126,16 @@ canvas {
 	padding-top: 14px;
 	padding-right: 5px;
 	color: lightgreen;
+}
+
+.homeIcon, .bCakeIcon, .clockIcon {
+	color: rgb(51,102,153);
+	padding-left: 5px;
+	border-left: 1px dotted #eeeeee;
+}
+
+.bCakeIcon {
+	font-size: 12px;
 }
 
 /*.panelTitle {
