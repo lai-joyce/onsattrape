@@ -94,68 +94,63 @@
 				<div class="panel-body">
 					<p>Beta: Since this app is in beta, to import contacts, you must join <a href="https://groups.google.com/forum/#!forum/risky-access-by-unreviewed-apps">this google group</a></p>
 					<button type="button" id="importGoogleContacts" class="btn btn-primary">Import Google Contacts</button>
-					<!-- 
-					<hr>
-					<button type="button" id="importGoogleSheet" class="btn btn-primary">Import Google Sheet</button>
-				-->
-			</div>
-		</div>
-	</div>
-</div>
-</div>
 
-<div class="modal fade" id="googleContactsSelector" tabindex="-1" role="dialog" aria-labelledby="googleContactsSelector">
-	<div class="modal-dialog" id="googleContactsSelectorModalDialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="googleContactsSelector">Gmail Contact Importer
-					<div class="pull-right" id="selectAllCheckboxDiv">
-						<span id="selectAllCheckboxText">Select All</span><input id="selectAllCheckbox" type="checkbox">
-					</div>
-				</h4>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-xs-12">
-						<table class="linedTable" id="contactTable">
-							<tr>
-								<th>Include</th>
-								<th>Name</th>
-								<th>Tel</th>
-								<th>Email</th>
-								<th class='hidden-xs hidden-sm'>City</th>
-								<th>Days</th>
-							</tr>
-						</table>
-					</div>
 				</div>
 			</div>
-			<div class="modal-footer">
-				<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="saveButton" class="btn btn-primary">Save changes</button>
+		</div>
+	</div>
+	<div class="modal fade" id="googleContactsSelector" tabindex="-1" role="dialog" aria-labelledby="googleContactsSelector">
+		<div class="modal-dialog" id="googleContactsSelectorModalDialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="googleContactsSelector">Gmail Contact Importer
+						<div class="pull-right" id="selectAllCheckboxDiv">
+							<span id="selectAllCheckboxText">Select All</span><input id="selectAllCheckbox" type="checkbox">
+						</div>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-12">
+							<table class="linedTable" id="contactTable">
+								<tr>
+									<th>Include</th>
+									<th>Name</th>
+									<th>Tel</th>
+									<th>Email</th>
+									<th class='hidden-xs hidden-sm'>City</th>
+									<th>Days</th>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="cancelButton" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="saveButton" class="btn btn-primary">Save changes</button>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<footer>
-	<div class="container">
-		<p class='text-muted text-center'>Copyright &copy; Joyce, Denise, Michael and Bob</p>
-	</div>
-</footer>
+	<footer>
+		<div class="container">
+			<p class='text-muted text-center'>Copyright &copy; Joyce, Denise, Michael and Bob</p>
+		</div>
+	</footer>
 
-<!-- Imported Scripts -->
-<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="assets/javascript/jquery.ajax-cross-origin.min.js"></script>
-<script src="assets/javascript/parse-address-master/parse-address.min.js"></script>
-<!-- Our Logic -->
-<script>
-	$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
+	<!-- Imported Scripts -->
+	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="assets/javascript/jquery.ajax-cross-origin.min.js"></script>
+	<script src="assets/javascript/parse-address-master/parse-address.min.js"></script>
+	<!-- Our Logic -->
+	<script>
+		$('a[href$="'+document.location.href.substr(document.location.href.lastIndexOf('/') + 1)+'"]').parent().addClass("active");
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script>
 	<script>
 		var pattern = Trianglify({
 			width: window.innerWidth,
@@ -164,6 +159,6 @@
 		});
 		$('body').append(pattern.canvas())
 	</script>
-<script src="assets/javascript/settings.js"></script>
+	<script src="assets/javascript/settings.js"></script>
 </body>
 </html>

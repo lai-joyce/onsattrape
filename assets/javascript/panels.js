@@ -1,6 +1,3 @@
-// $("#dump-div").append("<h1>" + "Hello World" + "</h1>");
-
-// jQuery document load
 $(function() {
 
 	var config = {
@@ -12,10 +9,9 @@ $(function() {
 		messagingSenderId: "1094671185695"
 	};
 
-	var uid = "-KmUZTaohwghpuagw";
-
 	firebase.initializeApp(config);
 
+	//Firebase global variables
 	var provider = new firebase.auth.GoogleAuthProvider();
 	var database = firebase.database();
 	var user;
@@ -24,6 +20,7 @@ $(function() {
 	var infoRef;
 	var uid;
 
+	//Checks to see if user is logged in, tosses them to auth page if not. If file is locally hosted, assigns our test account
 	firebase.auth().onAuthStateChanged(function(fbUser) {
 		if (fbUser) {
 			user = fbUser;
@@ -43,9 +40,9 @@ $(function() {
 		infoRef = database.ref('users/'+uid+'/info');
 		setUpLogic();
 		populateContacts();
-		
 	});
 
+	//Initates global variables we need for logic, etc.
 	var now;
 	var myrng;
 	var myrngInt;
@@ -60,6 +57,7 @@ $(function() {
 
 	function populateContacts() {
 		contactsRef.on("child_added", function(snap) {
+			//Checks to see if contact is eligible (passes a logic check), then adds to DOM
 			var selectionVal = selectionLogic(snap.key, snap.val());
 			if(selectionVal > 0) {
 				appendContactToDumpDiv(snap.key, snap.val(), selectionVal);
@@ -67,6 +65,7 @@ $(function() {
 		});
 	}
 
+	//Adds a new panel for each contact that is eligible
 	function appendContactToDumpDiv(contactKey, contactVal, selectionVal) {
 
 		var mainDiv = $("<div>");
@@ -80,10 +79,9 @@ $(function() {
 		var panelHeading = $("<div>");
 		panelHeading.addClass("panel-heading clearfix");
 
-
 		var panelTitle = $("<div>").addClass('panelTitle pull-left').append($("<h4>").text(contactVal.name));
 		
-
+		//Sets various topical treatments to provide context from our selection logic
 		switch(selectionVal){
 			case 1: 
 			//Birthday
@@ -103,6 +101,7 @@ $(function() {
 
 		var panelHeadingIcons = $("<div>").addClass('pull-right');		
 
+		//Adds info from settings for contacts that have it
 		var panelBody = $("<div>");
 		panelBody.addClass("panel-body hidden-sm hidden-xs");
 
@@ -117,12 +116,10 @@ $(function() {
 			notes.append('<span class="text-center"><i class="fa fa-home homeIcon" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
 		}
 		notes.append('<br><br>');
-		notes.text();
-
-
 
 		panelBody.append(notes);
 
+		//Writes our various buttons (mobile, non, hidden, non)
 		var check = $("<a>").addClass("checkMark btn btn-primary panelButton").attr("id", "checkBox");
 		var icheck = $("<i>").addClass("fa fa-check").attr("aria-hidden", "true");
 		check.append(icheck);
@@ -132,8 +129,10 @@ $(function() {
 		var iphone = $("<i>").addClass("fa fa-phone").attr("aria-hidden", "true");
 		if (contactVal.telephone) {
 			phone.attr("href", "tel:" + contactVal.telephone);
+			phoneMobile.attr("href", "tel:" + contactVal.telephone);
 		} else {
 			phone.attr('disabled',true);
+			phoneMobile.attr('disabled',true);
 		}
 		phone.append(iphone);
 		phoneMobile.append(iphone.clone());
@@ -163,15 +162,17 @@ $(function() {
 		var iaddNotes = $("<i>").attr("aria-hidden", "true").text("Add Notes").addClass("addNotesButton");
 		addNotes.append(iaddNotes);
 
+		//Checks for lightweight mode, and added classes that remove need for 'remove' button
 		if (lightweightMobile) {
 			email.addClass("dismissOnClick");
 			phoneMobile.addClass("dismissOnClick");
-			check.addClass("hidden-sm hidden-xs")
+			check.addClass("hidden-sm hidden-xs");
 		} else {
 			panelHeadingIcons.append(viewNotesPhone);
 			panelHeadingIcons.append(addNotesPhone);
 		}
 
+		//Adds buttons to panel header & body, then adds header & body to actual div
 		panelHeadingIcons.prepend(email);
 		panelHeadingIcons.prepend(gmail);
 		panelHeadingIcons.prepend(phone);
@@ -189,10 +190,12 @@ $(function() {
 
 		mainDiv.append(divPanel);
 
+		//Writes to DOM
 		$("#dump-div").append(mainDiv);
 
 	}
 
+	//Fills in global variables, from firebase where available, or from constants
 	function setUpLogic() {
 		//Gets today's date
 		now = moment();
@@ -222,10 +225,12 @@ $(function() {
 		});
 	}
 
+	//Takes a contact, and applies various logics against them to see if they should be on the main page
 	function selectionLogic(contactKey, contact) {
 
 		//console.log(contact);
 
+		//Checks if it is their birthday, returns 1 if so
 		if (contact.birthday) { 
 			var convertedBday = moment(contact.birthday).format("MM/DD");
 			if (convertedBday === todayStrNoYear) {
@@ -234,6 +239,7 @@ $(function() {
 			}
 		}
 
+		//Checks if geolocation is enabled, then if they are within a certain distance
 		if(myCoordinates && contact.long && contact.lat) {
 			var d = distance(myCoordinates.latitude, myCoordinates.longitude, contact.lat, contact.long);
 			//console.log(d);
@@ -246,18 +252,22 @@ $(function() {
 
 		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
 
+		//Checks if they are randomly selected, assuming they are outside of a minimum threshold
 		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays >= minThreshold * contact.days)) {
 			//console.log("random Function working");
 			return 3;
 		}
 
+		//If you haven't talked to them long enough, adds them anyway
 		if (lastTalkedNumberDays > maxThreshold * contact.days) {
 			return 2; 
 		}
 
+		//Returns a 'non-pass' value if they don't get hit above
 		return -1;
 	}
 
+	//Gets location from browser, then reruns the logic so we can see if people are close 
 	function getLocation() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
@@ -271,6 +281,7 @@ $(function() {
 		} 
 	}
 
+	//Great circle distance function (accurate to ~5%, which is good enough for us)
 	function distance(lat1, lon1, lat2, lon2) {
 		var p = 0.017453292519943295;    // Math.PI / 180
 		var c = Math.cos;
@@ -280,6 +291,7 @@ $(function() {
 		return 3959 * 2 * Math.asin(Math.sqrt(a)); // R = 3959 miles
 	}
 
+	//Nukes panel when we talk to the person
 	function removeDiv(button) {
 		var key = button.parents('.contact-panel').data('key');
 		console.log(key);
@@ -288,6 +300,7 @@ $(function() {
 		mostRecentContact(key, button.attr("id"));
 	}
 
+	//Writes when/how the user contacted the person, and updates 'lastTalked' for logic above 
 	function mostRecentContact(key, type) {
 		contactsRef.child(key).update({
 			lastTalked: todayStr
@@ -298,6 +311,7 @@ $(function() {
 		});
 	}
 
+	//Adds all our button functions
 	$(document).on("click", ".addNotes", function () {
 		newNoteModal($(this).parents('.contact-panel').data('key'));
 	});
@@ -324,14 +338,18 @@ $(function() {
 		removeDiv($(this));
 	});
 	$(document).on("click", ".dismissOnClick", function() {
-		removeDiv($(this));
+		if($(this).attr('disabled') !== 'disabled') {
+			removeDiv($(this));
+		}
 	});
 
+	//Pops up new modal and sets the global variable modalContactKey to whichever row we clicked on
 	function newNoteModal(contactKey) {
 		$("#newNote").modal();
 		modalContactKey = contactKey;
 	}
 
+	//Pops up modal that fetches all previously-written notes from that contact. Also empties the modal
 	function prevNotesModal(contactKey) {
 		$("#viewPrevNotes").modal();
 		$("#prevNotesTable").children().children("tr:not(:first)").remove();
@@ -342,6 +360,7 @@ $(function() {
 		});
 	}
 
+	//Adds note on save button press
 	function addNote(key) {
 		var noteText;
 		noteText = $("#longNoteInput").val();
