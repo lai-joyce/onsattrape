@@ -14,7 +14,6 @@ $(function() {
 
 	var uid = "-KmUZTaohwghpuagw";
 
-
 	firebase.initializeApp(config);
 
 	var provider = new firebase.auth.GoogleAuthProvider();
@@ -47,7 +46,18 @@ $(function() {
 		
 	});
 
-	
+	var now;
+	var myrng;
+	var myrngInt;
+	var todayStr;
+	var minThreshold;
+	var maxThreshold;
+	var todayStrNoYear;
+	var distanceThreshold;
+	var myCoordinates;
+	var lightweightMobile;
+	var modalContactKey = "";
+
 	function populateContacts() {
 		contactsRef.on("child_added", function(snap) {
 			var selectionVal = selectionLogic(snap.key, snap.val());
@@ -76,183 +86,105 @@ $(function() {
 
 		switch(selectionVal){
 			case 1: 
-				//Birthday
-				panelHeading.append($("<div><i class='fa fa-birthday-cake bIcon pull-left' aria-hidden='true'></i></div>"));
-				break;
-				case 2:
-				//Haven't talked in a while
-				break;
-				case 3: 
-				//Random chance
-				break;
-				case 4: 
-				//Nearby
-				panelHeading.append($("<div><i class='fa fa-globe locIcon pull-left' aria-hidden='true'></i></div>"));
-				break;
-			}
-
-			var panelHeadingIcons = $("<div>").addClass('pull-right');		
-
-
-			var panelBody = $("<div>");
-			panelBody.addClass("panel-body hidden-sm hidden-xs");
-
-			var notes = $("<span>");
-			if (contactVal.lastTalked) {
-				notes.append('<span><i class="fa fa-clock-o clockIcon" aria-hidden="true"></i>' + " " + contactVal.lastTalked + "   " + "</span>");
-			}
-			if (contactVal.birthday) {
-				notes.append('<span class="text-center"><i class="fa fa-birthday-cake bCakeIcon" aria-hidden="true"></i>' + " " + contactVal.birthday + "   " + "</span>");
-			}
-			if (contactVal.city) {
-				notes.append('<span class="text-center"><i class="fa fa-home homeIcon" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
-			}
-			notes.append('<br><br>');
-			notes.text();
-
-
-
-			panelBody.append(notes);
-
-			var check = $("<a>");
-			check.addClass("checkMark btn btn-primary panelButton");
-			var icheck = $("<i>");
-			icheck.addClass("fa fa-check");
-			icheck.attr("aria-hidden", "true");
-			check.append(icheck);
-
-
-			if (contactVal.telephone) {
-				var phone = $("<a>");
-				phone.attr("href", "tel:" + contactVal.telephone);
-				phone.attr("id", "phoneLine");
-				phone.addClass("btn btn-primary panelButton");
-				var iphone = $("<i>");
-				iphone.addClass("fa fa-phone");
-				iphone.attr("aria-hidden", "true");
-				phone.append(iphone);
-				panelHeadingIcons.append(phone);
-			} else {
-				var phone = $("<a>");
-				phone.attr("id", "phoneLine");
-				phone.attr('disabled',true);
-				phone.addClass("btn btn-primary panelButton");
-				var iphone = $("<i>");
-				iphone.addClass("fa fa-phone");
-				iphone.attr("aria-hidden", "true");
-				phone.append(iphone);
-				panelHeadingIcons.append(phone);
-			}
-
-
-			if (contactVal.email) {
-
-
-				var email = $("<a>");
-				email.attr("href", "mailto:" + contactVal.email);
-				email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
-				var iemail = $("<i>");
-				iemail.addClass("fa fa-envelope-o");
-				iemail.attr("aria-hidden", "true");
-				email.append(iemail);
-
-				var gmail = $("<a>");
-				gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + contactVal.email);
-				gmail.attr("target", "_blank");
-				gmail.attr("id", "gmailID");
-				gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
-				var igemail = $("<i>");
-				igemail.addClass("fa fa-envelope-o");
-				igemail.attr("aria-hidden", "true");
-			//igemail.text("g");
-			gmail.append(igemail);
-
-			panelHeadingIcons.append(email);
-			panelHeadingIcons.append(gmail);
-
-		} else {
-			var email = $("<a>");
-			email.addClass("btn btn-primary panelButton hidden-md hidden-lg");
-			var iemail = $("<i>");
-			iemail.addClass("fa fa-envelope-o");
-			iemail.attr("aria-hidden", "true");
-			email.attr('disabled', true);
-			email.append(iemail);
-
-			var gmail = $("<a>");
-			gmail.attr("target", "_blank");
-			gmail.attr("id", "gmailID");
-			gmail.addClass("btn btn-primary panelButton hidden-sm hidden-xs");
-			var igemail = $("<i>");
-			igemail.addClass("fa fa-envelope-o");
-			igemail.attr("aria-hidden", "true");
-			gmail.attr('disabled', true);
-			//igemail.text("g");
-			gmail.append(igemail);
-
-			panelHeadingIcons.append(email);
-			panelHeadingIcons.append(gmail);
+			//Birthday
+			panelHeading.append($("<div><i class='fa fa-birthday-cake bIcon pull-left' aria-hidden='true'></i></div>"));
+			break;
+			case 2:
+			//Haven't talked in a while
+			break;
+			case 3: 
+			//Random chance
+			break;
+			case 4: 
+			//Nearby
+			panelHeading.append($("<div><i class='fa fa-globe locIcon pull-left' aria-hidden='true'></i></div>"));
+			break;
 		}
 
-		var viewNotesPhone = $("<a>");
-		viewNotesPhone.addClass("btn btn-info");
-		viewNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg viewNotesSmall");
-		viewNotesPhone.append('<i class="fa fa-eye" aria-hidden="true"></i>');
-		var iNotesPhone = $("<i>");
-		iNotesPhone.addClass("fa");
-		iNotesPhone.attr("aria-hidden", "true");
-		iNotesPhone.text("View Notes");
-		viewNotesPhone.append(iNotes);
+		var panelHeadingIcons = $("<div>").addClass('pull-right');		
 
-		panelHeadingIcons.append(viewNotesPhone);
+		var panelBody = $("<div>");
+		panelBody.addClass("panel-body hidden-sm hidden-xs");
 
-
-		var addNotesPhone = $("<a>");
-		addNotesPhone.addClass("btn btn-info addNotesSmall");
-		addNotesPhone.addClass("btn btn-primary panelButton hidden-md hidden-lg addNotesSmall");
-		addNotesPhone.append('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>');
-		var iaddNotesPhone = $("<i>");
-		iaddNotesPhone.addClass("fa");
-		iaddNotesPhone.attr("aria-hidden", "true");
-		iaddNotesPhone.text("Add Notes");
-		addNotesPhone.append(iaddNotes);
-
-		panelHeadingIcons.append(addNotesPhone);
-
-		panelHeadingIcons.append(check);
+		var notes = $("<span>");
+		if (contactVal.lastTalked) {
+			notes.append('<span><i class="fa fa-clock-o clockIcon" aria-hidden="true"></i>' + " " + contactVal.lastTalked + "   " + "</span>");
+		}
+		if (contactVal.birthday) {
+			notes.append('<span class="text-center"><i class="fa fa-birthday-cake bCakeIcon" aria-hidden="true"></i>' + " " + contactVal.birthday + "   " + "</span>");
+		}
+		if (contactVal.city) {
+			notes.append('<span class="text-center"><i class="fa fa-home homeIcon" aria-hidden="true"></i>' + " " + contactVal.city + "   " + "</span>");
+		}
+		notes.append('<br><br>');
+		notes.text();
 
 
-		var viewNotes = $("<a>");
-		viewNotes.addClass("btn btn-info viewNotes");
-		var iNotes = $("<i>");
-		iNotes.addClass("fa");
-		iNotes.attr("aria-hidden", "true");
-		iNotes.text("View Notes");
-		iNotes.addClass("viewNotesButton");
+
+		panelBody.append(notes);
+
+		var check = $("<a>").addClass("checkMark btn btn-primary panelButton").attr("id", "checkBox");
+		var icheck = $("<i>").addClass("fa fa-check").attr("aria-hidden", "true");
+		check.append(icheck);
+
+		var phoneMobile = $("<a>").attr("id", "phoneLine").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
+		var phone = $("<a>").attr("id", "phoneLine").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-sm hidden-xs");
+		var iphone = $("<i>").addClass("fa fa-phone").attr("aria-hidden", "true");
+		if (contactVal.telephone) {
+			phone.attr("href", "tel:" + contactVal.telephone);
+		} else {
+			phone.attr('disabled',true);
+		}
+		phone.append(iphone);
+		phoneMobile.append(iphone.clone());
+
+		var email = $("<a>").attr("id", "emailID").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
+		var gmail = $("<a>").attr("id", "gmailID").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-sm hidden-xs");
+		var iemail = $("<i>").attr("aria-hidden", "true").addClass("fa fa-envelope-o");
+
+		if (contactVal.email) {
+			email.attr("href", "mailto:" + contactVal.email);
+			gmail.attr("href", "https://mail.google.com/mail/?view=cm&fs=1&to=" + contactVal.email);
+		} else {
+			email.attr('disabled', true);
+			gmail.attr('disabled', true);
+		}
+		email.append(iemail);
+		gmail.append(iemail.clone());
+
+		var viewNotesPhone = $("<a>").addClass("btn btn-info panelButton hidden-md hidden-lg viewNotesSmall").append('<i class="fa fa-eye" aria-hidden="true"></i>');
+		var addNotesPhone = $("<a>").addClass("btn btn-info panelButton hidden-md hidden-lg addNotesSmall").append('<i class="fa fa-pencil-square-o" aria-hidden="true"></i>');
+
+		var viewNotes = $("<a>").addClass("btn btn-info viewNotes");
+		var iNotes = $("<i>").attr("aria-hidden", "true").text("View Notes").addClass("viewNotesButton");
 		viewNotes.append(iNotes);
 
-		panelBody.append(viewNotes);
-
-
-		var addNotes = $("<a>");
-		addNotes.addClass("btn btn-primary addNotes");
-		var iaddNotes = $("<i>");
-		iaddNotes.addClass("fa");
-		iaddNotes.attr("aria-hidden", "true");
-		iaddNotes.text("Add Notes");
-		iaddNotes.addClass("addNotesButton");
+		var addNotes = $("<a>").addClass("btn btn-primary addNotes");
+		var iaddNotes = $("<i>").attr("aria-hidden", "true").text("Add Notes").addClass("addNotesButton");
 		addNotes.append(iaddNotes);
 
+		if (lightweightMobile) {
+			email.addClass("dismissOnClick");
+			phoneMobile.addClass("dismissOnClick");
+			check.addClass("hidden-sm hidden-xs")
+		} else {
+			panelHeadingIcons.append(viewNotesPhone);
+			panelHeadingIcons.append(addNotesPhone);
+		}
+
+		panelHeadingIcons.prepend(email);
+		panelHeadingIcons.prepend(gmail);
+		panelHeadingIcons.prepend(phone);
+		panelHeadingIcons.prepend(phoneMobile);
+		panelHeadingIcons.append(check);
+
+		panelBody.append(viewNotes);
 		panelBody.append(addNotes);
-
-
-
 
 		panelHeading.append(panelTitle);
 		panelHeading.append(panelHeadingIcons);
 
 		divPanel.append(panelHeading);
-
 		divPanel.append(panelBody);
 
 		mainDiv.append(divPanel);
@@ -260,16 +192,6 @@ $(function() {
 		$("#dump-div").append(mainDiv);
 
 	}
-	
-	var now;
-	var myrng;
-	var myrngInt;
-	var todayStr;
-	var minThreshold;
-	var maxThreshold;
-	var todayStrNoYear;
-	var distanceThreshold;
-	var myCoordinates;
 
 	function setUpLogic() {
 		//Gets today's date
@@ -284,7 +206,7 @@ $(function() {
 		maxThreshold = 2;
 		distanceThreshold = 25;
 		infoRef.on("value", function(snap) {
-			console.log(snap.val());
+			//console.log(snap.val());
 			if (snap.val() !== null && (snap.val().minThreshold < 0.5 && snap.val().minThreshold >= 0)) {
 				minThreshold = snap.val().minThreshold;
 			}
@@ -294,10 +216,11 @@ $(function() {
 			if (snap.val() !== null && snap.val().maxDistance >0) {
 				distanceThreshold = snap.val().maxDistance;
 			}
+			if (snap.val() !== null) {
+				lightweightMobile = snap.val().lightweightMobile || false;
+			}
 		});
 	}
-
-	
 
 	function selectionLogic(contactKey, contact) {
 
@@ -306,14 +229,14 @@ $(function() {
 		if (contact.birthday) { 
 			var convertedBday = moment(contact.birthday).format("MM/DD");
 			if (convertedBday === todayStrNoYear) {
-				console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
+				//console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
 				return 1;
 			}
 		}
 
 		if(myCoordinates && contact.long && contact.lat) {
 			var d = distance(myCoordinates.latitude, myCoordinates.longitude, contact.lat, contact.long);
-			console.log(d);
+			//console.log(d);
 			if (d <= distanceThreshold) {
 				return 4;
 			}
@@ -324,7 +247,7 @@ $(function() {
 		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
 
 		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays >= minThreshold * contact.days)) {
-			console.log("random Function working");
+			//console.log("random Function working");
 			return 3;
 		}
 
@@ -339,7 +262,7 @@ $(function() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				myCoordinates = position.coords;
-				console.log(myCoordinates);
+				//console.log(myCoordinates);
 				//Turns firebase off and on again now that we have location! Also blows up the contacts to avoid duplicates
 				contactsRef.off();
 				$(".mainDiv").remove();
@@ -357,35 +280,24 @@ $(function() {
 		return 3959 * 2 * Math.asin(Math.sqrt(a)); // R = 3959 miles
 	}
 
-	$("#geolocationUpdateButton").click(function() {
-		getLocation();
-	});
-
-	$(document).on("click",".checkMark", removeDiv);
-
-
-
-	function removeDiv() {
-		var key = $(this).parents('.contact-panel').data('key');
-
+	function removeDiv(button) {
+		var key = button.parents('.contact-panel').data('key');
 		console.log(key);
-		$(this).parents('.mainDiv').remove();
+		button.parents('.mainDiv').remove();
 		//addNote(key);
-		mostRecentContact(key);
+		mostRecentContact(key, button.attr("id"));
 	}
 
-	function mostRecentContact(key) {
+	function mostRecentContact(key, type) {
 		contactsRef.child(key).update({
 			lastTalked: todayStr
-		})
+		});
+		contactsRef.child(key).child('history').push({
+			date: todayStr,
+			type: type
+		});
 	}
 
-	//Notes modal functions
-
-	//Set modalContactKey so we can test it.
-	var modalContactKey = "";
-
-	//Change 'modalContactKey' below to update based on where the 
 	$(document).on("click", ".addNotes", function () {
 		newNoteModal($(this).parents('.contact-panel').data('key'));
 	});
@@ -405,18 +317,24 @@ $(function() {
 		addNote(modalContactKey);
 		$("#newNote").modal('hide');
 	});
+	$("#geolocationUpdateButton").click(function() {
+		getLocation();
+	});
+	$(document).on("click",".checkMark", function() {
+		removeDiv($(this));
+	});
+	$(document).on("click", ".dismissOnClick", function() {
+		removeDiv($(this));
+	});
 
-	//Make sure this function can pass on the correct contactKey to the '#saveNotesButton' button
 	function newNoteModal(contactKey) {
 		$("#newNote").modal();
 		modalContactKey = contactKey;
 	}
 
-	//Write this function to pull down all firebase notes that exist at contactsRef.child(contactKey+'/notes')
 	function prevNotesModal(contactKey) {
 		$("#viewPrevNotes").modal();
 		$("#prevNotesTable").children().children("tr:not(:first)").remove();
-		console.log("contact key BLAH BALHA FLDASFJSDFS " + contactKey + ":::::" + database.ref('users/'+uid+'/contacts/' + contactKey + "/notes"));
 		var notesRef; 
 		notesRef = database.ref('users/'+uid+'/contacts/'+contactKey+'/notes');
 		notesRef.orderByKey().on("child_added", function(snapshot) {
@@ -425,10 +343,8 @@ $(function() {
 	}
 
 	function addNote(key) {
-		//fill in this variable to make sure noteText has whatever the user types in the #longNoteInput field in the modal
 		var noteText;
 		noteText = $("#longNoteInput").val();
-		//Edit this push to include the noteText. If noteText is blank, write a warning to the user
 		contactsRef.child(key).child('notes').push({
 			date: todayStr,
 			text: noteText
