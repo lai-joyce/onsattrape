@@ -126,7 +126,7 @@ $(function() {
 
 		var phoneMobile = $("<a>").attr("id", "phoneLine").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
 		var phone = $("<a>").attr("id", "phoneLine").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-sm hidden-xs");
-		var textMobile = $("<a>").attr("id", "phoneLine").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
+		var textMobile = $("<a>").attr("id", "text").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
 		var iphone = $("<i>").addClass("fa fa-phone").attr("aria-hidden", "true");
 		var itext = $("<i>").addClass("fa fa-comments-o").attr("aria-hidden", "true");
 		if (contactVal.telephone) {
