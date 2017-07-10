@@ -237,10 +237,14 @@ $(function() {
 
 		//console.log(contact);
 
+		var lastTalkedNumberDays; 
+
+		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
+
 		//Checks if it is their birthday, returns 1 if so
 		if (contact.birthday) { 
 			var convertedBday = moment(contact.birthday).format("MM/DD");
-			if (convertedBday === todayStrNoYear) {
+			if (convertedBday === todayStrNoYear && lastTalkedNumberDays !== 0) {
 				//console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
 				return 1;
 			}
@@ -255,9 +259,7 @@ $(function() {
 			}
 		}
 
-		var lastTalkedNumberDays; 
-
-		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
+		
 
 		//Checks if they are randomly selected, assuming they are outside of a minimum threshold
 		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays >= minThreshold * contact.days)) {
