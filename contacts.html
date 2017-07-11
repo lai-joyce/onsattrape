@@ -34,11 +34,11 @@
 	<div class="container">
 		<div class="col-lg-12">
 			<div class="panel panel-primary">
-				<div class="panel-heading">
+				<div class="panel-heading" id="contactsPgHeader">
 					Contacts:
-					<span id="newContact"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add New</span>
+					<span id="newContact" class="addNewClick"><i class="fa fa-plus-circle" class="addNewClick" aria-hidden="true"></i> Add New</span>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" id="contactsPgPanBody">
 					<table id="contactTable" class="linedTable">
 						<tr>
 							<th>Name</th>
@@ -167,7 +167,7 @@
 		var pattern = Trianglify({
 			width: window.innerWidth,
 			height: window.innerHeight,
-			x_colors: 'PuBu'
+			x_colors: 'Oranges'
 		});
 		$('body').append(pattern.canvas())
 	</script>

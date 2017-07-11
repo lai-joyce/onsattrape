@@ -210,6 +210,92 @@ th, label {
 	border: 1px solid black;
 }
 
+#contactsPgHeader {
+	background: rgb(55, 23, 11);
+	color: lightyellow;
+	/*border: 2px dotted black;*/
+}
+
+#contactsPgPanBody {
+	border: 1px solid black;
+}
+
+.edit {
+	background: rgb(205,139,95);
+	border: 1px solid rgb(53,23,11);
+}
+
+.edit:hover {
+	background: rgb(231,206,188);
+	color: rgb(55, 23, 11);
+	border: 1px solid rgb(53,23,11);
+}
+
+.addNewClick:hover {
+	color: rgb(205,139,95);
+}
+
+#setPanel {
+	background: rgb(55, 23, 11);
+	border: 1px solid black;
+	color: lightyellow;
+}
+
+#setPanelBody {
+	border: 1px solid black;
+}
+
+#saveUserInfo {
+	background: rgb(205,139,95);
+	border: 1px solid rgb(53,23,11);
+}
+
+#saveUserInfo:hover {
+	background: rgb(231,206,188);
+	color: rgb(55, 23, 11);
+	border: 1px solid rgb(53,23,11);
+}
+
+#signOut {
+	background: rgb(55, 23, 11);
+	border: 2px dotted black;
+}
+
+#signOut:hover {
+	color: rgb(205,139,95);
+}
+
+#saveLogic {
+	background: rgb(205,139,95);
+	border: 1px solid rgb(53,23,11);
+}
+
+#saveLogic:hover {
+	background: rgb(231,206,188);
+	color: rgb(55, 23, 11);
+	border: 1px solid rgb(53,23,11);
+}
+
+#importGoogleContacts {
+	background: rgb(205,139,95);
+	border: 1px solid rgb(53,23,11);
+}
+
+#importGoogleContacts:hover {
+	background: rgb(231,206,188);
+	color: rgb(55, 23, 11);
+	border: 1px solid rgb(53,23,11);
+}
+
+#labelMessage {
+	color: rgb(205,139,95);
+}
+
+#nameInput, #emailInput, #minThreshold, #maxThreshold, 
+#maxDistance  {
+	border: 1px dotted black;
+}
+
 /*.contact-panel:hover {
 	border: 1px solid white/*rgb(55, 23, 11);
 }
