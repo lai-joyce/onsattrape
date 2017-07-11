@@ -78,6 +78,7 @@ $(function() {
 
 		var panelHeading = $("<div>");
 		panelHeading.addClass("panel-heading clearfix");
+		panelHeading.attr("id", "panelBackground");
 
 		var panelTitle = $("<div>").addClass('panelTitle pull-left').append($("<h4>").text(contactVal.name));
 		
