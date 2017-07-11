@@ -127,16 +127,21 @@ $(function() {
 
 		var phoneMobile = $("<a>").attr("id", "phoneLine").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
 		var phone = $("<a>").attr("id", "phoneLine").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-sm hidden-xs");
+		var textMobile = $("<a>").attr("id", "text").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
 		var iphone = $("<i>").addClass("fa fa-phone").attr("aria-hidden", "true");
+		var itext = $("<i>").addClass("fa fa-comments-o").attr("aria-hidden", "true");
 		if (contactVal.telephone) {
-			phone.attr("href", "tel:" + contactVal.telephone);
-			phoneMobile.attr("href", "tel:" + contactVal.telephone);
+			phone.attr("href", "tel://" + contactVal.telephone);
+			phoneMobile.attr("href", "tel://" + contactVal.telephone);
+			textMobile.attr("href", "sms://" + contactVal.telephone);
 		} else {
 			phone.attr('disabled',true);
 			phoneMobile.attr('disabled',true);
+			textMobile.attr('disabled',true);
 		}
 		phone.append(iphone);
 		phoneMobile.append(iphone.clone());
+		textMobile.append(itext);
 
 		var email = $("<a>").attr("id", "emailID").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-md hidden-lg");
 		var gmail = $("<a>").attr("id", "gmailID").attr("target", "_blank").addClass("btn btn-primary panelButton hidden-sm hidden-xs");
@@ -167,6 +172,7 @@ $(function() {
 		if (lightweightMobile) {
 			email.addClass("dismissOnClick");
 			phoneMobile.addClass("dismissOnClick");
+			textMobile.addClass("dismissOnClick");
 			check.addClass("hidden-sm hidden-xs");
 		} else {
 			panelHeadingIcons.append(viewNotesPhone);
@@ -176,6 +182,7 @@ $(function() {
 		//Adds buttons to panel header & body, then adds header & body to actual div
 		panelHeadingIcons.prepend(email);
 		panelHeadingIcons.prepend(gmail);
+		panelHeadingIcons.prepend(textMobile);
 		panelHeadingIcons.prepend(phone);
 		panelHeadingIcons.prepend(phoneMobile);
 		panelHeadingIcons.append(check);
@@ -231,10 +238,14 @@ $(function() {
 
 		//console.log(contact);
 
+		var lastTalkedNumberDays; 
+
+		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
+
 		//Checks if it is their birthday, returns 1 if so
 		if (contact.birthday) { 
 			var convertedBday = moment(contact.birthday).format("MM/DD");
-			if (convertedBday === todayStrNoYear) {
+			if (convertedBday === todayStrNoYear && lastTalkedNumberDays !== 0) {
 				//console.log('Today is ' + contact.name + "'s BIRTHDAY!!");
 				return 1;
 			}
@@ -249,9 +260,7 @@ $(function() {
 			}
 		}
 
-		var lastTalkedNumberDays; 
-
-		lastTalkedNumberDays = moment(todayStr, "YYYY-MM-DD").diff(moment(contact.lastTalked, "YYYY-MM-DD"), 'days');
+		
 
 		//Checks if they are randomly selected, assuming they are outside of a minimum threshold
 		if ((myrngInt + contact.offset||0) % contact.days === 0 && (!contact.lastTalked || lastTalkedNumberDays >= minThreshold * contact.days)) {
