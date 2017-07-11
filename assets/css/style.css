@@ -100,6 +100,11 @@ div, h4 {
 	font-family: "Assistant";
 }
 
+#panelBackground {
+	background: rgb(65,61,61);
+	border: 1px solid black;
+}
+
 .panelTitle h4 {
 	font-weight: bold;
 	color: lightyellow;
@@ -145,20 +150,72 @@ th, label {
 	color: #eee;
 }
 */
-.addNotesSmall, .viewNotesSmall {
-	border: 1px solid #eee;
+
+#geolocationUpdateButton {
+	background: rgb(55, 23, 11);
+	border: 2px dotted black;
 }
+
+#geolocationUpdateButton:hover {
+	color: rgb(205,139,95);
+}
+
+.panelButton {
+	margin-left: 5px;
+	background: rgb(205,139,95);
+	border: 1px dotted rgb(53,23,11);
+}
+
+.panelButton:hover {
+	background: rgb(231,206,188);
+	color: rgb(55, 23, 11);;
+}
+
+
+.addNotesSmall, .viewNotesSmall {
+	border: 1px solid black;
+	background: rgb(228,193,172);
+	color: black;
+}
+
+.viewNotesSmall:hover, .addNotesSmall:hover {
+	border: 1px solid white;
+}
+
+
 
 .addNotes {
 	margin-left: 10px;
-	border: 1px solid rgb(51,102,153);
+	border: 1px dotted rgb(65,61,61);
+	background: rgb(205,139,95);
 }
 
 .viewNotes {
-	border: 1px solid rgb(235,104,100);
+	border: 1px solid rgb(205,139,95);
+	background: rgb(83,73,69);
 }
 
+.addNotes:hover {
+	background: rgb(83,73,69);
+	color: rgb(205,139,95);
+}
+
+.viewNotes:hover {
+	background: rgb(205,139,95);
+	color: black;
+}
+
+
+.contact-panel {
+	border: 1px solid black;
+}
+
+/*.contact-panel:hover {
+	border: 1px solid white/*rgb(55, 23, 11);
+}
 /*
+
+
 .btn {
 	border: 1px solid #eee;
 }
@@ -170,9 +227,7 @@ th, label {
 }
 */
 
-.panelButton {
-	margin-left: 5px;
-}
+
 
 .linedTable {
 	width: 100%;
