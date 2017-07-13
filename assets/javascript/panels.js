@@ -86,7 +86,7 @@ $(function() {
 		switch(selectionVal){
 			case 1: 
 			//Birthday
-			panelHeading.append($("<div><i class='fa fa-birthday-cake bIcon pull-left' aria-hidden='true'></i></div>"));
+			panelHeading.append($("<div><i class='fa fa-birthday-cake bIcon pull-left' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Birthday Today'></i></div>"));
 			break;
 			case 2:
 			//Haven't talked in a while
@@ -96,8 +96,12 @@ $(function() {
 			break;
 			case 4: 
 			//Nearby
-			panelHeading.append($("<div><i class='fa fa-globe locIcon pull-left' aria-hidden='true'></i></div>"));
+			panelHeading.append($("<div><i class='fa fa-globe locIcon pull-left' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='This contact is nearby'></i></div>"));
 			break;
+			// case 5:
+			// panelHeading.append($("<div><i class='fa fa-birthday-cake bIcon pull-left' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='Birthday Today'></i></div>"));
+			// panelHeading.append($("<div><i class='fa fa-globe locIcon pull-left' aria-hidden='true' data-toggle='tooltip' data-placement='top' title='This contact is nearby'></i></div>"));
+			// break;
 		}
 
 		var panelHeadingIcons = $("<div>").addClass('pull-right');		
@@ -260,6 +264,23 @@ $(function() {
 			}
 		}
 
+
+
+		// if ((contact.birthday) && (myCoordinates && contact.long && contact.lat)) {
+		// 	var convertedBday = moment(contact.birthday).format("MM/DD");
+		// 	var d = distance(myCoordinates.latitude, myCoordinates.longitude, contact.lat, contact.long);
+		// 	if ((convertedBday === todayStrNoYear && lastTalkedNumberDays !== 0) && (d <= distanceThreshold)) {
+		// 		return 5;
+		// 	}
+		// }
+
+
+
+
+
+
+
+
 		
 
 		//Checks if they are randomly selected, assuming they are outside of a minimum threshold
@@ -378,5 +399,6 @@ $(function() {
 			date: todayStr,
 			text: noteText
 		})
+		$("#longNoteInput").val("");
 	}
 });
