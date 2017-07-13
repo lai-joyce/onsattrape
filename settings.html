@@ -37,10 +37,10 @@
 	<div class="container">
 		<div class="col-lg-4">
 			<div class="panel panel-primary">
-				<div class="panel-heading">
+				<div class="panel-heading" id="setPanel">
 					User
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" id="setPanelBody">
 					<form id="editUserInfo">
 						<div class="form-group">
 							<label for="nameInput">Name:</label>
@@ -61,25 +61,25 @@
 		</div>
 		<div class="col-lg-4">
 			<div class="panel panel-primary">
-				<div class="panel-heading">
+				<div class="panel-heading" id="setPanel">
 					Logic
 				</div>
-				<div class="panel-body">
+				<div class="panel-body" id="setPanelBody">
 					<form id="editLogic">
 						<div class="form-group">
-							<label for="minThreshold"><a href="#" data-toggle="tooltip" data-placement="top" title="Do not contact person within X times regular cadence (0-0.99)">Minimum threshold:</a></label>
+							<label for="minThreshold"><a href="#" data-toggle="tooltip" data-placement="top" title="Do not contact person within X times regular cadence (0-0.99)" id="labelMessage">Minimum threshold:</a></label>
 							<input class="form-control" id="minThreshold" type="number">
 						</div>
 						<div class="form-group">
-							<label for="maxThreshold"><a href="#" data-toggle="tooltip" data-placement="top" title="Automatically contact person if not talked within X (1.5+)">Maximum threshold:</a></label>
+							<label for="maxThreshold"><a href="#" data-toggle="tooltip" data-placement="top" title="Automatically contact person if not talked within X (1.5+)" id="labelMessage">Maximum threshold:</a></label>
 							<input class="form-control" id="maxThreshold" type="number">
 						</div>
 						<div class="form-group">
-							<label for="maxDistance"><a href="#" data-toggle="tooltip" data-placement="top" title="Only return friends within X miles">Maximum distance:</a></label>
+							<label for="maxDistance"><a href="#" data-toggle="tooltip" data-placement="top" title="Only return friends within X miles" id="labelMessage">Maximum distance:</a></label>
 							<input class="form-control" id="maxDistance" type="number">
 						</div>
 						<div class="form-group">
-							<label for="lightweightMobile"><a href="#" data-toggle="tooltip" data-placement="top" title="On mobile, remove notes buttons and dismiss contact when pressing phone or email button">'Lightweight mode' on mobile:</a></label><input id="lightweightMobile" class="pull-right" type="checkbox">
+							<label for="lightweightMobile"><a href="#" data-toggle="tooltip" data-placement="top" title="On mobile, remove notes buttons and dismiss contact when pressing phone or email button" id="labelMessage">'Lightweight mode' on mobile:</a></label><input id="lightweightMobile" class="pull-right" type="checkbox">
 						</div>
 						<button type="button" id="saveLogic" class="btn btn-primary">Save settings</button>
 					</form>
@@ -88,11 +88,11 @@
 		</div>
 		<div class="col-lg-4">
 			<div class="panel panel-primary">
-				<div class="panel-heading">
+				<div class="panel-heading" id="setPanel">
 					Import Contacts
 				</div>
-				<div class="panel-body">
-					<p>Beta: Since this app is in beta, to import contacts, you must join <a href="https://groups.google.com/forum/#!forum/risky-access-by-unreviewed-apps">this google group</a></p>
+				<div class="panel-body" id="setPanelBody">
+					<p>Beta: Since this app is in beta, to import contacts, you must join <a href="https://groups.google.com/forum/#!forum/risky-access-by-unreviewed-apps" id="labelMessage">this google group</a></p>
 					<button type="button" id="importGoogleContacts" class="btn btn-primary">Import Google Contacts</button>
 
 				</div>
@@ -155,7 +155,7 @@
 		var pattern = Trianglify({
 			width: window.innerWidth,
 			height: window.innerHeight,
-			x_colors: 'PRGn'
+			x_colors: 'Greys'
 		});
 		$('body').append(pattern.canvas())
 	</script>
